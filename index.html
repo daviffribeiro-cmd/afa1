@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard AFA — Simulado · 28/02/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f7fa;--white:#ffffff;--border:#e5e9f0;
+  --text:#1a2332;--text2:#4b5a6e;--text3:#8b99ab;
+  --navy:#1e3a5f;--navy2:#2d5282;
+  --blue:#3b82f6;--blue-soft:#eff6ff;
+  --green:#16a34a;--green-soft:#f0fdf4;
+  --red:#dc2626;--red-soft:#fef2f2;
+  --gold:#d97706;--gold-soft:#fffbeb;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;}
+.page-wrap{max-width:1320px;margin:0 auto;padding:28px 20px;}
+.site-header{background:var(--white);border-bottom:2px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.site-header-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;color:var(--navy);letter-spacing:-.3px;flex-shrink:0;}
+.logo-badge{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-sub{font-size:12px;font-weight:600;color:var(--text3);display:block;}
+.main-nav{display:flex;gap:6px;flex:1;justify-content:center;flex-wrap:wrap;}
+.nav-btn{padding:8px 20px;background:transparent;border:1px solid transparent;border-radius:8px;font-size:14px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.nav-btn:hover{background:var(--bg);color:var(--navy);}
+.nav-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.section{display:none;}.section.active{display:block;}
+.page-intro{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.page-intro h1{font-size:26px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.page-intro p{font-size:14px;color:var(--text2);max-width:640px;}
+.legend-box{background:#f0f6ff;border:1px solid #c3d9f5;border-left:4px solid var(--blue);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--text2);display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;}
+.legend-box strong{color:var(--navy);}
+.legend-item{display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px;}
+.card-head{margin-bottom:4px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.card-head h2{font-size:18px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px;}
+.card-sub{font-size:13px;color:var(--text3);margin-bottom:18px;font-weight:500;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px;margin:16px 0;}
+.stat-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:box-shadow .2s;}
+.stat-item:hover{box-shadow:var(--shadow);}
+.stat-item .s-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.stat-item .s-val{font-size:34px;font-weight:900;color:var(--text);line-height:1;margin-bottom:4px;}
+.stat-item .s-hint{font-size:11px;color:var(--text3);font-weight:600;}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800;white-space:nowrap;}
+.chip-aprov{background:#dcfce7;color:#15803d;border:1px solid #86efac;}
+.chip-reprov{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;}
+.badge{padding:3px 9px;border-radius:6px;font-size:12px;font-weight:800;display:inline-block;}
+.b-ex{background:#dcfce7;color:#15803d;}
+.b-bo{background:#dbeafe;color:#1d4ed8;}
+.b-re{background:#fef9c3;color:#a16207;}
+.b-ru{background:#fee2e2;color:#b91c1c;}
+.pos-badge{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;font-size:18px;font-weight:900;color:white;background:#94a3b8;}
+.pos-badge.g1{background:linear-gradient(135deg,#fbbf24,#f59e0b);font-size:22px;box-shadow:0 3px 10px rgba(251,191,36,.4);}
+.pos-badge.g2{background:linear-gradient(135deg,#94a3b8,#64748b);font-size:20px;}
+.pos-badge.g3{background:linear-gradient(135deg,#f97316,#ea580c);font-size:20px;}
+.ranking-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);}
+.ranking-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.filter-btn{padding:8px 16px;border:1.5px solid var(--border);background:var(--white);border-radius:8px;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;flex-direction:column;}
+.filter-btn:hover{border-color:var(--navy);color:var(--navy);background:var(--bg);}
+.filter-btn.active{background:var(--navy);color:white;border-color:var(--navy);}
+.fb-desc{font-size:10px;font-weight:500;opacity:.75;}
+.search-input{width:100%;max-width:400px;padding:10px 16px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:500;outline:none;transition:border-color .2s;background:var(--bg);margin-bottom:14px;display:block;}
+.search-input:focus{border-color:var(--navy);background:var(--white);}
+.ranking-table{width:100%;border-collapse:separate;border-spacing:0 6px;}
+.ranking-table thead th{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:0 12px 8px;border-bottom:1.5px solid var(--border);}
+.ranking-row{cursor:pointer;transition:all .2s;}
+.ranking-row td{padding:12px;background:var(--bg);border-top:1px solid transparent;border-bottom:1px solid transparent;}
+.ranking-row td:first-child{border-radius:10px 0 0 10px;border-left:1px solid transparent;}
+.ranking-row td:last-child{border-radius:0 10px 10px 0;border-right:1px solid transparent;}
+.ranking-row:hover td{background:#edf2fb;border-color:#c3d9f5;}
+.ranking-row.top3 td{background:#fffbeb;border-top:1px solid #fde68a;border-bottom:1px solid #fde68a;}
+.ranking-row.top3 td:first-child{border-left:3px solid #fbbf24;border-radius:10px 0 0 10px;}
+.ranking-row.top3:hover td{background:#fef3c7;}
+.aluno-nome{font-size:14px;font-weight:800;color:var(--navy);display:block;}
+.aluno-meta{font-size:11px;color:var(--text3);font-weight:500;}
+.busca-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);max-width:580px;margin:0 auto;}
+.busca-card h2{font-size:22px;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.field-label{display:block;font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.field-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:15px;font-weight:500;outline:none;transition:border-color .2s;background:var(--bg);}
+.field-input:focus{border-color:var(--navy);background:var(--white);}
+.sug-item{padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-top:5px;cursor:pointer;font-weight:700;font-size:13px;color:var(--text);transition:all .15s;}
+.sug-item:hover{background:var(--blue-soft);border-color:var(--blue);color:var(--navy);}
+.btn-search{width:100%;padding:14px;background:var(--navy);color:white;border:none;border-radius:9px;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn-search:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,58,95,.3);}
+#dashboard{display:none;}
+.dash-topbar{background:var(--white);border-bottom:1.5px solid var(--border);padding:0 24px;position:sticky;top:64px;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.dash-topbar-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px;flex-wrap:wrap;}
+.dash-aluno-info h3{font-size:17px;font-weight:900;color:var(--navy);}
+.dash-aluno-info p{font-size:12px;color:var(--text3);font-weight:600;}
+.rank-pill{background:var(--gold-soft);border:1.5px solid #fde68a;color:var(--gold);padding:8px 16px;border-radius:8px;font-weight:900;font-size:14px;}
+.btn-back{padding:8px 18px;background:var(--red-soft);border:1px solid #fca5a5;color:var(--red);border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.btn-back:hover{background:#fee2e2;}
+.tabs-bar{background:var(--white);border-bottom:1.5px solid var(--border);padding:0 24px;position:sticky;top:124px;z-index:80;}
+.tabs-bar-inner{max-width:1320px;margin:0 auto;display:flex;gap:0;}
+.tab-btn{padding:14px 20px;border:none;background:transparent;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;}
+.tab-btn:hover{color:var(--navy);}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--navy);}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+.disc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0;}
+.disc-card{border-radius:12px;padding:16px;text-align:center;border:2px solid transparent;}
+.disc-card .dc-name{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.disc-card .dc-val{font-size:42px;font-weight:900;line-height:1;margin-bottom:4px;}
+.disc-card .dc-max{font-size:11px;color:var(--text3);margin-bottom:8px;}
+.disc-card.pass{background:#f0fdf4;border-color:#86efac;}
+.disc-card.fail{background:#fef2f2;border-color:#fca5a5;}
+.disc-card.pass .dc-val{color:#16a34a;}
+.disc-card.fail .dc-val{color:#dc2626;}
+.dtable{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:14px 0;}
+.dtable th{background:var(--bg);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;padding:11px 12px;border-bottom:1.5px solid var(--border);text-align:center;}
+.dtable th:first-child{text-align:left;}
+.dtable td{padding:11px 12px;border-bottom:1px solid var(--border);font-size:13px;text-align:center;}
+.dtable td:first-child{text-align:left;font-weight:700;}
+.dtable tbody tr:last-child td{border-bottom:none;}
+.dtable tbody tr:hover td{background:#f8fafc;}
+.info-box{background:#f0f6ff;border:1px solid #bdd3f3;border-left:4px solid var(--blue);border-radius:10px;padding:16px 18px;margin:14px 0;}
+.info-box h5{font-size:13px;font-weight:800;color:#1e3a8a;margin-bottom:8px;}
+.info-box ul{margin-left:18px;line-height:1.9;color:var(--text2);font-size:13px;}
+.warn-box{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid var(--gold);border-radius:10px;padding:16px 18px;margin:14px 0;}
+.warn-box h5{font-size:13px;font-weight:800;color:#78350f;margin-bottom:8px;}
+.warn-box ul{margin-left:18px;line-height:1.9;color:#92400e;font-size:13px;}
+.chart-wrap{height:340px;background:var(--bg);border-radius:10px;border:1px solid var(--border);padding:16px;margin:12px 0;}
+.plan-tbl{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);}
+.plan-tbl thead th{background:var(--navy);color:white;padding:12px 10px;font-size:12px;font-weight:800;text-align:center;}
+.plan-tbl thead th:first-child{text-align:left;padding-left:18px;}
+.plan-tbl tbody td{padding:11px 10px;border-bottom:1px solid var(--border);text-align:center;font-size:13px;vertical-align:middle;}
+.plan-tbl tbody td:first-child{font-weight:800;color:var(--navy);text-align:left;padding-left:18px;}
+.plan-tbl tfoot td{background:#f0fdf4;font-weight:900;color:#14532d;padding:12px 10px;text-align:center;font-size:13px;border-top:2px solid #86efac;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .3s ease;}
+@media(max-width:700px){
+  .site-header-inner{height:auto;padding:12px 0;}
+  .disc-grid{grid-template-columns:1fr 1fr;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="logo">
+      <div class="logo-badge">✈️</div>
+      <div>Dashboard AFA — Simulado
+        <span class="logo-sub">28/02/2026 · Português · Matemática · Física · Inglês · Matriz Educação</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-btn active" id="navRanking" onclick="goSec('ranking',this)">🏆 Ranking AFA</button>
+      <button class="nav-btn" id="navBusca" onclick="goSec('busca',this)">🔍 Buscar Aluno</button>
+    </nav>
+  </div>
+</header>
+
+<!-- RANKING -->
+<div id="rankingSection" class="section active">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>🏆 Ranking AFA — Simulado · 28/02/2026</h1>
+      <p>Classificação dos alunos no simulado de Português, Matemática, Física e Inglês. Clique no aluno para ver o relatório individual.</p>
+    </div>
+    <div class="legend-box">
+      <strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Aprovado = nota ≥ 5,0 em <strong>todas</strong> + redação entregue</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos 1</div>
+      <div class="legend-item">📌 Aprovados primeiro, depois reprovados — ambos por média ponderada</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div>
+          <h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">AFA — Lista de Alunos</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalRk">0</span> · Aprovados: <span id="aprovRk" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovRk" style="color:var(--red);font-weight:700">0</span></p>
+        </div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchRk" placeholder="🔍 Buscar pelo nome..." oninput="renderRanking()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFRk('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFRk('aprov',this)">✅ Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+        <button class="filter-btn" onclick="setFRk('reprov',this)">❌ Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+        <button class="filter-btn" onclick="setFRk('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar unidade</span></button>
+      </div>
+      <div id="uniWrapRk" style="display:none;margin-bottom:14px">
+        <select id="uniSelRk" onchange="renderRanking()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
+          <option value="">— Todas as unidades —</option>
+        </select>
+      </div>
+      <table class="ranking-table">
+        <thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Português <span style="font-weight:500;font-size:10px">(mín. 8/16)</span></th>
+          <th>Matemática <span style="font-weight:500;font-size:10px">(mín. 8/16)</span></th>
+          <th>Física <span style="font-weight:500;font-size:10px">(mín. 8/16)</span></th>
+          <th>Inglês <span style="font-weight:500;font-size:10px">(mín. 8/16)</span></th>
+          <th>Total <span style="font-weight:500;font-size:10px">(de 64)</span></th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody id="bodyRk"></tbody>
+      </table>
+      <div class="stat-grid" id="statsRk" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUSCA -->
+<div id="buscaSection" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>🔍 Buscar Aluno</h1>
+      <p>Pesquise pelo nome do aluno para ver o relatório individual de desempenho.</p>
+    </div>
+    <div class="busca-card">
+      <h2>Consultar Desempenho</h2>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:22px">Digite pelo menos 2 letras para ver sugestões automáticas.</p>
+      <div style="margin-bottom:16px">
+        <label class="field-label">Nome do Aluno</label>
+        <input type="text" class="field-input" id="nomeInput" placeholder="Ex: Pedro, Vagner, Miguel…" oninput="showSug()" onkeydown="if(event.key==='Enter')buscar()">
+        <div id="sugDiv" style="margin-top:6px"></div>
+      </div>
+      <button class="btn-search" onclick="buscar()">🔍 Ver Relatório Completo</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD INDIVIDUAL -->
+<div id="dashboard">
+  <div class="dash-topbar">
+    <div class="dash-topbar-inner">
+      <div class="dash-aluno-info">
+        <h3 id="dashNome">—</h3>
+        <p id="dashInfo">—</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div id="destDiv" style="display:none"><span class="rank-pill">⭐ <span id="destText"></span></span></div>
+        <button class="btn-back" onclick="voltar()">← Voltar ao Ranking</button>
+      </div>
+    </div>
+  </div>
+  <div class="tabs-bar">
+    <div class="tabs-bar-inner">
+      <button class="tab-btn active" onclick="goTab('pNotas',this)">📊 Desempenho</button>
+      <button class="tab-btn" onclick="goTab('pGrafico',this)">📈 Gráficos</button>
+      <button class="tab-btn" onclick="goTab('pPlano',this)">📅 Plano de Estudos</button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <div id="pNotas" class="tab-pane active"></div>
+    <div id="pGrafico" class="tab-pane"></div>
+    <div id="pPlano" class="tab-pane"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DADOS AFA — Simulado 28/02/2026
+// port/mate/fisi/ingl = acertos (0-16)
+// m_port/m_mate/m_fisi/m_ingl = nota (0-10)
+// media = MP · aprovação: nota ≥ 5,0 em todas + red=Sim
+// ═══════════════════════════════════════════════════════
+const RAW_AFA = [
+{unidade:"NOVA IGUACU",nome:"MIGUEL COSTA",turma:"NI-PAFA11",serie:"AEF",ra:"MT23134281",port:14,mate:12,fisi:13,ingl:9,m_port:8.75,m_mate:7.5,m_fisi:8.12,m_ingl:5.62,media:7.5,red:"Sim"},
+{unidade:"TAQUARA",nome:"VAGNER SOUZA",turma:"TQ-PAFA11",serie:"AEF",ra:"MT25198953",port:15,mate:10,fisi:9,ingl:13,m_port:9.38,m_mate:6.25,m_fisi:5.62,m_ingl:8.12,media:7.34,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"PEDRO WERNECK",turma:"NI-3AFA11",serie:"3S",ra:"MT25188095",port:12,mate:13,fisi:10,ingl:12,m_port:7.5,m_mate:8.12,m_fisi:6.25,m_ingl:7.5,media:7.34,red:"Sim"},
+{unidade:"BANGU",nome:"MARCOS CARVALHO",turma:"BG-PAFA11",serie:"AEF",ra:"MT20041455",port:12,mate:12,fisi:10,ingl:12,m_port:7.5,m_mate:7.5,m_fisi:6.25,m_ingl:7.5,media:7.19,red:"Sim"},
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",turma:"TQ-3AFA11",serie:"3S",ra:"MT25189275",port:14,mate:11,fisi:8,ingl:11,m_port:8.75,m_mate:6.88,m_fisi:5.0,m_ingl:6.88,media:6.88,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"MARIA COSTA",turma:"NI-PAFA11",serie:"AEF",ra:"MT25170952",port:10,mate:13,fisi:10,ingl:11,m_port:6.25,m_mate:8.12,m_fisi:6.25,m_ingl:6.88,media:6.88,red:"Sim"},
+{unidade:"MADUREIRA",nome:"GUSTAVO OLIVEIRA",turma:"MD-PAFA11",serie:"AEF",ra:"MT22058218",port:9,mate:10,fisi:12,ingl:11,m_port:5.62,m_mate:6.25,m_fisi:7.5,m_ingl:6.88,media:6.56,red:"Sim"},
+{unidade:"MADUREIRA",nome:"LOHAYNE SANTOS",turma:"MD-PAFA11",serie:"AEF",ra:"MT24164287",port:9,mate:12,fisi:11,ingl:9,m_port:5.62,m_mate:7.5,m_fisi:6.88,m_ingl:5.62,media:6.41,red:"Sim"},
+{unidade:"BANGU",nome:"LUCIANO OLIVEIRA",turma:"BG-PAFA11",serie:"AEF",ra:"MT22096622",port:11,mate:10,fisi:7,ingl:14,m_port:6.88,m_mate:6.25,m_fisi:4.38,m_ingl:8.75,media:6.56,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"BRENO OLIVEIRA",turma:"CG-3AFA11",serie:"3S",ra:"MT23120876",port:13,mate:12,fisi:6,ingl:11,m_port:8.12,m_mate:7.5,m_fisi:3.75,m_ingl:6.88,media:6.56,red:"Sim"},
+{unidade:"BANGU",nome:"JOÃO TEODORO",turma:"BG-PAFA11",serie:"AEF",ra:"MT23126717",port:12,mate:8,fisi:7,ingl:14,m_port:7.5,m_mate:5.0,m_fisi:4.38,m_ingl:8.75,media:6.41,red:"Sim"},
+{unidade:"BANGU",nome:"PEDRO SEGUNDO",turma:"BG-PAFA11",serie:"AEF",ra:"MT21056205",port:11,mate:14,fisi:10,ingl:6,m_port:6.88,m_mate:8.75,m_fisi:6.25,m_ingl:3.75,media:6.41,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"BERNARDO SILVA",turma:"NI-PAFA11",serie:"AEF",ra:"MT21062021",port:9,mate:11,fisi:7,ingl:14,m_port:5.62,m_mate:6.88,m_fisi:4.38,m_ingl:8.75,media:6.41,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"BERNARDO SILVA",turma:"-",serie:"3S",ra:"MT22099527",port:12,mate:9,fisi:5,ingl:14,m_port:7.5,m_mate:5.62,m_fisi:3.12,m_ingl:8.75,media:6.25,red:"Sim"},
+{unidade:"MADUREIRA",nome:"JOÃO DIAS",turma:"MD-3AFA11",serie:"3S",ra:"MT23122104",port:13,mate:8,fisi:5,ingl:14,m_port:8.12,m_mate:5.0,m_fisi:3.12,m_ingl:8.75,media:6.25,red:"Sim"},
+{unidade:"BANGU",nome:"CAIO DINIZ",turma:"BG-PAFA11",serie:"AEF",ra:"MT21065453",port:11,mate:10,fisi:8,ingl:10,m_port:6.88,m_mate:6.25,m_fisi:5.0,m_ingl:6.25,media:6.09,red:"Não"},
+{unidade:"BANGU",nome:"LEONARDO BORGES",turma:"BG-3AFA11",serie:"3S",ra:"MT23131139",port:11,mate:8,fisi:6,ingl:13,m_port:6.88,m_mate:5.0,m_fisi:3.75,m_ingl:8.12,media:5.94,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"PEDRO PINTO",turma:"CG-PAAE11",serie:"AEF",ra:"MT22089403",port:11,mate:7,fisi:7,ingl:13,m_port:6.88,m_mate:4.38,m_fisi:4.38,m_ingl:8.12,media:5.94,red:"Sim"},
+{unidade:"MADUREIRA",nome:"RAFAELLA SANTOS",turma:"MD-3AFA11",serie:"3S",ra:"MT24162687",port:12,mate:5,fisi:9,ingl:12,m_port:7.5,m_mate:3.12,m_fisi:5.62,m_ingl:7.5,media:5.94,red:"Sim"},
+{unidade:"BANGU",nome:"MANUELLE VERNECH",turma:"BG-PAFA11",serie:"AEF",ra:"MT25173634",port:10,mate:7,fisi:7,ingl:13,m_port:6.25,m_mate:4.38,m_fisi:4.38,m_ingl:8.12,media:5.78,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL BORGES",turma:"CG-3AFA11",serie:"3S",ra:"MT19023548",port:11,mate:8,fisi:5,ingl:13,m_port:6.88,m_mate:5.0,m_fisi:3.12,m_ingl:8.12,media:5.78,red:"Não"},
+{unidade:"BANGU",nome:"SOPHIA BASTOS",turma:"BG-PAFA11",serie:"AEF",ra:"MT25198466",port:12,mate:5,fisi:4,ingl:15,m_port:7.5,m_mate:3.12,m_fisi:2.5,m_ingl:9.38,media:5.62,red:"Sim"},
+{unidade:"TAQUARA",nome:"NIKOLAS SANTOS",turma:"TQ-PAFA11",serie:"AEF",ra:"MT24158446",port:11,mate:11,fisi:7,ingl:6,m_port:6.88,m_mate:6.88,m_fisi:4.38,m_ingl:3.75,media:5.47,red:"Sim"},
+{unidade:"BANGU",nome:"BEATRIZ VELLASCO",turma:"BG-PAFA11",serie:"AEF",ra:"MT20040838",port:14,mate:8,fisi:6,ingl:7,m_port:8.75,m_mate:5.0,m_fisi:3.75,m_ingl:4.38,media:5.47,red:"Sim"},
+{unidade:"BANGU",nome:"MARIA MENEZES",turma:"BG-3AFA11",serie:"3S",ra:"MT22091896",port:11,mate:5,fisi:5,ingl:14,m_port:6.88,m_mate:3.12,m_fisi:3.12,m_ingl:8.75,media:5.47,red:"Sim"},
+{unidade:"BANGU",nome:"YANNI VIANA",turma:"BG-3AFA11",serie:"3S",ra:"MT21065735",port:11,mate:6,fisi:5,ingl:13,m_port:6.88,m_mate:3.75,m_fisi:3.12,m_ingl:8.12,media:5.47,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"ARTHUR ALBUQUERQUE",turma:"CG-3AFA11",serie:"3S",ra:"MT22097604",port:13,mate:3,fisi:5,ingl:14,m_port:8.12,m_mate:1.88,m_fisi:3.12,m_ingl:8.75,media:5.47,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"LUCAS FILIPAK",turma:"NI-PAFA11",serie:"AEF",ra:"MT24160137",port:10,mate:9,fisi:6,ingl:10,m_port:6.25,m_mate:5.62,m_fisi:3.75,m_ingl:6.25,media:5.47,red:"Sim"},
+{unidade:"BANGU",nome:"LUAN SANTOS",turma:"BG-PAFA11",serie:"AEF",ra:"MT25182916",port:9,mate:6,fisi:7,ingl:12,m_port:5.62,m_mate:3.75,m_fisi:4.38,m_ingl:7.5,media:5.31,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"DANILO ALMEIDA",turma:"-",serie:"AEF",ra:"MT26203620",port:11,mate:8,fisi:6,ingl:9,m_port:6.88,m_mate:5.0,m_fisi:3.75,m_ingl:5.62,media:5.31,red:"Sim"},
+{unidade:"MADUREIRA",nome:"BERNARDO MATOS",turma:"MD-PAFA11",serie:"AEF",ra:"MT22088942",port:13,mate:8,fisi:8,ingl:5,m_port:8.12,m_mate:5.0,m_fisi:5.0,m_ingl:3.12,media:5.31,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"BEATRIZ GAMMINE",turma:"NI-PAFA11",serie:"AEF",ra:"MT22095475",port:9,mate:11,fisi:8,ingl:5,m_port:5.62,m_mate:6.88,m_fisi:5.0,m_ingl:3.12,media:5.16,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"NATALY LUNA",turma:"NI-3AFA11",serie:"3S",ra:"MT23130412",port:10,mate:7,fisi:4,ingl:12,m_port:6.25,m_mate:4.38,m_fisi:2.5,m_ingl:7.5,media:5.16,red:"Sim"},
+{unidade:"TAQUARA",nome:"GUILHERME BLUM",turma:"TQ-3AFA11",serie:"3S",ra:"MT19021575",port:11,mate:10,fisi:6,ingl:5,m_port:6.88,m_mate:6.25,m_fisi:3.75,m_ingl:3.12,media:5.0,red:"Sim"},
+{unidade:"TAQUARA",nome:"YASMIM ROMÃO",turma:"TQ-PAFA11",serie:"AEF",ra:"MT23134059",port:15,mate:9,fisi:6,ingl:2,m_port:9.38,m_mate:5.62,m_fisi:3.75,m_ingl:1.25,media:5.0,red:"Sim"},
+{unidade:"BANGU",nome:"EZEQUIEL TREZENA",turma:"BG-3AFA11",serie:"3S",ra:"MT25188749",port:12,mate:6,fisi:5,ingl:9,m_port:7.5,m_mate:3.75,m_fisi:3.12,m_ingl:5.62,media:5.0,red:"Sim"},
+{unidade:"BANGU",nome:"MATHEUS PINTO",turma:"BG-3AFA11",serie:"3S",ra:"MT20037883",port:8,mate:9,fisi:8,ingl:7,m_port:5.0,m_mate:5.62,m_fisi:5.0,m_ingl:4.38,media:5.0,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"LUIZA SANTOS",turma:"NI-PAFA11",serie:"AEF",ra:"MT25188046",port:8,mate:9,fisi:6,ingl:9,m_port:5.0,m_mate:5.62,m_fisi:3.75,m_ingl:5.62,media:5.0,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"SIDNEY LOURENÇO",turma:"NI-PAFA11",serie:"AEF",ra:"MT25194226",port:6,mate:8,fisi:7,ingl:11,m_port:3.75,m_mate:5.0,m_fisi:4.38,m_ingl:6.88,media:5.0,red:"Sim"},
+{unidade:"MADUREIRA",nome:"DAVI SANTOS",turma:"MD-3AFA11",serie:"3S",ra:"MT22098230",port:11,mate:4,fisi:5,ingl:11,m_port:6.88,m_mate:2.5,m_fisi:3.12,m_ingl:6.88,media:4.84,red:"Sim"},
+{unidade:"MADUREIRA",nome:"RICHARD GOMES",turma:"MD-3AFA11",serie:"3S",ra:"MT23118201",port:9,mate:5,fisi:6,ingl:11,m_port:5.62,m_mate:3.12,m_fisi:3.75,m_ingl:6.88,media:4.84,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"GABRIEL ALVES",turma:"NI-PAFA11",serie:"AEF",ra:"MT24161879",port:12,mate:3,fisi:5,ingl:11,m_port:7.5,m_mate:1.88,m_fisi:3.12,m_ingl:6.88,media:4.84,red:"Sim"},
+{unidade:"BANGU",nome:"CAUA LOPES",turma:"BG-PAFA11",serie:"AEF",ra:"MT26203059",port:11,mate:5,fisi:5,ingl:9,m_port:6.88,m_mate:3.12,m_fisi:3.12,m_ingl:5.62,media:4.69,red:"Sim"},
+{unidade:"BANGU",nome:"LÍVIA BARBOSA",turma:"BG-3AFA11",serie:"3S",ra:"MT23122203",port:11,mate:4,fisi:6,ingl:9,m_port:6.88,m_mate:2.5,m_fisi:3.75,m_ingl:5.62,media:4.69,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"FERNANDO TRINDADE",turma:"CG-3AFA11",serie:"3S",ra:"MT22087480",port:7,mate:8,fisi:5,ingl:10,m_port:4.38,m_mate:5.0,m_fisi:3.12,m_ingl:6.25,media:4.69,red:"Não"},
+{unidade:"NOVA IGUACU",nome:"JHONATAN SILVA",turma:"NI-PAFA11",serie:"AEF",ra:"MT25192337",port:10,mate:6,fisi:5,ingl:9,m_port:6.25,m_mate:3.75,m_fisi:3.12,m_ingl:5.62,media:4.69,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"LUCAS OLIVEIRA",turma:"NI-3AFA11",serie:"3S",ra:"MT24152068",port:9,mate:6,fisi:7,ingl:8,m_port:5.62,m_mate:3.75,m_fisi:4.38,m_ingl:5.0,media:4.69,red:"Sim"},
+{unidade:"BANGU",nome:"DANIEL VALENTIM",turma:"BG-PAFA11",serie:"AEF",ra:"MT25197096",port:9,mate:6,fisi:6,ingl:8,m_port:5.62,m_mate:3.75,m_fisi:3.75,m_ingl:5.0,media:4.53,red:"Sim"},
+{unidade:"MADUREIRA",nome:"LINDSAY MASSAPUST",turma:"MD-PAFA11",serie:"AEF",ra:"MT23127541",port:11,mate:10,fisi:4,ingl:4,m_port:6.88,m_mate:6.25,m_fisi:2.5,m_ingl:2.5,media:4.53,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"SAMUEL RIMOLO",turma:"NI-3AFA11",serie:"3S",ra:"MT25177932",port:12,mate:7,fisi:6,ingl:4,m_port:7.5,m_mate:4.38,m_fisi:3.75,m_ingl:2.5,media:4.53,red:"Sim"},
+{unidade:"TAQUARA",nome:"ISABELE NUNES",turma:"TQ-PAFA11",serie:"AEF",ra:"MT25189374",port:8,mate:6,fisi:6,ingl:8,m_port:5.0,m_mate:3.75,m_fisi:3.75,m_ingl:5.0,media:4.38,red:"Sim"},
+{unidade:"BANGU",nome:"JOAO SOUZA",turma:"-",serie:"3S",ra:"MT23107709",port:11,mate:6,fisi:6,ingl:5,m_port:6.88,m_mate:3.75,m_fisi:3.75,m_ingl:3.12,media:4.38,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"FELIPE BRUN",turma:"CG-3AFA11",serie:"3S",ra:"MT23133705",port:10,mate:7,fisi:4,ingl:7,m_port:6.25,m_mate:4.38,m_fisi:2.5,m_ingl:4.38,media:4.38,red:"Sim"},
+{unidade:"MADUREIRA",nome:"LARA LIMA",turma:"MD-3AFA11",serie:"3S",ra:"MT25167057",port:10,mate:9,fisi:6,ingl:3,m_port:6.25,m_mate:5.62,m_fisi:3.75,m_ingl:1.88,media:4.38,red:"Sim"},
+{unidade:"MADUREIRA",nome:"GABRIEL LIRA",turma:"MD-PAFA11",serie:"AEF",ra:"MT23108715",port:11,mate:9,fisi:7,ingl:1,m_port:6.88,m_mate:5.62,m_fisi:4.38,m_ingl:0.62,media:4.38,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"DANILO PINTO",turma:"NI-3AFA11",serie:"3S",ra:"MT24153348",port:10,mate:9,fisi:4,ingl:5,m_port:6.25,m_mate:5.62,m_fisi:2.5,m_ingl:3.12,media:4.38,red:"Sim"},
+{unidade:"MADUREIRA",nome:"BERNARDO AGUIAR",turma:"MD-3AFA11",serie:"3S",ra:"MT23132731",port:7,mate:9,fisi:5,ingl:6,m_port:4.38,m_mate:5.62,m_fisi:3.12,m_ingl:3.75,media:4.22,red:"Sim"},
+{unidade:"MADUREIRA",nome:"ENZO LIMA",turma:"MD-3AFA11",serie:"3S",ra:"MT23123334",port:9,mate:7,fisi:2,ingl:9,m_port:5.62,m_mate:4.38,m_fisi:1.25,m_ingl:5.62,media:4.22,red:"Sim"},
+{unidade:"TAQUARA",nome:"AMANDA ROSA",turma:"TQ-3AFA11",serie:"3S",ra:"MT23131576",port:9,mate:5,fisi:6,ingl:6,m_port:5.62,m_mate:3.12,m_fisi:3.75,m_ingl:3.75,media:4.06,red:"Sim"},
+{unidade:"TAQUARA",nome:"MARCIO BENEDITO",turma:"TQ-PAFA11",serie:"AEF",ra:"MT22076434",port:6,mate:7,fisi:8,ingl:5,m_port:3.75,m_mate:4.38,m_fisi:5.0,m_ingl:3.12,media:4.06,red:"Não"},
+{unidade:"BANGU",nome:"CAIO FRAGA",turma:"BG-3AFA11",serie:"3S",ra:"MT23123888",port:10,mate:8,fisi:6,ingl:2,m_port:6.25,m_mate:5.0,m_fisi:3.75,m_ingl:1.25,media:4.06,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"LETICIA SILVA",turma:"CG-PAAE11",serie:"AEF",ra:"MT24158479",port:10,mate:3,fisi:6,ingl:7,m_port:6.25,m_mate:1.88,m_fisi:3.75,m_ingl:4.38,media:4.06,red:"Não"},
+{unidade:"MADUREIRA",nome:"MATHEUS OLIVEIRA",turma:"MD-3AFA11",serie:"3S",ra:"MT23129125",port:10,mate:6,fisi:4,ingl:6,m_port:6.25,m_mate:3.75,m_fisi:2.5,m_ingl:3.75,media:4.06,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"LORENNA PAIXÃO",turma:"NI-3AFA11",serie:"3S",ra:"MT24161218",port:7,mate:6,fisi:8,ingl:5,m_port:4.38,m_mate:3.75,m_fisi:5.0,m_ingl:3.12,media:4.06,red:"Sim"},
+{unidade:"TAQUARA",nome:"RENATO MENDONÇA",turma:"TQ-3AFA11",serie:"3S",ra:"MT24147308",port:9,mate:6,fisi:3,ingl:7,m_port:5.62,m_mate:3.75,m_fisi:1.88,m_ingl:4.38,media:3.91,red:"Sim"},
+{unidade:"BANGU",nome:"JOÃO SOUSA",turma:"BG-3AFA11",serie:"3S",ra:"MT22096168",port:10,mate:7,fisi:6,ingl:2,m_port:6.25,m_mate:4.38,m_fisi:3.75,m_ingl:1.25,media:3.91,red:"Não"},
+{unidade:"CAMPO GRANDE",nome:"PAULO VIEIRA",turma:"CG-3AFA11",serie:"3S",ra:"MT24158255",port:11,mate:3,fisi:3,ingl:8,m_port:6.88,m_mate:1.88,m_fisi:1.88,m_ingl:5.0,media:3.91,red:"Sim"},
+{unidade:"MADUREIRA",nome:"GUILHERME OLIVEIRA",turma:"MD-PAFA11",serie:"AEF",ra:"MT23124365",port:7,mate:8,fisi:7,ingl:3,m_port:4.38,m_mate:5.0,m_fisi:4.38,m_ingl:1.88,media:3.91,red:"Sim"},
+{unidade:"BANGU",nome:"MAURICIO MONTEIRO",turma:"BG-3AFA11",serie:"3S",ra:"MT23132988",port:7,mate:6,fisi:6,ingl:5,m_port:4.38,m_mate:3.75,m_fisi:3.75,m_ingl:3.12,media:3.75,red:"Sim"},
+{unidade:"BANGU",nome:"JÚLIO SILVA",turma:"BG-3AFA11",serie:"3S",ra:"MT23128002",port:8,mate:6,fisi:8,ingl:2,m_port:5.0,m_mate:3.75,m_fisi:5.0,m_ingl:1.25,media:3.75,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"ADILSON FREITAS",turma:"CG-3AFA11",serie:"3S",ra:"MT24143216",port:6,mate:5,fisi:8,ingl:5,m_port:3.75,m_mate:3.12,m_fisi:5.0,m_ingl:3.12,media:3.75,red:"Não"},
+{unidade:"NOVA IGUACU",nome:"GUILHERME WARRAK",turma:"-",serie:"AEF",ra:"MT24135584",port:9,mate:8,fisi:4,ingl:3,m_port:5.62,m_mate:5.0,m_fisi:2.5,m_ingl:1.88,media:3.75,red:"Sim"},
+{unidade:"BANGU",nome:"DAVI SANTOS",turma:"BG-3AFA11",serie:"3S",ra:"MT23119332",port:9,mate:4,fisi:4,ingl:6,m_port:5.62,m_mate:2.5,m_fisi:2.5,m_ingl:3.75,media:3.59,red:"Sim"},
+{unidade:"BANGU",nome:"LUCAS HIDALGO",turma:"BG-3AFA11",serie:"3S",ra:"MT23120769",port:10,mate:5,fisi:4,ingl:4,m_port:6.25,m_mate:3.12,m_fisi:2.5,m_ingl:2.5,media:3.59,red:"Sim"},
+{unidade:"BANGU",nome:"RAFAELA SILVA",turma:"BG-3AFA11",serie:"3S",ra:"MT25191842",port:8,mate:7,fisi:7,ingl:1,m_port:5.0,m_mate:4.38,m_fisi:4.38,m_ingl:0.62,media:3.59,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"LEVI SILVA",turma:"CG-PAAE11",serie:"AEF",ra:"MT21064100",port:7,mate:6,fisi:5,ingl:5,m_port:4.38,m_mate:3.75,m_fisi:3.12,m_ingl:3.12,media:3.59,red:"Não"},
+{unidade:"MADUREIRA",nome:"JULIA FERNANDES",turma:"MD-3AFA11",serie:"3S",ra:"MT22094858",port:7,mate:4,fisi:7,ingl:5,m_port:4.38,m_mate:2.5,m_fisi:4.38,m_ingl:3.12,media:3.59,red:"Sim"},
+{unidade:"MADUREIRA",nome:"GABRIEL ALMEIDA",turma:"MD-PAFA11",serie:"AEF",ra:"MT23130198",port:9,mate:6,fisi:4,ingl:4,m_port:5.62,m_mate:3.75,m_fisi:2.5,m_ingl:2.5,media:3.59,red:"Sim"},
+{unidade:"MADUREIRA",nome:"MARIA MANHAES",turma:"MD-PAFA11",serie:"AEF",ra:"MT23111610",port:7,mate:7,fisi:3,ingl:6,m_port:4.38,m_mate:4.38,m_fisi:1.88,m_ingl:3.75,media:3.59,red:"Sim"},
+{unidade:"TAQUARA",nome:"BRENO GARCIA",turma:"TQ-3AFA11",serie:"3S",ra:"MT24135089",port:7,mate:5,fisi:6,ingl:4,m_port:4.38,m_mate:3.12,m_fisi:3.75,m_ingl:2.5,media:3.44,red:"Sim"},
+{unidade:"BANGU",nome:"RITA RIBEIRO",turma:"BG-PAFA11",serie:"AEF",ra:"MT21072566",port:8,mate:5,fisi:4,ingl:5,m_port:5.0,m_mate:3.12,m_fisi:2.5,m_ingl:3.12,media:3.44,red:"Sim"},
+{unidade:"MADUREIRA",nome:"LETHICIA SANTOS",turma:"MD-3AFA11",serie:"3S",ra:"MT23127327",port:4,mate:8,fisi:6,ingl:4,m_port:2.5,m_mate:5.0,m_fisi:3.75,m_ingl:2.5,media:3.44,red:"Sim"},
+{unidade:"MADUREIRA",nome:"AMANDA SILVA",turma:"MD-3AFA11",serie:"3S",ra:"MT23129406",port:9,mate:7,fisi:2,ingl:4,m_port:5.62,m_mate:4.38,m_fisi:1.25,m_ingl:2.5,media:3.44,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"DAVI CARVALHO",turma:"NI-3AFA11",serie:"3S",ra:"MT25188145",port:9,mate:3,fisi:7,ingl:3,m_port:5.62,m_mate:1.88,m_fisi:4.38,m_ingl:1.88,media:3.44,red:"Sim"},
+{unidade:"BANGU",nome:"FILIPE RIBEIRO",turma:"BG-3AFA11",serie:"3S",ra:"MT19026004",port:8,mate:6,fisi:6,ingl:1,m_port:5.0,m_mate:3.75,m_fisi:3.75,m_ingl:0.62,media:3.28,red:"Sim"},
+{unidade:"BANGU",nome:"LUCAS VEIGA",turma:"BG-3AFA11",serie:"3S",ra:"MT23131683",port:7,mate:7,fisi:6,ingl:1,m_port:4.38,m_mate:4.38,m_fisi:3.75,m_ingl:0.62,media:3.28,red:"Não"},
+{unidade:"BANGU",nome:"MARCIO SÁ",turma:"BG-3AFA11",serie:"3S",ra:"MT24160806",port:7,mate:3,fisi:7,ingl:4,m_port:4.38,m_mate:1.88,m_fisi:4.38,m_ingl:2.5,media:3.28,red:"Sim"},
+{unidade:"MADUREIRA",nome:"BRENDA VALE",turma:"MD-3AFA11",serie:"3S",ra:"MT23127376",port:3,mate:9,fisi:4,ingl:5,m_port:1.88,m_mate:5.62,m_fisi:2.5,m_ingl:3.12,media:3.28,red:"Sim"},
+{unidade:"MADUREIRA",nome:"ENZO ALEGRIO",turma:"MD-3AFA11",serie:"3S",ra:"MT23129745",port:8,mate:4,fisi:5,ingl:4,m_port:5.0,m_mate:2.5,m_fisi:3.12,m_ingl:2.5,media:3.28,red:"Sim"},
+{unidade:"TAQUARA",nome:"PEDRO ABREU",turma:"TQ-3AFA11",serie:"3S",ra:"MT25192386",port:6,mate:4,fisi:5,ingl:5,m_port:3.75,m_mate:2.5,m_fisi:3.12,m_ingl:3.12,media:3.12,red:"Sim"},
+{unidade:"BANGU",nome:"BERNARDO CARVALHO",turma:"BG-3AFA11",serie:"3S",ra:"MT23126246",port:9,mate:3,fisi:3,ingl:5,m_port:5.62,m_mate:1.88,m_fisi:1.88,m_ingl:3.12,media:3.12,red:"Sim"},
+{unidade:"BANGU",nome:"EMANUELLY GOMES",turma:"BG-3AFA11",serie:"3S",ra:"MT22102933",port:6,mate:4,fisi:6,ingl:4,m_port:3.75,m_mate:2.5,m_fisi:3.75,m_ingl:2.5,media:3.12,red:"Sim"},
+{unidade:"BANGU",nome:"PHYETRO SACRAMENTO",turma:"BG-3AFA11",serie:"3S",ra:"MT24147290",port:7,mate:4,fisi:7,ingl:2,m_port:4.38,m_mate:2.5,m_fisi:4.38,m_ingl:1.25,media:3.12,red:"Não"},
+{unidade:"BANGU",nome:"THIAGO SILVA",turma:"BG-3AFA11",serie:"3S",ra:"MT23123706",port:6,mate:4,fisi:5,ingl:5,m_port:3.75,m_mate:2.5,m_fisi:3.12,m_ingl:3.12,media:3.12,red:"Sim"},
+{unidade:"TAQUARA",nome:"JOÃO PAULA",turma:"TQ-PAFA11",serie:"AEF",ra:"MT24147464",port:10,mate:5,fisi:3,ingl:1,m_port:6.25,m_mate:3.12,m_fisi:1.88,m_ingl:0.62,media:2.97,red:"Sim"},
+{unidade:"BANGU",nome:"BRYAN CARNEIRO",turma:"BG-3AFA11",serie:"3S",ra:"MT25197468",port:6,mate:5,fisi:4,ingl:4,m_port:3.75,m_mate:3.12,m_fisi:2.5,m_ingl:2.5,media:2.97,red:"Não"},
+{unidade:"BANGU",nome:"DANIEL GIUSTI",turma:"BG-3AFA11",serie:"3S",ra:"MT25187501",port:6,mate:4,fisi:6,ingl:3,m_port:3.75,m_mate:2.5,m_fisi:3.75,m_ingl:1.88,media:2.97,red:"Não"},
+{unidade:"BANGU",nome:"SAMUEL CRUZ",turma:"BG-3AFA11",serie:"3S",ra:"MT23118458",port:5,mate:4,fisi:5,ingl:5,m_port:3.12,m_mate:2.5,m_fisi:3.12,m_ingl:3.12,media:2.97,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"PEDRO CRUZ",turma:"CG-3AFA11",serie:"3S",ra:"MT23119860",port:8,mate:7,fisi:3,ingl:1,m_port:5.0,m_mate:4.38,m_fisi:1.88,m_ingl:0.62,media:2.97,red:"Sim"},
+{unidade:"MADUREIRA",nome:"VITOR FREITAS",turma:"MD-3AFA11",serie:"3S",ra:"MT24137143",port:7,mate:7,fisi:3,ingl:2,m_port:4.38,m_mate:4.38,m_fisi:1.88,m_ingl:1.25,media:2.97,red:"Sim"},
+{unidade:"TAQUARA",nome:"ALICE SILVA",turma:"TQ-3AFA11",serie:"3S",ra:"MT24144529",port:6,mate:6,fisi:5,ingl:1,m_port:3.75,m_mate:3.75,m_fisi:3.12,m_ingl:0.62,media:2.81,red:"Não"},
+{unidade:"BANGU",nome:"GABRIEL ALVES",turma:"BG-3AFA11",serie:"3S",ra:"MT22096762",port:5,mate:4,fisi:7,ingl:2,m_port:3.12,m_mate:2.5,m_fisi:4.38,m_ingl:1.25,media:2.81,red:"Não"},
+{unidade:"BANGU",nome:"NICHOLAS GONÇALVES",turma:"BG-3AFA11",serie:"3S",ra:"MT23118466",port:8,mate:3,fisi:3,ingl:4,m_port:5.0,m_mate:1.88,m_fisi:1.88,m_ingl:2.5,media:2.81,red:"Sim"},
+{unidade:"NOVA IGUACU",nome:"MARIA SIQUEIRA",turma:"-",serie:"EM",ra:"MT25197617",port:3,mate:6,fisi:5,ingl:4,m_port:1.88,m_mate:3.75,m_fisi:3.12,m_ingl:2.5,media:2.81,red:"Sim"},
+{unidade:"TAQUARA",nome:"SOPHIA COSTA",turma:"TQ-3AFA11",serie:"3S",ra:"MT24140030",port:6,mate:3,fisi:6,ingl:2,m_port:3.75,m_mate:1.88,m_fisi:3.75,m_ingl:1.25,media:2.66,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"MARCOS LEITE",turma:"CG-3AFA11",serie:"3S",ra:"MT25191180",port:3,mate:7,fisi:4,ingl:3,m_port:1.88,m_mate:4.38,m_fisi:2.5,m_ingl:1.88,media:2.66,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"MARIA SILVA",turma:"-",serie:"AEF",ra:"MT26203810",port:6,mate:7,fisi:3,ingl:1,m_port:3.75,m_mate:4.38,m_fisi:1.88,m_ingl:0.62,media:2.66,red:"Sim"},
+{unidade:"CAMPO GRANDE",nome:"MARIANNA SILVA",turma:"CG-PAAE11",serie:"AEF",ra:"MT25192105",port:5,mate:3,fisi:6,ingl:2,m_port:3.12,m_mate:1.88,m_fisi:3.75,m_ingl:1.25,media:2.5,red:"Sim"},
+{unidade:"MADUREIRA",nome:"THIAGO SILVA",turma:"MD-PAFA11",serie:"AEF",ra:"MT24158404",port:7,mate:4,fisi:4,ingl:1,m_port:4.38,m_mate:2.5,m_fisi:2.5,m_ingl:0.62,media:2.5,red:"Sim"},
+{unidade:"TAQUARA",nome:"MATHEUS BAPTISTA",turma:"TQ-3AFA11",serie:"3S",ra:"MT25186164",port:4,mate:2,fisi:5,ingl:1,m_port:2.5,m_mate:1.25,m_fisi:3.12,m_ingl:0.62,media:1.88,red:"Não"}
+];
+
+function buildTurma(raw){
+  raw.forEach(a=>{
+    a.ok_port=a.m_port>=5.0; a.ok_mate=a.m_mate>=5.0;
+    a.ok_fisi=a.m_fisi>=5.0; a.ok_ingl=a.m_ingl>=5.0;
+    a.ok_red=a.red==='Sim';
+    a.aprov=a.ok_port&&a.ok_mate&&a.ok_fisi&&a.ok_ingl&&a.ok_red;
+    a.gtot=a.port+a.mate+a.fisi+a.ingl;
+    const f=[];
+    if(!a.ok_port)f.push('Português'); if(!a.ok_mate)f.push('Matemática');
+    if(!a.ok_fisi)f.push('Física');    if(!a.ok_ingl)f.push('Inglês');
+    if(!a.ok_red) f.push('Redação');
+    a.motivo=f.length?f.join(', ')+' abaixo do mín.':'';
+  });
+  const apv=raw.filter(a=>a.aprov).sort((a,b)=>b.media-a.media||(b.m_port-a.m_port));
+  const rep=raw.filter(a=>!a.aprov).sort((a,b)=>b.media-a.media||(b.m_port-a.m_port));
+  const sorted=[...apv,...rep];
+  sorted.forEach((a,i)=>a.rank=i+1);
+  const avg=k=>sorted.reduce((s,x)=>s+(x[k]||0),0)/sorted.length;
+  return{list:sorted,avgs:{port:avg('m_port'),mate:avg('m_mate'),fisi:avg('m_fisi'),ingl:avg('m_ingl'),media:avg('media')}};
+}
+
+const T=buildTurma(RAW_AFA);
+
+(()=>{
+  const sel=document.getElementById('uniSelRk');
+  [...new Set(T.list.map(a=>a.unidade))].sort().forEach(u=>{
+    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
+  });
+})();
+
+let fRk='todos', atual=null, secaoOrigem='ranking', chartObj=null;
+const pBadge=p=>p>=80?'b-ex':p>=65?'b-bo':p>=50?'b-re':'b-ru';
+const pLabel=p=>p>=80?'🏆 Excelente':p>=65?'✅ Bom':p>=50?'⚠️ Regular':'❌ Melhorar';
+
+function renderRanking(){
+  const q=(document.getElementById('searchRk').value||'').toLowerCase();
+  let lst=T.list.filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(fRk==='aprov')  lst=lst.filter(a=>a.aprov);
+  if(fRk==='reprov') lst=lst.filter(a=>!a.aprov);
+  if(fRk==='unidade'){const v=document.getElementById('uniSelRk').value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  const tot=T.list.length,apvN=T.list.filter(a=>a.aprov).length;
+  document.getElementById('totalRk').textContent=tot;
+  document.getElementById('aprovRk').textContent=apvN;
+  document.getElementById('reprovRk').textContent=tot-apvN;
+  document.getElementById('bodyRk').innerHTML=lst.map(a=>{
+    const p=a.rank,pc=p===1?'g1':p===2?'g2':p===3?'g3':'';
+    const em=p===1?'🥇':p===2?'🥈':p===3?'🥉':p;
+    const rc='ranking-row'+(p<=3?' top3':'');
+    const st=a.aprov?'<span class="chip chip-aprov">✓ Aprovado</span>':'<span class="chip chip-reprov">✗ Reprovado</span>';
+    return `<tr class="${rc}" onclick="openAluno('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade}${a.ra?' · '+a.ra:''}${!a.aprov?' · '+a.motivo:''}</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_port?'#16a34a':'#dc2626'}">${a.port}<span style="font-size:11px;color:var(--text3)">/16</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_mate?'#16a34a':'#dc2626'}">${a.mate}<span style="font-size:11px;color:var(--text3)">/16</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_fisi?'#16a34a':'#dc2626'}">${a.fisi}<span style="font-size:11px;color:var(--text3)">/16</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_ingl?'#16a34a':'#dc2626'}">${a.ingl}<span style="font-size:11px;color:var(--text3)">/16</span></td>
+      <td style="font-size:26px;font-weight:900;text-align:center;color:var(--navy)">${a.gtot}<span style="font-size:12px;font-weight:500;color:var(--text3)">/64</span></td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('statsRk').innerHTML=`
+    <div class="stat-item"><div class="s-label">Total de Alunos</div><div class="s-val">${tot}</div><div class="s-hint">participantes</div></div>
+    <div class="stat-item"><div class="s-label">Aprovados</div><div class="s-val" style="color:var(--green)">${apvN}</div><div class="s-hint">${Math.round(apvN/tot*100)}% da turma</div></div>
+    <div class="stat-item"><div class="s-label">Reprovados</div><div class="s-val" style="color:var(--red)">${tot-apvN}</div><div class="s-hint">${Math.round((tot-apvN)/tot*100)}%</div></div>
+    <div class="stat-item"><div class="s-label">Maior Pontuação</div><div class="s-val" style="color:var(--navy)">${T.list[0]?T.list[0].gtot:0}</div><div class="s-hint">de 64 questões</div></div>
+    <div class="stat-item"><div class="s-label">Média Português</div><div class="s-val">${T.avgs.port.toFixed(1)}</div><div class="s-hint">de 10 (mín. 5,0)</div></div>
+    <div class="stat-item"><div class="s-label">Média Matemática</div><div class="s-val">${T.avgs.mate.toFixed(1)}</div><div class="s-hint">de 10 (mín. 5,0)</div></div>
+    <div class="stat-item"><div class="s-label">Média Física</div><div class="s-val">${T.avgs.fisi.toFixed(1)}</div><div class="s-hint">de 10 (mín. 5,0)</div></div>
+    <div class="stat-item"><div class="s-label">Média Inglês</div><div class="s-val">${T.avgs.ingl.toFixed(1)}</div><div class="s-hint">de 10 (mín. 5,0)</div></div>
+  `;
+}
+
+function setFRk(f,btn){
+  fRk=f;
+  document.getElementById('rankingSection').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.getElementById('uniWrapRk').style.display=f==='unidade'?'block':'none';
+  renderRanking();
+}
+
+function showSug(){
+  const v=(document.getElementById('nomeInput').value||'').toLowerCase();
+  const d=document.getElementById('sugDiv');
+  if(v.length<2){d.innerHTML='';return;}
+  d.innerHTML=T.list.filter(a=>a.nome.toLowerCase().includes(v)).slice(0,8).map(a=>`
+    <div class="sug-item" onclick="openAluno('${a.nome.replace(/'/g,"\\'")}')">
+      #${a.rank}º — ${a.nome} <span style="color:var(--text3);font-size:11px">${a.unidade}</span>
+      ${a.aprov?'<span style="color:#16a34a;font-size:11px">✓ Aprovado</span>':'<span style="color:#dc2626;font-size:11px">✗ Reprovado</span>'}
+    </div>`).join('');
+}
+function buscar(){
+  const v=(document.getElementById('nomeInput').value||'').trim().toUpperCase();
+  const f=T.list.find(a=>a.nome.toUpperCase()===v||a.nome.toUpperCase().includes(v));
+  if(!f){alert('Aluno não encontrado!');return;}
+  openAluno(f.nome);
+}
+
+function openAluno(nome){
+  atual=T.list.find(a=>a.nome===nome);
+  if(!atual)return;
+  secaoOrigem='ranking';
+  document.getElementById('dashNome').textContent=atual.nome;
+  document.getElementById('dashInfo').textContent=`#${atual.rank}º no ranking AFA · ${atual.unidade} · ${atual.gtot} acertos de 64 · MP ${atual.media.toFixed(2)} · ${atual.aprov?'✓ Aprovado':'✗ '+atual.motivo}`;
+  const dd=document.getElementById('destDiv');
+  if(atual.rank<=5){dd.style.display='block';document.getElementById('destText').textContent=`#${atual.rank}º — AFA`;}
+  else dd.style.display='none';
+  buildNotas();buildGrafico();buildPlano();
+  goTab('pNotas',document.querySelector('.tab-btn'));
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  document.getElementById('dashboard').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function buildNotas(){
+  const a=atual, corte=7.65;
+  const portPct=+(a.port/16*100).toFixed(0), matePct=+(a.mate/16*100).toFixed(0);
+  const fisiPct=+(a.fisi/16*100).toFixed(0), inglPct=+(a.ingl/16*100).toFixed(0);
+  document.getElementById('pNotas').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>📊 Resumo de Desempenho</h2></div>
+    <p class="card-sub">Resultado no simulado AFA — 28/02/2026.</p>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="s-label">Classificação</div><div class="s-val" style="color:var(--navy)">#${a.rank}º</div><div class="s-hint">de ${T.list.length} alunos</div></div>
+      <div class="stat-item"><div class="s-label">Total de Acertos</div><div class="s-val">${a.gtot}</div><div class="s-hint">de 64 questões</div></div>
+      <div class="stat-item"><div class="s-label">Média Ponderada</div><div class="s-val" style="color:${a.media>=corte?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div><div class="s-hint">corte AFA ≈ 7,65</div></div>
+      <div class="stat-item"><div class="s-label">Redação</div><div class="s-val" style="font-size:28px;padding-top:4px">${a.ok_red?'✅':'❌'}</div><div class="s-hint">${a.ok_red?'Entregue':'Não entregue — eliminatória'}</div></div>
+      <div class="stat-item"><div class="s-label">Resultado</div><div class="s-val" style="font-size:28px;padding-top:4px">${a.aprov?'✅':'❌'}</div><div class="s-hint">${a.aprov?'Aprovado':a.motivo||'Reprovado'}</div></div>
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>📐 Desempenho por Disciplina</h2></div>
+    <p class="card-sub">Mínimo exigido: nota ≥ 5,0 (≥ 8 acertos) em <strong>cada</strong> disciplina + redação entregue.</p>
+    <div class="disc-grid">
+      <div class="disc-card ${a.ok_port?'pass':'fail'}"><div class="dc-name">Português</div><div class="dc-val">${a.port}</div><div class="dc-max">de 16 questões — nota ${a.m_port.toFixed(2)} — mínimo 8</div>${a.ok_port?'<span class="chip chip-aprov">✓ Aprovado</span>':'<span class="chip chip-reprov">✗ Abaixo do mínimo</span>'}</div>
+      <div class="disc-card ${a.ok_mate?'pass':'fail'}"><div class="dc-name">Matemática</div><div class="dc-val">${a.mate}</div><div class="dc-max">de 16 questões — nota ${a.m_mate.toFixed(2)} — mínimo 8</div>${a.ok_mate?'<span class="chip chip-aprov">✓ Aprovado</span>':'<span class="chip chip-reprov">✗ Abaixo do mínimo</span>'}</div>
+      <div class="disc-card ${a.ok_fisi?'pass':'fail'}"><div class="dc-name">Física</div><div class="dc-val">${a.fisi}</div><div class="dc-max">de 16 questões — nota ${a.m_fisi.toFixed(2)} — mínimo 8</div>${a.ok_fisi?'<span class="chip chip-aprov">✓ Aprovado</span>':'<span class="chip chip-reprov">✗ Abaixo do mínimo</span>'}</div>
+      <div class="disc-card ${a.ok_ingl?'pass':'fail'}"><div class="dc-name">Inglês</div><div class="dc-val">${a.ingl}</div><div class="dc-max">de 16 questões — nota ${a.m_ingl.toFixed(2)} — mínimo 8</div>${a.ok_ingl?'<span class="chip chip-aprov">✓ Aprovado</span>':'<span class="chip chip-reprov">✗ Abaixo do mínimo</span>'}</div>
+    </div>
+    <div style="display:inline-block;margin-top:8px;padding:10px 18px;border-radius:10px;font-weight:800;font-size:14px;${a.aprov?'background:#f0fdf4;border:1.5px solid #86efac;color:#15803d':'background:#fef2f2;border:1.5px solid #fca5a5;color:#b91c1c'}">
+      Resultado: ${a.aprov?'✓ Aprovado':'✗ Reprovado — '+a.motivo}
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>📊 Comparativo com a Turma AFA</h2></div>
+    <p class="card-sub">Desempenho do aluno versus a média geral da turma.</p>
+    <table class="dtable">
+      <thead><tr><th>Disciplina</th><th>Acertos</th><th>% Acerto</th><th>Média Turma</th><th>Diferença</th><th>Situação</th></tr></thead>
+      <tbody>
+        ${[['Português',a.port,portPct,a.ok_port,T.avgs.port,a.m_port],['Matemática',a.mate,matePct,a.ok_mate,T.avgs.mate,a.m_mate],['Física',a.fisi,fisiPct,a.ok_fisi,T.avgs.fisi,a.m_fisi],['Inglês',a.ingl,inglPct,a.ok_ingl,T.avgs.ingl,a.m_ingl]].map(([nome,ac,pct,ok,avg,nota])=>`
+          <tr ${!ok?'style="background:#fff8f8"':''}>
+            <td>${nome} <span style="color:var(--text3);font-size:11px">mín. 8</span></td>
+            <td style="font-weight:800">${ac}/16</td>
+            <td><span class="badge ${pBadge(pct)}">${pct}%</span></td>
+            <td style="color:var(--text2)">${avg.toFixed(2)} (${(avg/10*100).toFixed(0)}%)</td>
+            <td style="font-weight:900;color:${(nota-avg)>=0?'#16a34a':'#dc2626'}">${(nota-avg)>=0?'+':''}${(nota-avg).toFixed(2)}</td>
+            <td>${pLabel(pct)}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+    ${a.media<corte?`<div class="warn-box"><h5>⚠️ Abaixo do corte estimado da AFA</h5><ul>
+      <li>Média ponderada (${a.media.toFixed(2)}) abaixo do corte histórico da AFA (~${corte})</li>
+      <li>Precisa elevar a média em aproximadamente <strong>${(corte-a.media).toFixed(2)} pontos</strong></li>
+      <li>Foque nas disciplinas com nota abaixo de 5,0 — cada uma é eliminatória</li>
+    </ul></div>`:`<div class="info-box"><h5>✅ Acima do corte estimado da AFA</h5><ul>
+      <li>Média ponderada (${a.media.toFixed(2)}) acima do corte histórico (~${corte})</li>
+      <li>Mantenha a consistência em todas as 4 disciplinas e pratique questões de provas anteriores da AFA</li>
+    </ul></div>`}
+  </div>`;
+}
+
+function buildGrafico(){
+  const a=atual, topN=10;
+  const topList=T.list.slice(0,topN);
+  const tP=topList.reduce((s,x)=>s+x.m_port,0)/topN, tM=topList.reduce((s,x)=>s+x.m_mate,0)/topN;
+  const tF=topList.reduce((s,x)=>s+x.m_fisi,0)/topN, tI=topList.reduce((s,x)=>s+x.m_ingl,0)/topN;
+  document.getElementById('pGrafico').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>📈 Comparativo — ${a.nome.split(' ')[0]} vs Turma AFA</h2></div>
+    <p class="card-sub">Nota do aluno frente à média geral da turma e ao mínimo exigido pela AFA (nota 5,0).</p>
+    <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>🕸️ Radar — ${a.nome.split(' ')[0]} vs Top ${topN} AFA</h2></div>
+    <p class="card-sub">Comparação do aluno com a média dos ${topN} melhores da turma em cada disciplina (% de acerto).</p>
+    <div class="chart-wrap" style="height:380px"><canvas id="radarChart"></canvas></div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>📊 Distribuição da Turma AFA</h2></div>
+    <p class="card-sub">Quantos alunos acertaram cada quantidade de questões por disciplina.</p>
+    <div class="chart-wrap"><canvas id="distChart"></canvas></div>
+  </div>`;
+  if(chartObj){try{Object.values(chartObj).forEach(c=>c.destroy());}catch(e){}}
+  chartObj={};
+  setTimeout(()=>{
+    const ctx1=document.getElementById('barChart').getContext('2d');
+    chartObj.bar=new Chart(ctx1,{type:'bar',data:{labels:['Português','Matemática','Física','Inglês'],datasets:[
+      {label:a.nome.split(' ')[0],data:[a.m_port,a.m_mate,a.m_fisi,a.m_ingl],backgroundColor:['#3b82f6','#8b5cf6','#f59e0b','#10b981'],borderRadius:8},
+      {label:'Média Turma AFA',data:[+T.avgs.port.toFixed(2),+T.avgs.mate.toFixed(2),+T.avgs.fisi.toFixed(2),+T.avgs.ingl.toFixed(2)],backgroundColor:['rgba(59,130,246,.3)','rgba(139,92,246,.3)','rgba(245,158,11,.3)','rgba(16,185,129,.3)'],borderRadius:8},
+      {label:'Mínimo AFA (5,0)',data:[5,5,5,5],backgroundColor:'rgba(220,38,38,.15)',borderWidth:2,borderColor:'rgba(220,38,38,.6)',borderRadius:8}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true,max:10,ticks:{stepSize:1}}}}});
+    const ctx2=document.getElementById('radarChart').getContext('2d');
+    chartObj.radar=new Chart(ctx2,{type:'radar',data:{labels:['Português (%)','Matemática (%)','Física (%)','Inglês (%)','MP (%)'],datasets:[
+      {label:a.nome.split(' ')[0],data:[+(a.m_port*10).toFixed(1),+(a.m_mate*10).toFixed(1),+(a.m_fisi*10).toFixed(1),+(a.m_ingl*10).toFixed(1),+(a.media*10).toFixed(1)],backgroundColor:'rgba(59,130,246,.15)',borderColor:'#3b82f6',pointBackgroundColor:'#3b82f6',pointRadius:5,borderWidth:2},
+      {label:'Top '+topN+' — AFA',data:[+(tP*10).toFixed(1),+(tM*10).toFixed(1),+(tF*10).toFixed(1),+(tI*10).toFixed(1),+((tP+tM+tF+tI)/4*10).toFixed(1)],backgroundColor:'rgba(234,179,8,.12)',borderColor:'#ca8a04',pointBackgroundColor:'#ca8a04',pointRadius:5,borderWidth:2,borderDash:[5,3]}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:20,font:{size:11}},pointLabels:{font:{size:12,weight:'700'}},grid:{color:'rgba(0,0,0,.08)'},angleLines:{color:'rgba(0,0,0,.1)'}}}}});
+    const pB=Array(17).fill(0),mB=Array(17).fill(0),fB=Array(17).fill(0),iB=Array(17).fill(0);
+    T.list.forEach(x=>{if(x.port!=null)pB[Math.min(x.port,16)]++;if(x.mate!=null)mB[Math.min(x.mate,16)]++;if(x.fisi!=null)fB[Math.min(x.fisi,16)]++;if(x.ingl!=null)iB[Math.min(x.ingl,16)]++;});
+    const ctx3=document.getElementById('distChart').getContext('2d');
+    chartObj.dist=new Chart(ctx3,{type:'bar',data:{labels:[...Array(17).keys()],datasets:[
+      {label:'Português',data:pB,backgroundColor:'rgba(59,130,246,.5)',borderRadius:4},
+      {label:'Matemática',data:mB,backgroundColor:'rgba(139,92,246,.4)',borderRadius:4},
+      {label:'Física',data:fB,backgroundColor:'rgba(245,158,11,.5)',borderRadius:4},
+      {label:'Inglês',data:iB,backgroundColor:'rgba(16,185,129,.4)',borderRadius:4}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},tooltip:{callbacks:{title:([i])=>`${i.label} acertos`}}},scales:{x:{title:{display:true,text:'Nº de acertos'}},y:{title:{display:true,text:'Qtd de alunos'}}}}});
+  },80);
+}
+
+function buildPlano(){
+  const a=atual;
+  const discs=[
+    {nome:'Português',nota:a.m_port,ac:a.port,ok:a.ok_port,cor:'#3b82f6'},
+    {nome:'Matemática',nota:a.m_mate,ac:a.mate,ok:a.ok_mate,cor:'#8b5cf6'},
+    {nome:'Física',nota:a.m_fisi,ac:a.fisi,ok:a.ok_fisi,cor:'#f59e0b'},
+    {nome:'Inglês',nota:a.m_ingl,ac:a.ingl,ok:a.ok_ingl,cor:'#10b981'},
+  ].sort((x,y)=>x.nota-y.nota);
+  const semana=[['Segunda',discs[0].nome,'Teoria dos conteúdos com maior incidência na AFA'],['Terça',discs[1].nome,'Lista de exercícios de nível médio'],['Quarta',discs[0].nome,'Questões de provas anteriores da AFA'],['Quinta',discs[2].nome,'Revisão de conteúdo + exercícios variados'],['Sexta',discs[1].nome,'Questões de nível difícil — estilo banca AFA'],['Sábado','Simulado Completo','Prova completa (Port + Mat + Fís + Ing + Redação)'],['Domingo','Revisão Geral','Correção do simulado + reforço nos pontos fracos']];
+  document.getElementById('pPlano').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>📅 Plano de Estudos — ${a.nome.split(' ')[0]}</h2></div>
+    <p class="card-sub">Sugestão baseada no desempenho individual. Disciplinas com nota abaixo de 5,0 são priorizadas.</p>
+    <div class="disc-grid" style="margin-bottom:20px">
+      ${discs.map((d,i)=>{const prio=i===0?'🔴 Alta prioridade':i===1?'🟡 Média prioridade':i===2?'🟢 Manter':'🔵 Forte';return `<div class="disc-card ${d.ok?'pass':'fail'}" style="border-left:4px solid ${d.cor}"><div class="dc-name">${d.nome}</div><div class="dc-val" style="font-size:28px">${d.nota.toFixed(2)}</div><div class="dc-max">${d.ac}/16 acertos</div><div style="font-size:11px;font-weight:700;margin-top:4px">${prio}</div></div>`;}).join('')}
+    </div>
+    <table class="plan-tbl">
+      <thead><tr><th>Dia</th><th>Foco Principal</th><th>Atividade</th><th>Horas</th></tr></thead>
+      <tbody>${semana.map(([dia,disc,ativ])=>`<tr><td>${dia}</td><td><strong>${disc}</strong></td><td style="text-align:left;font-size:12px;color:var(--text2)">${ativ}</td><td>${dia==='Sábado'?'4h':'2h'}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><td colspan="4">Total semanal sugerido: 16 horas + 1 simulado completo com redação</td></tr></tfoot>
+    </table>
+    <div class="info-box" style="margin-top:14px"><h5>💡 Regras de aprovação na AFA</h5><ul>
+      <li>A AFA exige nota ≥ 5,0 em <strong>todas</strong> as 4 disciplinas (Port, Mat, Fís, Ing)</li>
+      <li>A redação é eliminatória — nunca deixe de entregar, independente do conteúdo</li>
+      <li>Não adianta ter 9,0 em Port com 4,9 em Fís — <strong>todas as disciplinas precisam passar</strong></li>
+      <li>Física costuma ser o maior gargalo da turma — priorize se estiver abaixo de 5,0</li>
+    </ul></div>
+    ${!a.ok_red?`<div class="warn-box"><h5>⚠️ Redação não entregue</h5><ul><li>A redação é critério eliminatório na AFA — entrega obrigatória em todo simulado</li></ul></div>`:''}
+  </div>`;
+}
+
+function goSec(s,btn){
+  secaoOrigem=s;
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(s+'Section').classList.add('active');
+  document.getElementById('dashboard').style.display='none';
+  if(btn)btn.classList.add('active');
+}
+function goTab(id,btn){
+  document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+function voltar(){
+  document.getElementById('dashboard').style.display='none';
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  document.getElementById(secaoOrigem+'Section').classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const navMap={ranking:'navRanking',busca:'navBusca'};
+  document.getElementById(navMap[secaoOrigem]||'navRanking').classList.add('active');
+}
+
+renderRanking();
+</script>
+</body>
+</html>
