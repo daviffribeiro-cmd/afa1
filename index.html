@@ -428,7 +428,7 @@ function renderRanking(){
     const st=a.aprov?'<span class="chip chip-aprov">✓ Aprovado</span>':'<span class="chip chip-reprov">✗ Reprovado</span>';
     return `<tr class="${rc}" onclick="openAluno('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
       <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
-      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade}${a.ra?' · '+a.ra:''}${!a.aprov?' · '+a.motivo:''}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade}${!a.aprov?' · '+a.motivo:''}</span></td>
       <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_port?'#16a34a':'#dc2626'}">${a.port}<span style="font-size:11px;color:var(--text3)">/16</span></td>
       <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_mate?'#16a34a':'#dc2626'}">${a.mate}<span style="font-size:11px;color:var(--text3)">/16</span></td>
       <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_fisi?'#16a34a':'#dc2626'}">${a.fisi}<span style="font-size:11px;color:var(--text3)">/16</span></td>
