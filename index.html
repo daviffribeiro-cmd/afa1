@@ -248,12 +248,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="tab-btn active" onclick="goTab('pNotas',this)">📊 Desempenho</button>
       <button class="tab-btn" onclick="goTab('pGrafico',this)">📈 Gráficos</button>
       <button class="tab-btn" onclick="goTab('pPlano',this)">🎯 Chance de Classificação</button>
+      <button class="tab-btn" onclick="goTab('pAnalise',this)">📋 Análise de Performance</button>
     </div>
   </div>
   <div class="page-wrap">
     <div id="pNotas" class="tab-pane active"></div>
     <div id="pGrafico" class="tab-pane"></div>
     <div id="pPlano" class="tab-pane"></div>
+    <div id="pAnalise" class="tab-pane"></div>
   </div>
 </div>
 
@@ -504,7 +506,7 @@ function confirmarRA(){
   const dd=document.getElementById('destDiv');
   if(atual.rank<=5){dd.style.display='block';document.getElementById('destText').textContent=`#${atual.rank}º — AFA`;}
   else dd.style.display='none';
-  buildNotas();buildGrafico();buildPlano();
+  buildNotas();buildGrafico();buildPlano();buildAnalise();
   goTab('pNotas',document.querySelector('.tab-btn'));
   document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
   document.getElementById('dashboard').style.display='block';
@@ -732,6 +734,246 @@ function buildPlano(){
   </ul></div>` : ''}
   `;
 }
+
+function buildAnalise(){
+  const a = atual;
+  const CORTE = 7.41;
+  const TOTAL_Q = 16; // questões por disciplina
+
+  const discs = [
+    {nome:'Português', ac:a.port,  nota:a.m_port, cor:'#3b82f6', emoji:'📖'},
+    {nome:'Matemática',ac:a.mate,  nota:a.m_mate, cor:'#8b5cf6', emoji:'📐'},
+    {nome:'Física',    ac:a.fisi,  nota:a.m_fisi, cor:'#f59e0b', emoji:'⚡'},
+    {nome:'Inglês',    ac:a.ingl,  nota:a.m_ingl, cor:'#10b981', emoji:'🌐'},
+  ];
+
+  // ── 1. ÍNDICE DE CONFIABILIDADE (IC) ──
+  // Baseado no % de acertos por disciplina
+  // ≥70% = Alto | 50–69% = Médio | <50% = Baixo
+  const ic = d => {
+    const pct = (d.ac / TOTAL_Q) * 100;
+    if (pct >= 70) return {label:'IC ALTO',   cor:'#16a34a', bg:'#f0fdf4', borda:'#86efac', emoji:'🟢', pct};
+    if (pct >= 50) return {label:'IC MÉDIO',  cor:'#d97706', bg:'#fffbeb', borda:'#fde68a', emoji:'🟡', pct};
+    return             {label:'IC BAIXO',  cor:'#dc2626', bg:'#fef2f2', borda:'#fca5a5', emoji:'🔴', pct};
+  };
+
+  // ── 2. FAIXAS DE DESEMPENHO ──
+  // Baseadas na nota absoluta (sem Δp entre simulados — só 1 simulado)
+  // Verde ≥ 7,0 | Amarelo 5,0–6,9 | Vermelho < 5,0
+  const faixa = d => {
+    if (d.nota >= 7.0) return {label:'ESTÁVEL',   cor:'#16a34a', bg:'#f0fdf4', borda:'#86efac', emoji:'🟢', desc:'Desempenho sólido'};
+    if (d.nota >= 5.0) return {label:'ATENÇÃO',   cor:'#d97706', bg:'#fffbeb', borda:'#fde68a', emoji:'🟡', desc:'Margem de melhora'};
+    return               {label:'CRÍTICO',   cor:'#dc2626', bg:'#fef2f2', borda:'#fca5a5', emoji:'🔴', desc:'Intervenção necessária'};
+  };
+
+  // ── 3. SCORE PONDERADO (AFA — sem pesos, peso 1 para todas) ──
+  // Score de cada disciplina = % de acertos × 100
+  // Score total = média dos scores
+  const scores = discs.map(d => ({ nome:d.nome, score: (d.ac/TOTAL_Q)*100, cor:d.cor, emoji:d.emoji }));
+  const scoreTotal = scores.reduce((s,d)=>s+d.score,0) / scores.length;
+  const scoreMeta  = (CORTE/10)*100; // 74,1% = meta para classificar
+
+  // Contribuição de cada disciplina para o score total
+  const contrib = d => ((d.score / scores.reduce((s,x)=>s+x.score,0))*100);
+  // Disciplina com maior impacto negativo (mais longe da meta)
+  const impacto = scores.map(d=>({...d, deficit: Math.max(0, scoreMeta - d.score)}));
+  impacto.sort((a,b)=>b.deficit-a.deficit);
+
+  // ── 4. ROI PEDAGÓGICO ──
+  // Sem pesos (AFA) → ROI = déficit até o corte por disciplina
+  // Quanto maior o déficit, maior o ROI de estudar aquela disciplina
+  // FR adaptado: baseado no quanto a disciplina está abaixo do mínimo (5,0)
+  // Abaixo do mínimo → FR alto (mais urgente) | Acima → FR menor
+  const roi = discs.map(d => {
+    const pct    = (d.ac/TOTAL_Q)*100;
+    const defMeta = Math.max(0, scoreMeta - pct);      // déficit até o corte
+    const defMin  = Math.max(0, 50 - pct);              // déficit até o mínimo
+    const fr = d.nota < 5.0 ? 1.0 : d.nota < 7.41 ? 0.75 : 0.4;
+    const roiVal = (defMeta + defMin) * fr;
+    return { nome:d.nome, cor:d.cor, emoji:d.emoji, nota:d.nota, pct, defMeta: defMeta.toFixed(1), roiVal: roiVal.toFixed(1), fr };
+  });
+  roi.sort((a,b)=>b.roiVal-a.roiVal);
+  const maxRoi = Math.max(...roi.map(r=>+r.roiVal)) || 1;
+
+  // FR label
+  const frLabel = fr => fr >= 1.0 ? '🔴 Urgente' : fr >= 0.75 ? '🟡 Moderado' : '🟢 Manutenção';
+
+  document.getElementById('pAnalise').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>📋 Análise de Performance — ${a.nome.split(' ')[0]}</h2></div>
+    <p class="card-sub">Indicadores pedagógicos baseados no simulado de 28/02/2026. Com apenas 1 simulado, os cálculos usam desempenho absoluto como referência.</p>
+  </div>
+
+  <!-- ══ ÍNDICE DE CONFIABILIDADE ══ -->
+  <div class="card fade-in">
+    <div class="card-head"><h2>🔬 Índice de Confiabilidade (IC)</h2></div>
+    <p class="card-sub">Avalia a solidez do resultado por disciplina com base no percentual de acertos. 🟢 IC Alto ≥ 70% · 🟡 IC Médio 50–69% · 🔴 IC Baixo &lt; 50%</p>
+    <table class="dtable">
+      <thead><tr>
+        <th style="text-align:left">Disciplina</th>
+        <th>Acertos</th>
+        <th>% Acertos</th>
+        <th>Nota</th>
+        <th>IC</th>
+        <th style="text-align:left">Interpretação</th>
+      </tr></thead>
+      <tbody>
+        ${discs.map(d=>{
+          const r=ic(d);
+          return `<tr>
+            <td><strong style="color:${d.cor}">${d.emoji} ${d.nome}</strong></td>
+            <td style="text-align:center;font-weight:700">${d.ac}/${TOTAL_Q}</td>
+            <td style="text-align:center">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="flex:1;height:10px;background:#e5e9f0;border-radius:5px;overflow:hidden">
+                  <div style="height:100%;width:${r.pct.toFixed(0)}%;background:${r.cor};border-radius:5px"></div>
+                </div>
+                <span style="font-weight:800;color:${r.cor};font-size:13px;white-space:nowrap">${r.pct.toFixed(0)}%</span>
+              </div>
+            </td>
+            <td style="text-align:center;font-weight:800;color:${d.nota>=7?'#16a34a':d.nota>=5?'#d97706':'#dc2626'}">${d.nota.toFixed(2)}</td>
+            <td style="text-align:center">
+              <span style="background:${r.bg};color:${r.cor};border:1px solid ${r.borda};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800;white-space:nowrap">${r.emoji} ${r.label}</span>
+            </td>
+            <td style="font-size:12px;color:var(--text2)">${
+              r.label==='IC ALTO'   ? 'Resultado sólido e confiável' :
+              r.label==='IC MÉDIO'  ? 'Razoável — com margem de melhora' :
+                                      'Instável — intervenção necessária'
+            }</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ FAIXAS DE DESEMPENHO ══ -->
+  <div class="card fade-in">
+    <div class="card-head"><h2>🎯 Faixas de Desempenho</h2></div>
+    <p class="card-sub">Classificação do desempenho por disciplina. 🟢 Estável ≥ 7,0 · 🟡 Atenção 5,0–6,9 · 🔴 Crítico &lt; 5,0 (eliminatório)</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px">
+      ${discs.map(d=>{
+        const f=faixa(d);
+        return `<div style="border:2px solid ${f.borda};background:${f.bg};border-radius:12px;padding:16px;text-align:center">
+          <div style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px">${d.emoji} ${d.nome}</div>
+          <div style="font-size:30px;font-weight:900;color:${f.cor}">${d.nota.toFixed(2)}</div>
+          <div style="font-size:11px;color:var(--text3);margin:2px 0">/ 10,0 · ${d.ac}/16 acertos</div>
+          <span style="background:${f.cor};color:#fff;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:800">${f.emoji} ${f.label}</span>
+          <div style="font-size:11px;color:${f.cor};margin-top:6px;font-weight:700">${f.desc}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    ${discs.filter(d=>faixa(d).label==='CRÍTICO').length > 0 ? `
+    <div style="padding:12px 16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;font-size:13px;color:#b91c1c;font-weight:700">
+      ⚠️ Disciplina(s) na faixa crítica: ${discs.filter(d=>faixa(d).label==='CRÍTICO').map(d=>d.nome).join(' · ')} — eliminatório na AFA (mín. 5,0)
+    </div>` : `
+    <div style="padding:12px 16px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;font-size:13px;color:#15803d;font-weight:700">
+      ✅ Nenhuma disciplina na faixa crítica — foco em elevar as que estão em Atenção
+    </div>`}
+  </div>
+
+  <!-- ══ SCORE PONDERADO ══ -->
+  <div class="card fade-in">
+    <div class="card-head"><h2>📊 Score Ponderado</h2></div>
+    <p class="card-sub">AFA não adota pesos diferenciados — todas as disciplinas têm contribuição igual. Score = % de acertos por disciplina. Meta para classificar: <strong>${scoreMeta.toFixed(1)}%</strong> (corte 7,41).</p>
+    <div style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text3)">Score Médio Geral</div>
+          <div style="font-size:36px;font-weight:900;color:${scoreTotal>=scoreMeta?'#16a34a':'#dc2626'}">${scoreTotal.toFixed(1)}%</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:12px;color:var(--text3)">Meta de classificação</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy)">${scoreMeta.toFixed(1)}%</div>
+          <div style="font-size:11px;color:var(--text3)">${scoreTotal>=scoreMeta ? `✅ +${(scoreTotal-scoreMeta).toFixed(1)}pp acima da meta` : `❌ ${(scoreMeta-scoreTotal).toFixed(1)}pp abaixo da meta`}</div>
+        </div>
+      </div>
+      <div style="position:relative;height:20px;background:#e5e9f0;border-radius:10px;overflow:hidden">
+        <div style="height:100%;width:${Math.min(100,scoreTotal).toFixed(1)}%;background:${scoreTotal>=scoreMeta?'#16a34a':'#dc2626'};border-radius:10px"></div>
+        <div style="position:absolute;left:${scoreMeta.toFixed(1)}%;top:0;bottom:0;width:3px;background:#1e3a5f"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-weight:700;margin-top:4px">
+        <span>0%</span><span style="color:var(--navy)">▲ Meta: ${scoreMeta.toFixed(1)}%</span><span>100%</span>
+      </div>
+    </div>
+    <table class="dtable">
+      <thead><tr>
+        <th style="text-align:left">Disciplina</th>
+        <th>Acertos</th>
+        <th>Score</th>
+        <th>Contribuição</th>
+        <th>vs Meta</th>
+      </tr></thead>
+      <tbody>
+        ${scores.map(d=>`
+        <tr>
+          <td><strong style="color:${d.cor}">${d.emoji} ${d.nome}</strong></td>
+          <td style="text-align:center;font-weight:700">${discs.find(x=>x.nome===d.nome).ac}/${TOTAL_Q}</td>
+          <td style="text-align:center">
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="flex:1;height:10px;background:#e5e9f0;border-radius:5px;overflow:hidden">
+                <div style="height:100%;width:${d.score.toFixed(0)}%;background:${d.cor};border-radius:5px"></div>
+              </div>
+              <span style="font-weight:800;color:${d.cor};font-size:13px">${d.score.toFixed(1)}%</span>
+            </div>
+          </td>
+          <td style="text-align:center;font-weight:700;color:var(--navy)">${contrib(d).toFixed(1)}%</td>
+          <td style="text-align:center;font-weight:800;color:${d.score>=scoreMeta?'#16a34a':'#dc2626'}">
+            ${d.score>=scoreMeta?'+':''}${(d.score-scoreMeta).toFixed(1)}pp
+          </td>
+        </tr>`).join('')}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2"><strong>Score Médio Geral</strong></td>
+        <td style="text-align:center"><strong style="color:${scoreTotal>=scoreMeta?'#16a34a':'#dc2626'}">${scoreTotal.toFixed(1)}%</strong></td>
+        <td style="text-align:center"><strong>100%</strong></td>
+        <td style="text-align:center;font-weight:800;color:${scoreTotal>=scoreMeta?'#16a34a':'#dc2626'}">${scoreTotal>=scoreMeta?'+':''}${(scoreTotal-scoreMeta).toFixed(1)}pp</td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- ══ ROI PEDAGÓGICO ══ -->
+  <div class="card fade-in">
+    <div class="card-head"><h2>💡 ROI Pedagógico</h2></div>
+    <p class="card-sub">Indica onde o investimento de horas de estudo gera maior retorno. Prioridade = disciplinas com maior déficit até a meta + fator de recuperação elevado.</p>
+    <div style="margin-bottom:16px;padding:12px 16px;background:#f0f4ff;border:1px solid #c7d2fe;border-radius:8px;font-size:12px;color:#3730a3">
+      <strong>Como interpretar:</strong> FR 🔴 Urgente = abaixo do mínimo (5,0) · FR 🟡 Moderado = entre 5,0 e o corte · FR 🟢 Manutenção = acima do corte.<br>
+      ROI = (Déficit até o corte + Déficit até o mínimo) × FR. Quanto maior, mais prioritário estudar.
+    </div>
+    <table class="dtable">
+      <thead><tr>
+        <th style="text-align:left">Prioridade</th>
+        <th style="text-align:left">Disciplina</th>
+        <th>Nota Atual</th>
+        <th>Déficit (meta)</th>
+        <th>FR</th>
+        <th>ROI</th>
+        <th style="text-align:left">Barra ROI</th>
+      </tr></thead>
+      <tbody>
+        ${roi.map((r,i)=>`
+        <tr>
+          <td style="text-align:center;font-size:18px;font-weight:900;color:${i===0?'#dc2626':i===1?'#d97706':i===2?'#3b82f6':'#16a34a'}">${i+1}º</td>
+          <td><strong style="color:${r.cor}">${r.emoji} ${r.nome}</strong></td>
+          <td style="text-align:center;font-weight:800;color:${r.nota>=7.41?'#16a34a':r.nota>=5?'#d97706':'#dc2626'}">${r.nota.toFixed(2)}</td>
+          <td style="text-align:center;font-weight:700;color:#dc2626">${r.defMeta}pp</td>
+          <td style="text-align:center;font-size:11px">${frLabel(r.fr)}</td>
+          <td style="text-align:center;font-weight:900;font-size:16px;color:${i===0?'#dc2626':i===1?'#d97706':i===2?'#3b82f6':'#16a34a'}">${r.roiVal}</td>
+          <td style="min-width:100px">
+            <div style="height:12px;background:#e5e9f0;border-radius:6px;overflow:hidden">
+              <div style="height:100%;width:${((+r.roiVal/maxRoi)*100).toFixed(0)}%;background:${r.cor};border-radius:6px"></div>
+            </div>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    <div style="margin-top:14px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:13px;color:#92400e">
+      🎯 <strong>Foco recomendado:</strong> ${roi[0].nome} tem o maior ROI (${roi[0].roiVal}) — priorize esta disciplina para máximo impacto na classificação.
+      ${roi[1] ? ` Em seguida, ${roi[1].nome} (ROI: ${roi[1].roiVal}).` : ''}
+    </div>
+  </div>
+  `;
+}
+
 
 function goSec(s,btn){
   secaoOrigem=s;
