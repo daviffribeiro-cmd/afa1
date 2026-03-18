@@ -562,19 +562,29 @@ function renderRanking(){
     base=T.list.map(a=>{
       const has1=a.rank>0, has2=(a.s2_rank||0)>0;
       const t1=has1?a.gtot:0, t2=has2?(a.s2_gtot||0):0;
-      return {...a,_total:t1+t2,_sims:(has1?1:0)+(has2?1:0),
-        _aprov:has1&&has2?(a.aprov&&a.s2_aprov):has1?a.aprov:(a.s2_aprov||false),
+      const _aprov=has1&&has2?(a.aprov&&a.s2_aprov):has1?a.aprov:(a.s2_aprov||false);
+      return {...a,_total:t1+t2,_sims:(has1?1:0)+(has2?1:0),_aprov,
         _motivo:!a.aprov?(a.motivo||''):!(a.s2_aprov)?(a.motivo2||''):''};
-    }).filter(a=>a._sims>0).sort((a,b)=>b._total-a._total||b._sims-a._sims);
+    }).filter(a=>a._sims>0).sort((a,b)=>{
+      if(a._sims!==b._sims) return b._sims-a._sims;
+      if(a._aprov!==b._aprov) return a._aprov?-1:1;
+      return b._total-a._total;
+    });
   } else if(tab==='s2'){
     base=T.list.filter(a=>(a.s2_rank||0)>0)
       .map(a=>({...a,_total:a.s2_gtot||0,_rank:a.s2_rank||0,
         _aprov:a.s2_aprov,_motivo:a.motivo2||''}))
-      .sort((a,b)=>(a._rank)-(b._rank));
+      .sort((a,b)=>{
+        if(a._aprov!==b._aprov) return a._aprov?-1:1;
+        return a._rank-b._rank;
+      });
   } else {
     base=T.list.filter(a=>a.rank>0)
       .map(a=>({...a,_total:a.gtot,_rank:a.rank,_aprov:a.aprov,_motivo:a.motivo||''}))
-      .sort((a,b)=>a._rank-b._rank);
+      .sort((a,b)=>{
+        if(a._aprov!==b._aprov) return a._aprov?-1:1;
+        return a._rank-b._rank;
+      });
   }
 
   let lst=base.filter(a=>!q||a.nome.toLowerCase().includes(q));
