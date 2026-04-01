@@ -2296,44 +2296,46 @@ async function afaHandleFile(files){
   }
 }
 
-function afaBaixarJS(){
+async function afaBaixarJS(){
   try{
     if(!window._afaDados){ afaMsg('Nenhum dado para baixar. Carregue o Excel primeiro.','err'); return; }
     const {dados,tipo}=window._afaDados;
     const info=AFA_SIMULADO_MAP[tipo];
     if(!info){ afaMsg('Tipo de simulado inválido.','err'); return; }
 
-    // Gera index.html com os dados embutidos
-    // Pega o HTML do script que contém a variável
-    let htmlFonte='';
-    for(const s of document.scripts){
-      if(s.src) continue; // pula scripts externos
-      if(s.textContent.includes('const '+info.varName+' =') || s.textContent.includes('let '+info.varName+' =')){
-        htmlFonte=s.textContent; break;
-      }
+    afaMsg('⏳ Gerando index.html...','ok');
+
+    // Busca o HTML fonte limpo (sem DOM renderizado)
+    let html;
+    try{
+      const url=window.location.href.split('?')[0];
+      const resp=await fetch(url+'?_='+Date.now(),{cache:'no-store'});
+      if(!resp.ok) throw new Error('HTTP '+resp.status);
+      html=await resp.text();
+    }catch(e){
+      afaMsg('Abra o site pelo GitHub Pages para usar esta função (não funciona em arquivo local).','err');
+      return;
     }
-    if(!htmlFonte){ afaMsg('Script com os dados não encontrado.','err'); return; }
 
-    // Monta o index.html completo substituindo a variável no script
+    // Substitui a variável no HTML limpo
     const jsonDados=JSON.stringify(dados);
-    // Substitui a declaração const/let VARNAME = ...;
-    const novoScript=htmlFonte.replace(
-      new RegExp('(const|let)\\s+'+info.varName+'\\s*=\\s*[\\s\\S]*?(?=;\\s*\\n)'),
-      'const '+info.varName+' = '+jsonDados
-    );
+    const marker='const '+info.varName+' = ';
+    const altMarker='let '+info.varName+' = ';
+    let idx=html.indexOf(marker);
+    if(idx===-1) idx=html.indexOf(altMarker);
+    if(idx===-1){ afaMsg('Variável '+info.varName+' não encontrada.','err'); return; }
+    const endIdx=html.indexOf(';\n',idx);
+    if(endIdx===-1){ afaMsg('Fim da declaração não encontrado.','err'); return; }
+    html=html.substring(0,idx)+'const '+info.varName+' = '+jsonDados+html.substring(endIdx);
 
-    // Reconstrói o HTML completo com o script atualizado e remove estado do modal
-    const htmlCompleto=document.documentElement.outerHTML
-      .replace(htmlFonte, novoScript)
-      .replace(/class="modal-overlay open"/g,'class="modal-overlay"')
-      .replace(/class="modal-overlay open /g,'class="modal-overlay ');
-    const blob=new Blob([htmlCompleto],{type:'text/html;charset=utf-8'});
-    const url=URL.createObjectURL(blob);
+    // Baixa o index.html limpo e atualizado
+    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+    const blobUrl=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url; a.download='index.html'; a.style.display='none';
+    a.href=blobUrl; a.download='index.html'; a.style.display='none';
     document.body.appendChild(a); a.click();
-    setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); },2000);
-    afaMsg('✅ index.html baixado! Substitua no GitHub para publicar no site.','ok');
+    setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(blobUrl); },2000);
+    afaMsg('✅ index.html baixado! Substitua no GitHub para publicar.','ok');
   }catch(err){
     afaMsg('Erro: '+err.message,'err');
     console.error(err);
