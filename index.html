@@ -1660,7 +1660,7 @@ function atualizarLive(tipo, dados){
   ['afa_s1','efomm_s1','efomm_s2','en_s1','en_s2'].forEach(tipo=>{
     try{
       const s=localStorage.getItem('mz_afa_'+tipo);
-      if(s){ const d=JSON.parse(s); atualizarLive(tipo,d); }
+      if(s){ const d=JSON.parse(s); if(d && d.length>0) atualizarLive(tipo,d); }
     }catch(e){}
   });
 })();
