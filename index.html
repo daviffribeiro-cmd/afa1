@@ -23,12 +23,12 @@
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;}
 .page-wrap{max-width:1320px;margin:0 auto;padding:28px 20px;}
 .site-header{background:var(--white);border-bottom:2px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.site-header-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;flex-wrap:wrap;}
-.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;color:var(--navy);letter-spacing:-.3px;flex-shrink:0;}
-.logo-badge{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.logo-sub{font-size:12px;font-weight:600;color:var(--text3);display:block;}
-.main-nav{display:flex;gap:6px;flex:1;justify-content:center;flex-wrap:wrap;}
-.nav-btn{padding:8px 20px;background:transparent;border:1px solid transparent;border-radius:8px;font-size:14px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.site-header-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:16px;min-height:64px;padding:8px 0;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:16px;color:var(--navy);letter-spacing:-.3px;flex-shrink:0;}
+.logo-badge{width:32px;height:32px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.logo-sub{font-size:11px;font-weight:600;color:var(--text3);display:block;}
+.main-nav{display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;}
+.nav-btn{padding:6px 10px;background:transparent;border:1px solid transparent;border-radius:8px;font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
 .nav-btn:hover{background:var(--bg);color:var(--navy);}
 .nav-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 .section{display:none;}.section.active{display:block;}
@@ -188,6 +188,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="nav-btn" id="navEfomm2"  onclick="goSec('efomm2',this)">🚢 EFOMM 2°Sim</button>
       <button class="nav-btn" id="navEn"      onclick="goSec('en',this)">⚓ EN 1°Sim</button>
       <button class="nav-btn" id="navEn2"     onclick="goSec('en2',this)">⚓ EN 2°Sim</button>
+      <button class="nav-btn" id="navEfommGeral" onclick="goSec('efommGeral',this)">🚢 EFOMM Geral</button>
+      <button class="nav-btn" id="navEnGeral"    onclick="goSec('enGeral',this)">⚓ EN Geral</button>
       <button class="nav-btn" id="navBusca" onclick="goSec('busca',this)">🔍 Buscar</button>
       <button class="nav-btn" onclick="abrirModalAtualizar()" style="margin-left:8px;background:#1e3a5f;color:white;border-color:#1e3a5f;">⚙️ Atualizar Dados</button>
     </nav>
@@ -391,6 +393,80 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
         <th>Média</th><th>Status</th>
       </tr></thead><tbody id="bodyEn2"></tbody></table>
       <div class="stat-grid" id="statsEn2" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EFOMM GERAL (1°Sim + 2°Sim) -->
+<div id="efommGeralSection" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>🚢 Ranking EFOMM — Geral (1°Sim + 2°Sim)</h1>
+      <p>Soma dos acertos do 1º e 2º Simulado. Classificado = aprovado nos dois dias.</p>
+    </div>
+    <div class="legend-box"><strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Classificado = aprovado no 1°Sim e no 2°Sim</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos um dia</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EFOMM — Ranking Geral</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEfG">0</span> · Classificados: <span id="aprovEfG" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEfG" style="color:var(--red);font-weight:700">0</span></p></div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEfG" placeholder="🔍 Buscar pelo nome..." oninput="renderEfommGeral()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFEfG('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFEfG('aprov',this)">✅ Classificados<span class="fb-desc">Aprovados nos 2 dias</span></button>
+        <button class="filter-btn" onclick="setFEfG('reprov',this)">❌ Reprovados<span class="fb-desc">Reprovado em algum dia</span></button>
+        <button class="filter-btn" onclick="setFEfG('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
+      </div>
+      <div id="uniWrapEfG" style="display:none;margin-bottom:14px">
+        <select id="uniSelEfG" onchange="renderEfommGeral()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
+      </div>
+      <table class="ranking-table"><thead><tr>
+        <th style="width:60px;text-align:center">Pos.</th>
+        <th style="text-align:left;padding-left:14px">Aluno</th>
+        <th>1°Sim</th><th>2°Sim</th><th>Total</th><th>Status</th>
+      </tr></thead><tbody id="bodyEfG"></tbody></table>
+      <div class="stat-grid" id="statsEfG" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EN GERAL (1°Sim + 2°Sim) -->
+<div id="enGeralSection" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>⚓ Ranking EN — Geral (1°Sim + 2°Sim)</h1>
+      <p>Soma dos acertos do 1º e 2º Simulado. Aprovado = aprovado nos dois dias.</p>
+    </div>
+    <div class="legend-box"><strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Aprovado = aprovado no 1°Sim e no 2°Sim</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos um dia</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EN — Ranking Geral</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEnG">0</span> · Aprovados: <span id="aprovEnG" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEnG" style="color:var(--red);font-weight:700">0</span></p></div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEnG" placeholder="🔍 Buscar pelo nome..." oninput="renderEnGeral()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFEnG('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFEnG('aprov',this)">✅ Aprovados<span class="fb-desc">Passaram nos 2 dias</span></button>
+        <button class="filter-btn" onclick="setFEnG('reprov',this)">❌ Reprovados<span class="fb-desc">Reprovado em algum dia</span></button>
+        <button class="filter-btn" onclick="setFEnG('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
+      </div>
+      <div id="uniWrapEnG" style="display:none;margin-bottom:14px">
+        <select id="uniSelEnG" onchange="renderEnGeral()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
+      </div>
+      <table class="ranking-table"><thead><tr>
+        <th style="width:60px;text-align:center">Pos.</th>
+        <th style="text-align:left;padding-left:14px">Aluno</th>
+        <th>1°Sim</th><th>2°Sim</th><th>Total</th><th>Status</th>
+      </tr></thead><tbody id="bodyEnG"></tbody></table>
+      <div class="stat-grid" id="statsEnG" style="margin-top:20px"></div>
     </div>
   </div>
 </div>
@@ -702,8 +778,10 @@ function goSec(s,btn){
   if(s==='ranking') renderRanking();
   if(s==='efomm')   renderEfomm();
   if(s==='en')      renderEn();
-  if(s==='efomm2')  renderEfomm2();
-  if(s==='en2')     renderEn2();
+  if(s==='efomm2')     renderEfomm2();
+  if(s==='en2')        renderEn2();
+  if(s==='efommGeral') renderEfommGeral();
+  if(s==='enGeral')    renderEnGeral();
 }
 
 function goTab(id,btn){
@@ -1630,6 +1708,8 @@ let TEF  = buildExamTurma(RAW_EFOMM,    'efomm');
 let TEN  = buildExamTurma(RAW_EN,       'en');
 let TEF2 = RAW_EFOMM_S2.length ? buildExamTurma(RAW_EFOMM_S2, 'efomm') : {list:[]};
 let TEN2 = RAW_EN_S2.length    ? buildExamTurma(RAW_EN_S2,    'en')    : {list:[]};
+let TEFG = (TEF.list.length||TEF2.list.length) ? buildCombinedRanking(TEF,TEF2) : {list:[]};
+let TENG = (TEN.list.length||TEN2.list.length) ? buildCombinedRanking(TEN,TEN2) : {list:[]};
 
 function refreshUniSel(selId, list){
   const sel=document.getElementById(selId); if(!sel) return;
@@ -1644,12 +1724,16 @@ function atualizarLive(tipo, dados){
     T=buildTurma(dados); refreshUniSel('uniSelRk',T.list); renderRanking();
   } else if(tipo==='efomm_s1'){
     TEF=buildExamTurma(dados,'efomm'); refreshUniSel('uniSelEf',TEF.list); renderEfomm();
+    TEFG=buildCombinedRanking(TEF,TEF2); renderEfommGeral();
   } else if(tipo==='efomm_s2'){
     TEF2=buildExamTurma(dados,'efomm'); refreshUniSel('uniSelEf2',TEF2.list); renderEfomm2();
+    TEFG=buildCombinedRanking(TEF,TEF2); renderEfommGeral();
   } else if(tipo==='en_s1'){
     TEN=buildExamTurma(dados,'en'); refreshUniSel('uniSelEn',TEN.list); renderEn();
+    TENG=buildCombinedRanking(TEN,TEN2); renderEnGeral();
   } else if(tipo==='en_s2'){
     TEN2=buildExamTurma(dados,'en'); refreshUniSel('uniSelEn2',TEN2.list); renderEn2();
+    TENG=buildCombinedRanking(TEN,TEN2); renderEnGeral();
   }
   // Salva automaticamente no navegador
   try{ localStorage.setItem('mz_afa_'+tipo, JSON.stringify(dados)); }catch(e){}
@@ -1780,6 +1864,97 @@ function renderEn2(){
   renderExam(TEN2, fEn2,
     {search:'searchEn2',uniSel:'uniSelEn2',uniWrap:'uniWrapEn2',total:'totalEn2',aprov:'aprovEn2',reprov:'reprovEn2',body:'bodyEn2',stats:'statsEn2'},
     40, 'en');
+}
+
+// ── Ranking Geral (Combined 1°Sim + 2°Sim) ──
+function buildCombinedRanking(T1, T2){
+  const map1={}, map2={};
+  T1.list.forEach(a=>{ map1[a.nome.trim().toUpperCase()]=a; });
+  T2.list.forEach(a=>{ map2[a.nome.trim().toUpperCase()]=a; });
+  const allNames=new Set([...Object.keys(map1),...Object.keys(map2)]);
+  const combined=[];
+  allNames.forEach(key=>{
+    const a1=map1[key], a2=map2[key], base=a1||a2;
+    const gtot1=a1?a1.gtot:0, gtot2=a2?a2.gtot:0;
+    combined.push({
+      nome:base.nome, unidade:base.unidade, turma:base.turma||'', ra:base.ra||'',
+      gtot1, gtot2, gtotC:gtot1+gtot2,
+      aprov1:a1?a1.aprov:false, aprov2:a2?a2.aprov:false,
+      aprovC:(a1?a1.aprov:false)&&(a2?a2.aprov:false),
+      presente1:!!a1, presente2:!!a2
+    });
+  });
+  combined.sort((a,b)=>{ if(a.aprovC!==b.aprovC) return a.aprovC?-1:1; return b.gtotC-a.gtotC; });
+  combined.forEach((a,i)=>a.rankC=i+1);
+  const tot=combined.length||1;
+  return {list:combined, avgs:{gtot1:combined.reduce((s,x)=>s+x.gtot1,0)/tot, gtot2:combined.reduce((s,x)=>s+x.gtot2,0)/tot, gtotC:combined.reduce((s,x)=>s+x.gtotC,0)/tot}};
+}
+
+function refreshUniSelGeral(selId, list){
+  const sel=document.getElementById(selId); if(!sel) return;
+  const unis=[...new Set(list.map(a=>a.unidade).filter(Boolean))].sort();
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— Todas as unidades —</option>'+unis.map(u=>`<option value="${u}"${u===cur?' selected':''}>${u}</option>`).join('');
+}
+
+let fEfG='todos', fEnG='todos';
+function setFEfG(f,btn){ fEfG=f; document.querySelectorAll('#efommGeralSection .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('uniWrapEfG').style.display=f==='unidade'?'block':'none'; renderEfommGeral(); }
+function setFEnG(f,btn){ fEnG=f; document.querySelectorAll('#enGeralSection .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('uniWrapEnG').style.display=f==='unidade'?'block':'none'; renderEnGeral(); }
+
+function renderGeralExam(TG, filt, ids, exam){
+  if(!TG.list.length){
+    document.getElementById(ids.body).innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Dados ainda não carregados. Carregue o 1°Sim e o 2°Sim para ver o ranking geral.</td></tr>';
+    return;
+  }
+  const q=(document.getElementById(ids.search).value||'').toLowerCase();
+  let lst=[...TG.list].filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(filt==='aprov')  lst=lst.filter(a=>a.aprovC);
+  if(filt==='reprov') lst=lst.filter(a=>!a.aprovC);
+  if(filt==='unidade'){const v=document.getElementById(ids.uniSel).value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  lst.sort((a,b)=>{ if(a.aprovC!==b.aprovC) return a.aprovC?-1:1; return a.rankC-b.rankC; });
+  const tot=TG.list.length, apvN=TG.list.filter(a=>a.aprovC).length;
+  document.getElementById(ids.total).textContent=tot;
+  document.getElementById(ids.aprov).textContent=apvN;
+  document.getElementById(ids.reprov).textContent=tot-apvN;
+  const nd='<span style="color:var(--text3);font-size:12px">—</span>';
+  document.getElementById(ids.body).innerHTML=lst.map((a,i)=>{
+    const pos=i+1;
+    const pc=pos===1?'g1':pos===2?'g2':pos===3?'g3':'';
+    const em=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos;
+    const rc='ranking-row'+(pos<=3?' top3':'');
+    const st=a.aprovC
+      ?`<span class="chip chip-aprov">✓ ${exam==='efomm'?'Classificado':'Aprovado'}</span>`
+      :`<span class="chip chip-reprov">✗ Reprovado</span>`;
+    const pct=Math.min(100,Math.round(a.gtotC/80*100));
+    const barCol=pct>=70?'#16a34a':pct>=50?'#d97706':'#dc2626';
+    return `<tr class="${rc}">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade}</span></td>
+      <td style="text-align:center">${a.presente1?`<b>${a.gtot1}</b><span style="font-size:11px;color:var(--text3)">/40</span>`:nd}</td>
+      <td style="text-align:center">${a.presente2?`<b>${a.gtot2}</b><span style="font-size:11px;color:var(--text3)">/40</span>`:nd}</td>
+      <td style="text-align:center">
+        <div style="font-size:22px;font-weight:900;color:var(--navy);line-height:1">${a.gtotC}<span style="font-size:11px;font-weight:500;color:var(--text3)">/80</span></div>
+        <div style="height:5px;background:#e5e9f0;border-radius:3px;margin-top:4px;width:80px;margin-left:auto;margin-right:auto;overflow:hidden"><div style="height:100%;width:${pct}%;background:${barCol};border-radius:3px"></div></div>
+      </td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById(ids.stats).innerHTML=`
+    <div class="stat-item"><div class="s-label">Total</div><div class="s-val">${tot}</div><div class="s-hint">alunos</div></div>
+    <div class="stat-item"><div class="s-label">${exam==='efomm'?'Classificados':'Aprovados'}</div><div class="s-val" style="color:var(--green)">${apvN}</div><div class="s-hint">${Math.round(apvN/(tot||1)*100)}%</div></div>
+    <div class="stat-item"><div class="s-label">Reprovados</div><div class="s-val" style="color:var(--red)">${tot-apvN}</div><div class="s-hint">${Math.round((tot-apvN)/(tot||1)*100)}%</div></div>
+    <div class="stat-item"><div class="s-label">Maior Total</div><div class="s-val" style="color:var(--navy)">${TG.list[0]?TG.list[0].gtotC:0}</div><div class="s-hint">de 80</div></div>
+    <div class="stat-item"><div class="s-label">Média 1°Sim</div><div class="s-val">${(TG.avgs.gtot1||0).toFixed(1)}</div><div class="s-hint">de 40</div></div>
+    <div class="stat-item"><div class="s-label">Média 2°Sim</div><div class="s-val">${(TG.avgs.gtot2||0).toFixed(1)}</div><div class="s-hint">de 40</div></div>
+  `;
+}
+function renderEfommGeral(){
+  refreshUniSelGeral('uniSelEfG', TEFG.list);
+  renderGeralExam(TEFG, fEfG, {search:'searchEfG',uniSel:'uniSelEfG',uniWrap:'uniWrapEfG',total:'totalEfG',aprov:'aprovEfG',reprov:'reprovEfG',body:'bodyEfG',stats:'statsEfG'}, 'efomm');
+}
+function renderEnGeral(){
+  refreshUniSelGeral('uniSelEnG', TENG.list);
+  renderGeralExam(TENG, fEnG, {search:'searchEnG',uniSel:'uniSelEnG',uniWrap:'uniWrapEnG',total:'totalEnG',aprov:'aprovEnG',reprov:'reprovEnG',body:'bodyEnG',stats:'statsEnG'}, 'en');
 }
 
 // ── Modal + Dashboard for EFOMM/EN ──
