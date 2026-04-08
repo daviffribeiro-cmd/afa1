@@ -1,11 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard AFA — Simulados 28/02 e 07/03/2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -23,12 +22,12 @@
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;}
 .page-wrap{max-width:1320px;margin:0 auto;padding:28px 20px;}
 .site-header{background:var(--white);border-bottom:2px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.site-header-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:16px;min-height:64px;padding:8px 0;flex-wrap:wrap;}
-.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:16px;color:var(--navy);letter-spacing:-.3px;flex-shrink:0;}
-.logo-badge{width:32px;height:32px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.logo-sub{font-size:11px;font-weight:600;color:var(--text3);display:block;}
-.main-nav{display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;}
-.nav-btn{padding:6px 10px;background:transparent;border:1px solid transparent;border-radius:8px;font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
+.site-header-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;color:var(--navy);letter-spacing:-.3px;flex-shrink:0;}
+.logo-badge{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-sub{font-size:12px;font-weight:600;color:var(--text3);display:block;}
+.main-nav{display:flex;gap:6px;flex:1;justify-content:center;flex-wrap:wrap;}
+.nav-btn{padding:8px 20px;background:transparent;border:1px solid transparent;border-radius:8px;font-size:14px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;}
 .nav-btn:hover{background:var(--bg);color:var(--navy);}
 .nav-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 .section{display:none;}.section.active{display:block;}
@@ -84,30 +83,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .busca-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);max-width:580px;margin:0 auto;}
 .busca-card h2{font-size:22px;font-weight:900;color:var(--navy);margin-bottom:6px;}
 .field-label{display:block;font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;}
-.modal-overlay.open{display:flex;}
-.modal-box{background:var(--white);border-radius:16px;padding:32px;max-width:480px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;margin:auto;}
-.modal-box h2{font-size:20px;font-weight:900;color:var(--navy);margin-bottom:6px;}
-.modal-box p{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.5;}
-.modal-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:15px;font-weight:500;outline:none;background:var(--bg);transition:border-color .2s;margin-bottom:12px;}
-.modal-input:focus{border-color:var(--navy);background:var(--white);}
-.modal-btn{width:100%;padding:13px;background:var(--navy);color:white;border:none;border-radius:9px;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;}
-.modal-btn:hover{background:var(--navy2);transform:translateY(-1px);}
-.modal-btn.secondary{background:var(--bg);color:var(--text2);border:1.5px solid var(--border);margin-top:8px;}
-.modal-btn.secondary:hover{background:#f0f4f8;transform:none;}
-.modal-error{color:#dc2626;font-size:13px;font-weight:700;margin-bottom:10px;padding:8px 12px;background:#fef2f2;border-radius:7px;display:none;}
-.upload-area{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:12px;}
-.upload-area:hover,.upload-area.drag{border-color:var(--navy);background:#eff6ff;}
-.upload-area input[type=file]{display:none;}
-.upload-area .ua-icon{font-size:32px;margin-bottom:6px;}
-.upload-area .ua-text{font-size:13px;color:var(--text2);font-weight:600;}
-.upload-area .ua-hint{font-size:11px;color:var(--text3);margin-top:3px;}
-.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);line-height:1;}
-.modal-close:hover{color:var(--text);}
-.modal-tabs{display:flex;gap:0;border-bottom:1.5px solid var(--border);margin-bottom:20px;}
-.modal-tab{padding:10px 16px;border:none;background:none;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;}
-.modal-tab.active{color:var(--navy);border-bottom-color:var(--navy);}
-.modal-step{display:none;}.modal-step.active{display:block;}
 .field-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:15px;font-weight:500;outline:none;transition:border-color .2s;background:var(--bg);}
 .field-input:focus{border-color:var(--navy);background:var(--white);}
 .sug-item{padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-top:5px;cursor:pointer;font-weight:700;font-size:13px;color:var(--text);transition:all .15s;}
@@ -184,14 +159,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
     <nav class="main-nav">
       <button class="nav-btn active" id="navRanking" onclick="goSec('ranking',this)">✈️ AFA</button>
-      <button class="nav-btn" id="navEfomm"   onclick="goSec('efomm',this)">🚢 EFOMM 1°Sim</button>
-      <button class="nav-btn" id="navEfomm2"  onclick="goSec('efomm2',this)">🚢 EFOMM 2°Sim</button>
-      <button class="nav-btn" id="navEn"      onclick="goSec('en',this)">⚓ EN 1°Sim</button>
-      <button class="nav-btn" id="navEn2"     onclick="goSec('en2',this)">⚓ EN 2°Sim</button>
-      <button class="nav-btn" id="navEfommGeral" onclick="goSec('efommGeral',this)">🚢 EFOMM Geral</button>
-      <button class="nav-btn" id="navEnGeral"    onclick="goSec('enGeral',this)">⚓ EN Geral</button>
+      <button class="nav-btn" id="navEfomm" onclick="goSec('efomm',this)">🚢 EFOMM</button>
+      <button class="nav-btn" id="navEn" onclick="goSec('en',this)">⚓ EN</button>
       <button class="nav-btn" id="navBusca" onclick="goSec('busca',this)">🔍 Buscar</button>
-      <button class="nav-btn" onclick="abrirModalAtualizar()" style="margin-left:8px;background:#1e3a5f;color:white;border-color:#1e3a5f;">⚙️ Atualizar Dados</button>
     </nav>
   </div>
 </header>
@@ -205,6 +175,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <p>Clique em um aluno para ver o relatório individual com notas detalhadas.</p>
       <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
         <button class="sim-btn active" id="sTabGeral" onclick="setSimTab('geral',this)">🏅 Geral</button>
+        <button class="sim-btn" id="sTab3" onclick="setSimTab('s3',this)">📅 Simulado 3</button>
         <button class="sim-btn" id="sTab2" onclick="setSimTab('s2',this)">📅 Simulado 2</button>
         <button class="sim-btn" id="sTab1" onclick="setSimTab('s1',this)">📅 Simulado 1</button>
       </div>
@@ -323,154 +294,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 </div>
-<!-- EFOMM 2° Simulado -->
-<div id="efomm2Section" class="section">
-  <div class="page-wrap fade-in">
-    <div class="page-intro">
-      <h1>🚢 Ranking EFOMM — 2º Simulado · 21/03/2026</h1>
-      <p>Português · Matemática · Inglês · Física — mínimo 50% em cada. Clique no aluno para o relatório individual.</p>
-    </div>
-    <div class="legend-box"><strong>Como ler:</strong>
-      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Classificado = ≥ 50% em todas</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos 1</div>
-    </div>
-    <div class="ranking-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
-        <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EFOMM 2°Sim — Lista de Alunos</h2>
-          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEf2">0</span> · Classificados: <span id="aprovEf2" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEf2" style="color:var(--red);font-weight:700">0</span></p></div>
-        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEf2" placeholder="🔍 Buscar pelo nome..." oninput="renderEfomm2()">
-      </div>
-      <div class="ranking-filters">
-        <button class="filter-btn active" onclick="setFEf2('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
-        <button class="filter-btn" onclick="setFEf2('aprov',this)">✅ Classificados<span class="fb-desc">Aprovados</span></button>
-        <button class="filter-btn" onclick="setFEf2('reprov',this)">❌ Reprovados<span class="fb-desc">Precisam melhorar</span></button>
-        <button class="filter-btn" onclick="setFEf2('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
-      </div>
-      <div id="uniWrapEf2" style="display:none;margin-bottom:14px">
-        <select id="uniSelEf2" onchange="renderEfomm2()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
-      </div>
-      <table class="ranking-table"><thead><tr>
-        <th style="width:60px;text-align:center">Pos.</th>
-        <th style="text-align:left;padding-left:14px">Aluno</th>
-        <th>Média</th><th>Status</th>
-      </tr></thead><tbody id="bodyEf2"></tbody></table>
-      <div class="stat-grid" id="statsEf2" style="margin-top:20px"></div>
-    </div>
-  </div>
-</div>
-
-<!-- EN 2° Simulado -->
-<div id="en2Section" class="section">
-  <div class="page-wrap fade-in">
-    <div class="page-intro">
-      <h1>⚓ Ranking EN — 2º Simulado · 21/03/2026</h1>
-      <p>Português · Matemática · Inglês · Física — mínimo 50% em cada. Clique no aluno para o relatório individual.</p>
-    </div>
-    <div class="legend-box"><strong>Como ler:</strong>
-      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Aprovado = ≥ 50% em todas</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos 1</div>
-    </div>
-    <div class="ranking-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
-        <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EN 2°Sim — Lista de Alunos</h2>
-          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEn2">0</span> · Aprovados: <span id="aprovEn2" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEn2" style="color:var(--red);font-weight:700">0</span></p></div>
-        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEn2" placeholder="🔍 Buscar pelo nome..." oninput="renderEn2()">
-      </div>
-      <div class="ranking-filters">
-        <button class="filter-btn active" onclick="setFEn2('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
-        <button class="filter-btn" onclick="setFEn2('aprov',this)">✅ Aprovados<span class="fb-desc">Passaram em tudo</span></button>
-        <button class="filter-btn" onclick="setFEn2('reprov',this)">❌ Reprovados<span class="fb-desc">Precisam melhorar</span></button>
-        <button class="filter-btn" onclick="setFEn2('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
-      </div>
-      <div id="uniWrapEn2" style="display:none;margin-bottom:14px">
-        <select id="uniSelEn2" onchange="renderEn2()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
-      </div>
-      <table class="ranking-table"><thead><tr>
-        <th style="width:60px;text-align:center">Pos.</th>
-        <th style="text-align:left;padding-left:14px">Aluno</th>
-        <th>Média</th><th>Status</th>
-      </tr></thead><tbody id="bodyEn2"></tbody></table>
-      <div class="stat-grid" id="statsEn2" style="margin-top:20px"></div>
-    </div>
-  </div>
-</div>
-
-<!-- EFOMM GERAL (1°Sim + 2°Sim) -->
-<div id="efommGeralSection" class="section">
-  <div class="page-wrap fade-in">
-    <div class="page-intro">
-      <h1>🚢 Ranking EFOMM — Geral (1°Sim + 2°Sim)</h1>
-      <p>Soma dos acertos do 1º e 2º Simulado. Classificado = aprovado nos dois dias.</p>
-    </div>
-    <div class="legend-box"><strong>Como ler:</strong>
-      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Classificado = aprovado no 1°Sim e no 2°Sim</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos um dia</div>
-    </div>
-    <div class="ranking-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
-        <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EFOMM — Ranking Geral</h2>
-          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEfG">0</span> · Classificados: <span id="aprovEfG" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEfG" style="color:var(--red);font-weight:700">0</span></p></div>
-        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEfG" placeholder="🔍 Buscar pelo nome..." oninput="renderEfommGeral()">
-      </div>
-      <div class="ranking-filters">
-        <button class="filter-btn active" onclick="setFEfG('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
-        <button class="filter-btn" onclick="setFEfG('aprov',this)">✅ Classificados<span class="fb-desc">Aprovados nos 2 dias</span></button>
-        <button class="filter-btn" onclick="setFEfG('reprov',this)">❌ Reprovados<span class="fb-desc">Reprovado em algum dia</span></button>
-        <button class="filter-btn" onclick="setFEfG('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
-      </div>
-      <div id="uniWrapEfG" style="display:none;margin-bottom:14px">
-        <select id="uniSelEfG" onchange="renderEfommGeral()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
-      </div>
-      <table class="ranking-table"><thead><tr>
-        <th style="width:60px;text-align:center">Pos.</th>
-        <th style="text-align:left;padding-left:14px">Aluno</th>
-        <th>1°Sim</th><th>2°Sim</th><th>Total</th><th>Status</th>
-      </tr></thead><tbody id="bodyEfG"></tbody></table>
-      <div class="stat-grid" id="statsEfG" style="margin-top:20px"></div>
-    </div>
-  </div>
-</div>
-
-<!-- EN GERAL (1°Sim + 2°Sim) -->
-<div id="enGeralSection" class="section">
-  <div class="page-wrap fade-in">
-    <div class="page-intro">
-      <h1>⚓ Ranking EN — Geral (1°Sim + 2°Sim)</h1>
-      <p>Soma dos acertos do 1º e 2º Simulado. Aprovado = aprovado nos dois dias.</p>
-    </div>
-    <div class="legend-box"><strong>Como ler:</strong>
-      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Aprovado = aprovado no 1°Sim e no 2°Sim</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos um dia</div>
-    </div>
-    <div class="ranking-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
-        <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EN — Ranking Geral</h2>
-          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEnG">0</span> · Aprovados: <span id="aprovEnG" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEnG" style="color:var(--red);font-weight:700">0</span></p></div>
-        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEnG" placeholder="🔍 Buscar pelo nome..." oninput="renderEnGeral()">
-      </div>
-      <div class="ranking-filters">
-        <button class="filter-btn active" onclick="setFEnG('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
-        <button class="filter-btn" onclick="setFEnG('aprov',this)">✅ Aprovados<span class="fb-desc">Passaram nos 2 dias</span></button>
-        <button class="filter-btn" onclick="setFEnG('reprov',this)">❌ Reprovados<span class="fb-desc">Reprovado em algum dia</span></button>
-        <button class="filter-btn" onclick="setFEnG('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
-      </div>
-      <div id="uniWrapEnG" style="display:none;margin-bottom:14px">
-        <select id="uniSelEnG" onchange="renderEnGeral()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
-      </div>
-      <table class="ranking-table"><thead><tr>
-        <th style="width:60px;text-align:center">Pos.</th>
-        <th style="text-align:left;padding-left:14px">Aluno</th>
-        <th>1°Sim</th><th>2°Sim</th><th>Total</th><th>Status</th>
-      </tr></thead><tbody id="bodyEnG"></tbody></table>
-      <div class="stat-grid" id="statsEnG" style="margin-top:20px"></div>
-    </div>
-  </div>
-</div>
-
 <!-- BUSCA -->
 <div id="buscaSection" class="section">
   <div class="page-wrap fade-in">
@@ -549,48 +372,45 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 </div>
 <script>
-// Dados AFA — gerado automaticamente
-// Edite este arquivo para atualizar o ranking
-
 const RAW_AFA = [
-{unidade:"NOVA IGUACU",nome:"MIGUEL COSTA",ra:"MT23134281",rank:1,aprov:true,port:14,mate:12,ingl:9,fisi:13,m_port:8.75,m_mate:7.5,m_ingl:5.625,m_fisi:8.125,media:7.5,red:"Sim",s2_rank:2,s2_port:13,s2_mate:13,s2_ingl:13,s2_fisi:12,s2_m_port:8.13,s2_m_mate:8.13,s2_m_ingl:8.13,s2_m_fisi:7.5,s2_media:7.97,s2_red:"Sim",s2_aprov:true},
+{unidade:"NOVA IGUACU",nome:"MIGUEL COSTA",ra:"MT23134281",rank:1,aprov:true,port:14,mate:12,ingl:9,fisi:13,m_port:8.75,m_mate:7.5,m_ingl:5.625,m_fisi:8.125,media:7.5,red:"Sim",s2_rank:2,s2_port:13,s2_mate:13,s2_ingl:13,s2_fisi:12,s2_m_port:8.13,s2_m_mate:8.13,s2_m_ingl:8.13,s2_m_fisi:7.5,s2_media:7.97,s2_red:"Sim",s2_aprov:true,s3_rank:7,s3_port:14,s3_mate:10,s3_ingl:12,s3_fisi:10,s3_m_port:8.75,s3_m_mate:6.25,s3_m_ingl:7.5,s3_m_fisi:6.25,s3_media:7.19,s3_red:"Sim",s3_aprov:true},
 {unidade:"TAQUARA",nome:"VAGNER SOUZA",ra:"MT25198953",rank:2,aprov:true,port:15,mate:10,ingl:13,fisi:9,m_port:9.375,m_mate:6.25,m_ingl:8.125,m_fisi:5.625,media:7.3438,red:"Sim",s2_rank:24,s2_port:13,s2_mate:7,s2_ingl:16,s2_fisi:5,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:10.0,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Sim",s2_aprov:false},
-{unidade:"NOVA IGUACU",nome:"PEDRO WERNECK",ra:"MT25188095",rank:3,aprov:true,port:12,mate:13,ingl:12,fisi:10,m_port:7.5,m_mate:8.125,m_ingl:7.5,m_fisi:6.25,media:7.3438,red:"Sim",s2_rank:4,s2_port:15,s2_mate:11,s2_ingl:13,s2_fisi:10,s2_m_port:9.38,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:6.25,s2_media:7.66,s2_red:"Sim",s2_aprov:true},
-{unidade:"BANGU",nome:"MARCOS CARVALHO",ra:"MT20041455",rank:4,aprov:true,port:12,mate:12,ingl:12,fisi:10,m_port:7.5,m_mate:7.5,m_ingl:7.5,m_fisi:6.25,media:7.1875,red:"Sim",s2_rank:1,s2_port:15,s2_mate:15,s2_ingl:14,s2_fisi:13,s2_m_port:9.38,s2_m_mate:9.38,s2_m_ingl:8.75,s2_m_fisi:8.13,s2_media:8.91,s2_red:"Sim",s2_aprov:true},
-{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:5,aprov:true,port:14,mate:11,ingl:11,fisi:8,m_port:8.75,m_mate:6.875,m_ingl:6.875,m_fisi:5.0,media:6.875,red:"Sim",s2_rank:29,s2_port:14,s2_mate:5,s2_ingl:16,s2_fisi:5,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:10.0,s2_m_fisi:3.13,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
+{unidade:"NOVA IGUACU",nome:"PEDRO WERNECK",ra:"MT25188095",rank:3,aprov:true,port:12,mate:13,ingl:12,fisi:10,m_port:7.5,m_mate:8.125,m_ingl:7.5,m_fisi:6.25,media:7.3438,red:"Sim",s2_rank:4,s2_port:15,s2_mate:11,s2_ingl:13,s2_fisi:10,s2_m_port:9.38,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:6.25,s2_media:7.66,s2_red:"Sim",s2_aprov:true,s3_rank:2,s3_port:14,s3_mate:11,s3_ingl:15,s3_fisi:11,s3_m_port:8.75,s3_m_mate:6.88,s3_m_ingl:9.38,s3_m_fisi:6.88,s3_media:7.97,s3_red:"Sim",s3_aprov:true},
+{unidade:"BANGU",nome:"MARCOS CARVALHO",ra:"MT20041455",rank:4,aprov:true,port:12,mate:12,ingl:12,fisi:10,m_port:7.5,m_mate:7.5,m_ingl:7.5,m_fisi:6.25,media:7.1875,red:"Sim",s2_rank:1,s2_port:15,s2_mate:15,s2_ingl:14,s2_fisi:13,s2_m_port:9.38,s2_m_mate:9.38,s2_m_ingl:8.75,s2_m_fisi:8.13,s2_media:8.91,s2_red:"Sim",s2_aprov:true,s3_rank:9,s3_port:13,s3_mate:10,s3_ingl:15,s3_fisi:8,s3_m_port:8.13,s3_m_mate:6.25,s3_m_ingl:9.38,s3_m_fisi:5,s3_media:7.19,s3_red:"Sim",s3_aprov:true},
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:5,aprov:true,port:14,mate:11,ingl:11,fisi:8,m_port:8.75,m_mate:6.875,m_ingl:6.875,m_fisi:5.0,media:6.875,red:"Sim",s2_rank:29,s2_port:14,s2_mate:5,s2_ingl:16,s2_fisi:5,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:10.0,s2_m_fisi:3.13,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s3_rank:1,s3_port:14,s3_mate:13,s3_ingl:15,s3_fisi:11,s3_m_port:8.75,s3_m_mate:8.13,s3_m_ingl:9.38,s3_m_fisi:6.88,s3_media:8.28,s3_red:"Sim",s3_aprov:true},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #6",ra:"MT19023589",rank:6,aprov:true,port:10,mate:11,ingl:11,fisi:12,m_port:6.25,m_mate:6.875,m_ingl:6.875,m_fisi:7.5,media:6.875,red:"Sim"},
 {unidade:"NOVA IGUACU",nome:"MARIA COSTA",ra:"MT25170952",rank:7,aprov:true,port:10,mate:13,ingl:11,fisi:10,m_port:6.25,m_mate:8.125,m_ingl:6.875,m_fisi:6.25,media:6.875,red:"Sim",s2_rank:13,s2_port:15,s2_mate:12,s2_ingl:15,s2_fisi:7,s2_m_port:9.38,s2_m_mate:7.5,s2_m_ingl:9.38,s2_m_fisi:4.38,s2_media:7.66,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #8",ra:"MT21057715",rank:8,aprov:true,port:13,mate:12,ingl:10,fisi:7,m_port:8.125,m_mate:7.5,m_ingl:6.25,m_fisi:4.375,media:6.5625,red:"Sim"},
-{unidade:"BANGU",nome:"LUCIANO OLIVEIRA",ra:"MT22096622",rank:9,aprov:true,port:11,mate:10,ingl:14,fisi:7,m_port:6.875,m_mate:6.25,m_ingl:8.75,m_fisi:4.375,media:6.5625,red:"Sim",s2_rank:5,s2_port:12,s2_mate:8,s2_ingl:16,s2_fisi:13,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:10.0,s2_m_fisi:8.13,s2_media:7.66,s2_red:"Sim",s2_aprov:true},
+{unidade:"BANGU",nome:"LUCIANO OLIVEIRA",ra:"MT22096622",rank:9,aprov:true,port:11,mate:10,ingl:14,fisi:7,m_port:6.875,m_mate:6.25,m_ingl:8.75,m_fisi:4.375,media:6.5625,red:"Sim",s2_rank:5,s2_port:12,s2_mate:8,s2_ingl:16,s2_fisi:13,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:10.0,s2_m_fisi:8.13,s2_media:7.66,s2_red:"Sim",s2_aprov:true,s3_rank:4,s3_port:14,s3_mate:8,s3_ingl:16,s3_fisi:11,s3_m_port:8.75,s3_m_mate:5,s3_m_ingl:10,s3_m_fisi:6.88,s3_media:7.66,s3_red:"Sim",s3_aprov:true},
 {unidade:"NOVA IGUACU",nome:"BERNARDO SILVA",ra:"MT21062021",rank:10,aprov:true,port:9,mate:11,ingl:14,fisi:7,m_port:5.625,m_mate:6.875,m_ingl:8.75,m_fisi:4.375,media:6.4062,red:"Sim",s2_rank:19,s2_port:14,s2_mate:11,s2_ingl:15,s2_fisi:3,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:9.38,s2_m_fisi:1.88,s2_media:6.72,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"PEDRO PINTO",ra:"MT22089403",rank:11,aprov:true,port:11,mate:7,ingl:13,fisi:7,m_port:6.875,m_mate:4.375,m_ingl:8.125,m_fisi:4.375,media:5.9375,red:"Sim",s2_rank:25,s2_port:14,s2_mate:9,s2_ingl:13,s2_fisi:5,s2_m_port:8.75,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Não",s2_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"PEDRO PINTO",ra:"MT22089403",rank:11,aprov:true,port:11,mate:7,ingl:13,fisi:7,m_port:6.875,m_mate:4.375,m_ingl:8.125,m_fisi:4.375,media:5.9375,red:"Sim",s2_rank:25,s2_port:14,s2_mate:9,s2_ingl:13,s2_fisi:5,s2_m_port:8.75,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Não",s2_aprov:false,s3_rank:45,s3_port:10,s3_mate:4,s3_ingl:13,s3_fisi:5,s3_m_port:6.25,s3_m_mate:2.5,s3_m_ingl:8.13,s3_m_fisi:3.13,s3_media:5,s3_red:"Sim",s3_aprov:false},
 {unidade:"BANGU",nome:"MANUELLE VERNECH",ra:"MT25173634",rank:12,aprov:true,port:10,mate:7,ingl:13,fisi:7,m_port:6.25,m_mate:4.375,m_ingl:8.125,m_fisi:4.375,media:5.7812,red:"Sim",s2_rank:20,s2_port:15,s2_mate:7,s2_ingl:16,s2_fisi:4,s2_m_port:9.38,s2_m_mate:4.38,s2_m_ingl:10.0,s2_m_fisi:2.5,s2_media:6.56,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"BRENO OLIVEIRA",ra:"MT23120876",rank:13,aprov:false,port:13,mate:12,ingl:11,fisi:6,m_port:8.125,m_mate:7.5,m_ingl:6.875,m_fisi:3.75,media:6.5625,red:"Sim",s2_rank:35,s2_port:14,s2_mate:9,s2_ingl:13,s2_fisi:3,s2_m_port:8.75,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"GUSTAVO OLIVEIRA",ra:"MT22058218",rank:14,aprov:false,port:9,mate:10,ingl:11,fisi:12,m_port:5.625,m_mate:6.25,m_ingl:6.875,m_fisi:7.5,media:6.5625,red:"Não",s2_rank:6,s2_port:13,s2_mate:11,s2_ingl:14,s2_fisi:10,s2_m_port:8.13,s2_m_mate:6.88,s2_m_ingl:8.75,s2_m_fisi:6.25,s2_media:7.5,s2_red:"Sim",s2_aprov:true},
-{unidade:"BANGU",nome:"JOÃO TEODORO",ra:"MT23126717",rank:15,aprov:false,port:12,mate:8,ingl:14,fisi:7,m_port:7.5,m_mate:5.0,m_ingl:8.75,m_fisi:4.375,media:6.4062,red:"Não",s2_rank:8,s2_port:14,s2_mate:8,s2_ingl:16,s2_fisi:9,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:10.0,s2_m_fisi:5.63,s2_media:7.34,s2_red:"Sim",s2_aprov:true},
+{unidade:"CAMPO GRANDE",nome:"BRENO OLIVEIRA",ra:"MT23120876",rank:13,aprov:false,port:13,mate:12,ingl:11,fisi:6,m_port:8.125,m_mate:7.5,m_ingl:6.875,m_fisi:3.75,media:6.5625,red:"Sim",s2_rank:35,s2_port:14,s2_mate:9,s2_ingl:13,s2_fisi:3,s2_m_port:8.75,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s3_rank:36,s3_port:9,s3_mate:7,s3_ingl:14,s3_fisi:5,s3_m_port:5.63,s3_m_mate:4.38,s3_m_ingl:8.75,s3_m_fisi:3.13,s3_media:5.47,s3_red:"Não",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"GUSTAVO OLIVEIRA",ra:"MT22058218",rank:14,aprov:false,port:9,mate:10,ingl:11,fisi:12,m_port:5.625,m_mate:6.25,m_ingl:6.875,m_fisi:7.5,media:6.5625,red:"Não",s2_rank:6,s2_port:13,s2_mate:11,s2_ingl:14,s2_fisi:10,s2_m_port:8.13,s2_m_mate:6.88,s2_m_ingl:8.75,s2_m_fisi:6.25,s2_media:7.5,s2_red:"Sim",s2_aprov:true,s3_rank:3,s3_port:11,s3_mate:9,s3_ingl:16,s3_fisi:14,s3_m_port:6.88,s3_m_mate:5.63,s3_m_ingl:10,s3_m_fisi:8.75,s3_media:7.81,s3_red:"Sim",s3_aprov:true},
+{unidade:"BANGU",nome:"JOÃO TEODORO",ra:"MT23126717",rank:15,aprov:false,port:12,mate:8,ingl:14,fisi:7,m_port:7.5,m_mate:5.0,m_ingl:8.75,m_fisi:4.375,media:6.4062,red:"Não",s2_rank:8,s2_port:14,s2_mate:8,s2_ingl:16,s2_fisi:9,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:10.0,s2_m_fisi:5.63,s2_media:7.34,s2_red:"Sim",s2_aprov:true,s3_rank:16,s3_port:14,s3_mate:7,s3_ingl:13,s3_fisi:6,s3_m_port:8.75,s3_m_mate:4.38,s3_m_ingl:8.13,s3_m_fisi:3.75,s3_media:6.25,s3_red:"Sim",s3_aprov:false},
 {unidade:"BANGU",nome:"PEDRO SEGUNDO",ra:"MT21056205",rank:16,aprov:false,port:11,mate:14,ingl:6,fisi:10,m_port:6.875,m_mate:8.75,m_ingl:3.75,m_fisi:6.25,media:6.4062,red:"Não"},
 {unidade:"MADUREIRA",nome:"LOHAYNE SANTOS",ra:"MT24164287",rank:17,aprov:false,port:9,mate:12,ingl:9,fisi:11,m_port:5.625,m_mate:7.5,m_ingl:5.625,m_fisi:6.875,media:6.4062,red:"Não"},
 {unidade:"CAMPO GRANDE",nome:"BERNARDO SILVA",ra:"MT22099527",rank:18,aprov:false,port:12,mate:9,ingl:14,fisi:5,m_port:7.5,m_mate:5.625,m_ingl:8.75,m_fisi:3.125,media:6.25,red:"Sim",s2_rank:42,s2_port:14,s2_mate:6,s2_ingl:12,s2_fisi:6,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:7.5,s2_m_fisi:3.75,s2_media:5.94,s2_red:"Não",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"JOÃO DIAS",ra:"MT23122104",rank:19,aprov:false,port:13,mate:8,ingl:14,fisi:5,m_port:8.125,m_mate:5.0,m_ingl:8.75,m_fisi:3.125,media:6.25,red:"Não",s2_rank:26,s2_port:14,s2_mate:8,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.41,s2_red:"Não",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"JOÃO DIAS",ra:"MT23122104",rank:19,aprov:false,port:13,mate:8,ingl:14,fisi:5,m_port:8.125,m_mate:5.0,m_ingl:8.75,m_fisi:3.125,media:6.25,red:"Não",s2_rank:26,s2_port:14,s2_mate:8,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.41,s2_red:"Não",s2_aprov:false,s3_rank:22,s3_port:13,s3_mate:6,s3_ingl:15,s3_fisi:4,s3_m_port:8.13,s3_m_mate:3.75,s3_m_ingl:9.38,s3_m_fisi:2.5,s3_media:5.94,s3_red:"Sim",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #20",ra:"MTERRORA20",rank:20,aprov:false,port:12,mate:10,ingl:13,fisi:5,m_port:7.5,m_mate:6.25,m_ingl:8.125,m_fisi:3.125,media:6.25,red:"Não"},
 {unidade:"MADUREIRA",nome:"MARYA JUND",ra:"MT25169335",rank:21,aprov:false,port:12,mate:10,ingl:13,fisi:5,m_port:7.5,m_mate:6.25,m_ingl:8.125,m_fisi:3.125,media:6.25,red:"Não",s2_rank:15,s2_port:16,s2_mate:10,s2_ingl:15,s2_fisi:4,s2_m_port:10.0,s2_m_mate:6.25,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:7.03,s2_red:"Não",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #22",ra:"MTERRORA5",rank:22,aprov:false,port:11,mate:12,ingl:8,fisi:9,m_port:6.875,m_mate:7.5,m_ingl:5.0,m_fisi:5.625,media:6.25,red:"Não"},
 {unidade:"MADUREIRA",nome:"FELIPE SARDINHA",ra:"MT25169566",rank:23,aprov:false,port:11,mate:12,ingl:8,fisi:9,m_port:6.875,m_mate:7.5,m_ingl:5.0,m_fisi:5.625,media:6.25,red:"Não"},
 {unidade:"BANGU",nome:"CAIO DINIZ",ra:"MT21065453",rank:24,aprov:false,port:11,mate:10,ingl:10,fisi:8,m_port:6.875,m_mate:6.25,m_ingl:6.25,m_fisi:5.0,media:6.0938,red:"Não",s2_rank:43,s2_port:14,s2_mate:11,s2_ingl:13,s2_fisi:0,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:0.0,s2_media:5.94,s2_red:"Não",s2_aprov:false},
-{unidade:"BANGU",nome:"LEONARDO BORGES",ra:"MT23131139",rank:25,aprov:false,port:11,mate:8,ingl:13,fisi:6,m_port:6.875,m_mate:5.0,m_ingl:8.125,m_fisi:3.75,media:5.9375,red:"Sim",s2_rank:47,s2_port:14,s2_mate:7,s2_ingl:13,s2_fisi:3,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:5.78,s2_red:"Sim",s2_aprov:false},
+{unidade:"BANGU",nome:"LEONARDO BORGES",ra:"MT23131139",rank:25,aprov:false,port:11,mate:8,ingl:13,fisi:6,m_port:6.875,m_mate:5.0,m_ingl:8.125,m_fisi:3.75,media:5.9375,red:"Sim",s2_rank:47,s2_port:14,s2_mate:7,s2_ingl:13,s2_fisi:3,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:20,s3_port:12,s3_mate:6,s3_ingl:15,s3_fisi:6,s3_m_port:7.5,s3_m_mate:3.75,s3_m_ingl:9.38,s3_m_fisi:3.75,s3_media:6.09,s3_red:"Não",s3_aprov:false},
 {unidade:"MADUREIRA",nome:"RAFAELLA SANTOS",ra:"MT24162687",rank:26,aprov:false,port:12,mate:5,ingl:12,fisi:9,m_port:7.5,m_mate:3.125,m_ingl:7.5,m_fisi:5.625,media:5.9375,red:"Não",s2_rank:23,s2_port:15,s2_mate:6,s2_ingl:15,s2_fisi:5,s2_m_port:9.38,s2_m_mate:3.75,s2_m_ingl:9.38,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Sim",s2_aprov:false},
 {unidade:"TAQUARA",nome:"YASMIM ROMÃO",ra:"MT23134059",rank:27,aprov:false,port:15,mate:11,ingl:5,fisi:6,m_port:9.375,m_mate:6.875,m_ingl:3.125,m_fisi:3.75,media:5.7812,red:"Sim",s2_rank:10,s2_port:15,s2_mate:9,s2_ingl:13,s2_fisi:9,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:5.63,s2_media:7.19,s2_red:"Sim",s2_aprov:true},
-{unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #28",ra:"MT25197691",rank:28,aprov:false,port:11,mate:6,ingl:14,fisi:6,m_port:6.875,m_mate:3.75,m_ingl:8.75,m_fisi:3.75,media:5.7812,red:"Sim"},
+{unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #28",ra:"MT25197691",rank:28,aprov:false,port:11,mate:6,ingl:14,fisi:6,m_port:6.875,m_mate:3.75,m_ingl:8.75,m_fisi:3.75,media:5.7812,red:"Sim",s3_rank:30,s3_port:11,s3_mate:7,s3_ingl:13,s3_fisi:6,s3_m_port:6.88,s3_m_mate:4.38,s3_m_ingl:8.13,s3_m_fisi:3.75,s3_media:5.78,s3_red:"Sim",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #29",ra:"MTERRORA11",rank:29,aprov:false,port:14,mate:6,ingl:12,fisi:5,m_port:8.75,m_mate:3.75,m_ingl:7.5,m_fisi:3.125,media:5.7812,red:"Não"},
-{unidade:"MADUREIRA",nome:"LUIZ REIS",ra:"MT24139594",rank:30,aprov:false,port:14,mate:6,ingl:12,fisi:5,m_port:8.75,m_mate:3.75,m_ingl:7.5,m_fisi:3.125,media:5.7812,red:"Não",s2_rank:40,s2_port:15,s2_mate:5,s2_ingl:14,s2_fisi:4,s2_m_port:9.38,s2_m_mate:3.13,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.94,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"GABRIEL BORGES",ra:"MT19023548",rank:31,aprov:false,port:11,mate:8,ingl:13,fisi:5,m_port:6.875,m_mate:5.0,m_ingl:8.125,m_fisi:3.125,media:5.7812,red:"Não",s2_rank:50,s2_port:15,s2_mate:9,s2_ingl:8,s2_fisi:4,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.63,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"LUIZ REIS",ra:"MT24139594",rank:30,aprov:false,port:14,mate:6,ingl:12,fisi:5,m_port:8.75,m_mate:3.75,m_ingl:7.5,m_fisi:3.125,media:5.7812,red:"Não",s2_rank:40,s2_port:15,s2_mate:5,s2_ingl:14,s2_fisi:4,s2_m_port:9.38,s2_m_mate:3.13,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.94,s2_red:"Sim",s2_aprov:false,s3_rank:19,s3_port:13,s3_mate:5,s3_ingl:14,s3_fisi:7,s3_m_port:8.13,s3_m_mate:3.13,s3_m_ingl:8.75,s3_m_fisi:4.38,s3_media:6.09,s3_red:"Não",s3_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL BORGES",ra:"MT19023548",rank:31,aprov:false,port:11,mate:8,ingl:13,fisi:5,m_port:6.875,m_mate:5.0,m_ingl:8.125,m_fisi:3.125,media:5.7812,red:"Não",s2_rank:50,s2_port:15,s2_mate:9,s2_ingl:8,s2_fisi:4,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.63,s2_red:"Sim",s2_aprov:false,s3_rank:71,s3_port:12,s3_mate:6,s3_ingl:6,s3_fisi:3,s3_m_port:7.5,s3_m_mate:3.75,s3_m_ingl:3.75,s3_m_fisi:1.88,s3_media:4.22,s3_red:"Não",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #32",ra:"MTERRORA30",rank:32,aprov:false,port:7,mate:12,ingl:8,fisi:10,m_port:4.375,m_mate:7.5,m_ingl:5.0,m_fisi:6.25,media:5.7812,red:"Não"},
-{unidade:"MADUREIRA",nome:"SAMUEL FERNANDES",ra:"MT24156572",rank:33,aprov:false,port:7,mate:12,ingl:8,fisi:10,m_port:4.375,m_mate:7.5,m_ingl:5.0,m_fisi:6.25,media:5.7812,red:"Não",s2_rank:3,s2_port:14,s2_mate:12,s2_ingl:13,s2_fisi:11,s2_m_port:8.75,s2_m_mate:7.5,s2_m_ingl:8.13,s2_m_fisi:6.88,s2_media:7.81,s2_red:"Sim",s2_aprov:true},
-{unidade:"BANGU",nome:"SOPHIA BASTOS",ra:"MT25198466",rank:34,aprov:false,port:12,mate:5,ingl:15,fisi:4,m_port:7.5,m_mate:3.125,m_ingl:9.375,m_fisi:2.5,media:5.625,red:"Sim"},
+{unidade:"MADUREIRA",nome:"SAMUEL FERNANDES",ra:"MT24156572",rank:33,aprov:false,port:7,mate:12,ingl:8,fisi:10,m_port:4.375,m_mate:7.5,m_ingl:5.0,m_fisi:6.25,media:5.7812,red:"Não",s2_rank:3,s2_port:14,s2_mate:12,s2_ingl:13,s2_fisi:11,s2_m_port:8.75,s2_m_mate:7.5,s2_m_ingl:8.13,s2_m_fisi:6.88,s2_media:7.81,s2_red:"Sim",s2_aprov:true,s3_rank:15,s3_port:13,s3_mate:13,s3_ingl:13,s3_fisi:10,s3_m_port:8.13,s3_m_mate:8.13,s3_m_ingl:8.13,s3_m_fisi:6.25,s3_media:7.66,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"SOPHIA BASTOS",ra:"MT25198466",rank:34,aprov:false,port:12,mate:5,ingl:15,fisi:4,m_port:7.5,m_mate:3.125,m_ingl:9.375,m_fisi:2.5,media:5.625,red:"Sim",s3_rank:17,s3_port:11,s3_mate:7,s3_ingl:15,s3_fisi:7,s3_m_port:6.88,s3_m_mate:4.38,s3_m_ingl:9.38,s3_m_fisi:4.38,s3_media:6.25,s3_red:"Sim",s3_aprov:false},
 {unidade:"NOVA IGUACU",nome:"LUCAS FILIPAK",ra:"MT24160137",rank:35,aprov:false,port:10,mate:9,ingl:11,fisi:6,m_port:6.25,m_mate:5.625,m_ingl:6.875,m_fisi:3.75,media:5.625,red:"Sim",s2_rank:32,s2_port:11,s2_mate:7,s2_ingl:15,s2_fisi:7,s2_m_port:6.88,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"MONT' SILIO",ra:"MT25192345",rank:36,aprov:false,port:13,mate:5,ingl:11,fisi:7,m_port:8.125,m_mate:3.125,m_ingl:6.875,m_fisi:4.375,media:5.625,red:"Não"},
 {unidade:"MADUREIRA",nome:"LARA LIMA",ra:"MT25167057",rank:37,aprov:false,port:10,mate:9,ingl:8,fisi:9,m_port:6.25,m_mate:5.625,m_ingl:5.0,m_fisi:5.625,media:5.625,red:"Não",s2_rank:94,s2_port:13,s2_mate:3,s2_ingl:5,s2_fisi:4,s2_m_port:8.13,s2_m_mate:1.88,s2_m_ingl:3.13,s2_m_fisi:2.5,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"ARTHUR ALBUQUERQUE",ra:"MT22097604",rank:38,aprov:false,port:13,mate:3,ingl:14,fisi:5,m_port:8.125,m_mate:1.875,m_ingl:8.75,m_fisi:3.125,media:5.4688,red:"Sim",s2_rank:44,s2_port:15,s2_mate:4,s2_ingl:14,s2_fisi:4,s2_m_port:9.38,s2_m_mate:2.5,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.78,s2_red:"Sim",s2_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"ARTHUR ALBUQUERQUE",ra:"MT22097604",rank:38,aprov:false,port:13,mate:3,ingl:14,fisi:5,m_port:8.125,m_mate:1.875,m_ingl:8.75,m_fisi:3.125,media:5.4688,red:"Sim",s2_rank:44,s2_port:15,s2_mate:4,s2_ingl:14,s2_fisi:4,s2_m_port:9.38,s2_m_mate:2.5,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:54,s3_port:11,s3_mate:4,s3_ingl:11,s3_fisi:4,s3_m_port:6.88,s3_m_mate:2.5,s3_m_ingl:6.88,s3_m_fisi:2.5,s3_media:4.69,s3_red:"Sim",s3_aprov:false},
 {unidade:"TAQUARA",nome:"NIKOLAS SANTOS",ra:"MT24158446",rank:39,aprov:false,port:11,mate:11,ingl:6,fisi:7,m_port:6.875,m_mate:6.875,m_ingl:3.75,m_fisi:4.375,media:5.4688,red:"Sim",s2_rank:36,s2_port:13,s2_mate:9,s2_ingl:10,s2_fisi:7,s2_m_port:8.13,s2_m_mate:5.63,s2_m_ingl:6.25,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"MARIA MENEZES",ra:"MT22091896",rank:40,aprov:false,port:11,mate:5,ingl:14,fisi:5,m_port:6.875,m_mate:3.125,m_ingl:8.75,m_fisi:3.125,media:5.4688,red:"Sim",s2_rank:57,s2_port:12,s2_mate:5,s2_ingl:14,s2_fisi:4,s2_m_port:7.5,s2_m_mate:3.13,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.47,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"BEATRIZ VELLASCO",ra:"MT20040838",rank:41,aprov:false,port:14,mate:8,ingl:7,fisi:6,m_port:8.75,m_mate:5.0,m_ingl:4.375,m_fisi:3.75,media:5.4688,red:"Não"},
@@ -598,75 +418,75 @@ const RAW_AFA = [
 {unidade:"TAQUARA",nome:"MATHEUS BAPTISTA",ra:"MT25186164",rank:43,aprov:false,port:10,mate:6,ingl:12,fisi:7,m_port:6.25,m_mate:3.75,m_ingl:7.5,m_fisi:4.375,media:5.4688,red:"Não",s2_rank:60,s2_port:10,s2_mate:9,s2_ingl:12,s2_fisi:3,s2_m_port:6.25,s2_m_mate:5.63,s2_m_ingl:7.5,s2_m_fisi:1.88,s2_media:5.31,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"DANILO ALMEIDA",ra:"MT26203620",rank:44,aprov:false,port:11,mate:8,ingl:9,fisi:6,m_port:6.875,m_mate:5.0,m_ingl:5.625,m_fisi:3.75,media:5.3125,red:"Sim"},
 {unidade:"BANGU",nome:"LUAN SANTOS",ra:"MT25182916",rank:45,aprov:false,port:9,mate:6,ingl:12,fisi:7,m_port:5.625,m_mate:3.75,m_ingl:7.5,m_fisi:4.375,media:5.3125,red:"Sim",s2_rank:62,s2_port:12,s2_mate:3,s2_ingl:14,s2_fisi:5,s2_m_port:7.5,s2_m_mate:1.88,s2_m_ingl:8.75,s2_m_fisi:3.13,s2_media:5.31,s2_red:"Não",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"BERNARDO MATOS",ra:"MT22088942",rank:46,aprov:false,port:13,mate:8,ingl:5,fisi:8,m_port:8.125,m_mate:5.0,m_ingl:3.125,m_fisi:5.0,media:5.3125,red:"Não",s2_rank:61,s2_port:13,s2_mate:7,s2_ingl:11,s2_fisi:3,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:6.88,s2_m_fisi:1.88,s2_media:5.31,s2_red:"Não",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"BERNARDO MATOS",ra:"MT22088942",rank:46,aprov:false,port:13,mate:8,ingl:5,fisi:8,m_port:8.125,m_mate:5.0,m_ingl:3.125,m_fisi:5.0,media:5.3125,red:"Não",s2_rank:61,s2_port:13,s2_mate:7,s2_ingl:11,s2_fisi:3,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:6.88,s2_m_fisi:1.88,s2_media:5.31,s2_red:"Não",s2_aprov:false,s3_rank:18,s3_port:13,s3_mate:8,s3_ingl:11,s3_fisi:7,s3_m_port:8.13,s3_m_mate:5,s3_m_ingl:6.88,s3_m_fisi:4.38,s3_media:6.09,s3_red:"Não",s3_aprov:false},
 {unidade:"MADUREIRA",nome:"LINDSAY MASSAPUST",ra:"MT23127541",rank:47,aprov:false,port:11,mate:10,ingl:9,fisi:4,m_port:6.875,m_mate:6.25,m_ingl:5.625,m_fisi:2.5,media:5.3125,red:"Não",s2_rank:102,s2_port:15,s2_mate:0,s2_ingl:4,s2_fisi:0,s2_m_port:9.38,s2_m_mate:0.0,s2_m_ingl:2.5,s2_m_fisi:0.0,s2_media:2.97,s2_red:"Sim",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"NATALY LUNA",ra:"MT23130412",rank:48,aprov:false,port:10,mate:7,ingl:12,fisi:4,m_port:6.25,m_mate:4.375,m_ingl:7.5,m_fisi:2.5,media:5.1562,red:"Sim",s2_rank:56,s2_port:13,s2_mate:5,s2_ingl:12,s2_fisi:5,s2_m_port:8.13,s2_m_mate:3.13,s2_m_ingl:7.5,s2_m_fisi:3.13,s2_media:5.47,s2_red:"Sim",s2_aprov:false},
-{unidade:"NOVA IGUACU",nome:"BEATRIZ GAMMINE",ra:"MT22095475",rank:49,aprov:false,port:9,mate:11,ingl:5,fisi:8,m_port:5.625,m_mate:6.875,m_ingl:3.125,m_fisi:5.0,media:5.1562,red:"Sim",s2_rank:51,s2_port:15,s2_mate:9,s2_ingl:8,s2_fisi:4,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.63,s2_red:"Sim",s2_aprov:false},
+{unidade:"NOVA IGUACU",nome:"BEATRIZ GAMMINE",ra:"MT22095475",rank:49,aprov:false,port:9,mate:11,ingl:5,fisi:8,m_port:5.625,m_mate:6.875,m_ingl:3.125,m_fisi:5.0,media:5.1562,red:"Sim",s2_rank:51,s2_port:15,s2_mate:9,s2_ingl:8,s2_fisi:4,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.63,s2_red:"Sim",s2_aprov:false,s3_rank:40,s3_port:12,s3_mate:6,s3_ingl:11,s3_fisi:4,s3_m_port:7.5,s3_m_mate:3.75,s3_m_ingl:6.88,s3_m_fisi:2.5,s3_media:5.16,s3_red:"Sim",s3_aprov:false},
 {unidade:"BANGU",nome:"RAFAELA SILVA",ra:"MT25191842",rank:50,aprov:false,port:8,mate:7,ingl:12,fisi:6,m_port:5.0,m_mate:4.375,m_ingl:7.5,m_fisi:3.75,media:5.1562,red:"Sim",s2_rank:53,s2_port:15,s2_mate:4,s2_ingl:13,s2_fisi:3,s2_m_port:9.38,s2_m_mate:2.5,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:5.47,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"JONAS AGUIAR",ra:"MT25187782",rank:51,aprov:false,port:13,mate:7,ingl:7,fisi:6,m_port:8.125,m_mate:4.375,m_ingl:4.375,m_fisi:3.75,media:5.1562,red:"Não"},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #52",ra:"MTERRORA13",rank:52,aprov:false,port:8,mate:7,ingl:11,fisi:7,m_port:5.0,m_mate:4.375,m_ingl:6.875,m_fisi:4.375,media:5.1562,red:"Não"},
 {unidade:"BANGU",nome:"EZEQUIEL TREZENA",ra:"MT25188749",rank:53,aprov:false,port:12,mate:6,ingl:9,fisi:5,m_port:7.5,m_mate:3.75,m_ingl:5.625,m_fisi:3.125,media:5.0,red:"Sim",s2_rank:37,s2_port:13,s2_mate:6,s2_ingl:13,s2_fisi:7,s2_m_port:8.13,s2_m_mate:3.75,s2_m_ingl:8.13,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
-{unidade:"TAQUARA",nome:"GUILHERME BLUM",ra:"MT19021575",rank:54,aprov:false,port:11,mate:10,ingl:5,fisi:6,m_port:6.875,m_mate:6.25,m_ingl:3.125,m_fisi:3.75,media:5.0,red:"Sim",s2_rank:28,s2_port:15,s2_mate:7,s2_ingl:11,s2_fisi:7,s2_m_port:9.38,s2_m_mate:4.38,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
-{unidade:"TAQUARA",nome:"JOÃO PAULA",ra:"MT24147464",rank:55,aprov:false,port:10,mate:5,ingl:8,fisi:9,m_port:6.25,m_mate:3.125,m_ingl:5.0,m_fisi:5.625,media:5.0,red:"Sim",s2_rank:67,s2_port:14,s2_mate:6,s2_ingl:8,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
-{unidade:"NOVA IGUACU",nome:"DAVI CARVALHO",ra:"MT25188145",rank:56,aprov:false,port:9,mate:10,ingl:5,fisi:8,m_port:5.625,m_mate:6.25,m_ingl:3.125,m_fisi:5.0,media:5.0,red:"Sim",s2_rank:12,s2_port:14,s2_mate:11,s2_ingl:10,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:6.25,s2_m_fisi:5.63,s2_media:6.88,s2_red:"Sim",s2_aprov:true},
+{unidade:"TAQUARA",nome:"GUILHERME BLUM",ra:"MT19021575",rank:54,aprov:false,port:11,mate:10,ingl:5,fisi:6,m_port:6.875,m_mate:6.25,m_ingl:3.125,m_fisi:3.75,media:5.0,red:"Sim",s2_rank:28,s2_port:15,s2_mate:7,s2_ingl:11,s2_fisi:7,s2_m_port:9.38,s2_m_mate:4.38,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s3_rank:26,s3_port:14,s3_mate:7,s3_ingl:13,s3_fisi:3,s3_m_port:8.75,s3_m_mate:4.38,s3_m_ingl:8.13,s3_m_fisi:1.88,s3_media:5.78,s3_red:"Sim",s3_aprov:false},
+{unidade:"TAQUARA",nome:"JOÃO PAULA",ra:"MT24147464",rank:55,aprov:false,port:10,mate:5,ingl:8,fisi:9,m_port:6.25,m_mate:3.125,m_ingl:5.0,m_fisi:5.625,media:5.0,red:"Sim",s2_rank:67,s2_port:14,s2_mate:6,s2_ingl:8,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.0,s2_red:"Sim",s2_aprov:false,s3_rank:21,s3_port:13,s3_mate:7,s3_ingl:11,s3_fisi:7,s3_m_port:8.13,s3_m_mate:4.38,s3_m_ingl:6.88,s3_m_fisi:4.38,s3_media:5.94,s3_red:"Sim",s3_aprov:false},
+{unidade:"NOVA IGUACU",nome:"DAVI CARVALHO",ra:"MT25188145",rank:56,aprov:false,port:9,mate:10,ingl:5,fisi:8,m_port:5.625,m_mate:6.25,m_ingl:3.125,m_fisi:5.0,media:5.0,red:"Sim",s2_rank:12,s2_port:14,s2_mate:11,s2_ingl:10,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:6.25,s2_m_fisi:5.63,s2_media:6.88,s2_red:"Sim",s2_aprov:true,s3_rank:37,s3_port:12,s3_mate:7,s3_ingl:11,s3_fisi:4,s3_m_port:7.5,s3_m_mate:4.38,s3_m_ingl:6.88,s3_m_fisi:2.5,s3_media:5.31,s3_red:"Sim",s3_aprov:false},
 {unidade:"NOVA IGUACU",nome:"LUIZA SANTOS",ra:"MT25188046",rank:57,aprov:false,port:8,mate:9,ingl:9,fisi:6,m_port:5.0,m_mate:5.625,m_ingl:5.625,m_fisi:3.75,media:5.0,red:"Sim"},
 {unidade:"NOVA IGUACU",nome:"SIDNEY LOURENÇO",ra:"MT25194226",rank:58,aprov:false,port:6,mate:8,ingl:11,fisi:7,m_port:3.75,m_mate:5.0,m_ingl:6.875,m_fisi:4.375,media:5.0,red:"Sim",s2_rank:69,s2_port:12,s2_mate:6,s2_ingl:10,s2_fisi:4,s2_m_port:7.5,s2_m_mate:3.75,s2_m_ingl:6.25,s2_m_fisi:2.5,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
-{unidade:"BANGU",nome:"MATHEUS PINTO",ra:"MT20037883",rank:59,aprov:false,port:8,mate:9,ingl:7,fisi:8,m_port:5.0,m_mate:5.625,m_ingl:4.375,m_fisi:5.0,media:5.0,red:"Não",s2_rank:48,s2_port:12,s2_mate:8,s2_ingl:11,s2_fisi:6,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:6.88,s2_m_fisi:3.75,s2_media:5.78,s2_red:"Sim",s2_aprov:false},
+{unidade:"BANGU",nome:"MATHEUS PINTO",ra:"MT20037883",rank:59,aprov:false,port:8,mate:9,ingl:7,fisi:8,m_port:5.0,m_mate:5.625,m_ingl:4.375,m_fisi:5.0,media:5.0,red:"Não",s2_rank:48,s2_port:12,s2_mate:8,s2_ingl:11,s2_fisi:6,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:6.88,s2_m_fisi:3.75,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:34,s3_port:12,s3_mate:11,s3_ingl:5,s3_fisi:7,s3_m_port:7.5,s3_m_mate:6.88,s3_m_ingl:3.13,s3_m_fisi:4.38,s3_media:5.47,s3_red:"Não",s3_aprov:false},
 {unidade:"NOVA IGUACU",nome:"GABRIEL ALVES",ra:"MT24161879",rank:60,aprov:false,port:12,mate:3,ingl:11,fisi:5,m_port:7.5,m_mate:1.875,m_ingl:6.875,m_fisi:3.125,media:4.8438,red:"Sim",s2_rank:18,s2_port:14,s2_mate:10,s2_ingl:14,s2_fisi:5,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:8.75,s2_m_fisi:3.13,s2_media:6.72,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #61",ra:"MTERRORA1",rank:61,aprov:false,port:12,mate:6,ingl:7,fisi:6,m_port:7.5,m_mate:3.75,m_ingl:4.375,m_fisi:3.75,media:4.8438,red:"Não"},
-{unidade:"MADUREIRA",nome:"DAVI SANTOS",ra:"MT22098230",rank:62,aprov:false,port:11,mate:4,ingl:11,fisi:5,m_port:6.875,m_mate:2.5,m_ingl:6.875,m_fisi:3.125,media:4.8438,red:"Não",s2_rank:33,s2_port:14,s2_mate:5,s2_ingl:13,s2_fisi:7,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:8.13,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"RICHARD GOMES",ra:"MT23118201",rank:63,aprov:false,port:9,mate:5,ingl:11,fisi:6,m_port:5.625,m_mate:3.125,m_ingl:6.875,m_fisi:3.75,media:4.8438,red:"Não"},
-{unidade:"BANGU",nome:"LÍVIA BARBOSA",ra:"MT23122203",rank:64,aprov:false,port:11,mate:4,ingl:9,fisi:6,m_port:6.875,m_mate:2.5,m_ingl:5.625,m_fisi:3.75,media:4.6875,red:"Sim",s2_rank:17,s2_port:14,s2_mate:11,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.88,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"DAVI SANTOS",ra:"MT22098230",rank:62,aprov:false,port:11,mate:4,ingl:11,fisi:5,m_port:6.875,m_mate:2.5,m_ingl:6.875,m_fisi:3.125,media:4.8438,red:"Não",s2_rank:33,s2_port:14,s2_mate:5,s2_ingl:13,s2_fisi:7,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:8.13,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s3_rank:73,s3_port:9,s3_mate:5,s3_ingl:11,s3_fisi:1,s3_m_port:5.63,s3_m_mate:3.13,s3_m_ingl:6.88,s3_m_fisi:0.63,s3_media:4.06,s3_red:"Sim",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"RICHARD GOMES",ra:"MT23118201",rank:63,aprov:false,port:9,mate:5,ingl:11,fisi:6,m_port:5.625,m_mate:3.125,m_ingl:6.875,m_fisi:3.75,media:4.8438,red:"Não",s3_rank:55,s3_port:9,s3_mate:4,s3_ingl:16,s3_fisi:1,s3_m_port:5.63,s3_m_mate:2.5,s3_m_ingl:10,s3_m_fisi:0.63,s3_media:4.69,s3_red:"Sim",s3_aprov:false},
+{unidade:"BANGU",nome:"LÍVIA BARBOSA",ra:"MT23122203",rank:64,aprov:false,port:11,mate:4,ingl:9,fisi:6,m_port:6.875,m_mate:2.5,m_ingl:5.625,m_fisi:3.75,media:4.6875,red:"Sim",s2_rank:17,s2_port:14,s2_mate:11,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.88,s2_red:"Sim",s2_aprov:false,s3_rank:53,s3_port:12,s3_mate:8,s3_ingl:6,s3_fisi:4,s3_m_port:7.5,s3_m_mate:5,s3_m_ingl:3.75,s3_m_fisi:2.5,s3_media:4.69,s3_red:"Sim",s3_aprov:false},
 {unidade:"NOVA IGUACU",nome:"JHONATAN SILVA",ra:"MT25192337",rank:65,aprov:false,port:10,mate:6,ingl:9,fisi:5,m_port:6.25,m_mate:3.75,m_ingl:5.625,m_fisi:3.125,media:4.6875,red:"Sim",s2_rank:59,s2_port:13,s2_mate:5,s2_ingl:11,s2_fisi:5,s2_m_port:8.13,s2_m_mate:3.13,s2_m_ingl:6.88,s2_m_fisi:3.13,s2_media:5.31,s2_red:"Sim",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"DANILO PINTO",ra:"MT24153348",rank:66,aprov:false,port:10,mate:9,ingl:7,fisi:4,m_port:6.25,m_mate:5.625,m_ingl:4.375,m_fisi:2.5,media:4.6875,red:"Sim",s2_rank:45,s2_port:15,s2_mate:9,s2_ingl:10,s2_fisi:3,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:6.25,s2_m_fisi:1.88,s2_media:5.78,s2_red:"Sim",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"LUCAS OLIVEIRA",ra:"MT24152068",rank:67,aprov:false,port:9,mate:6,ingl:8,fisi:7,m_port:5.625,m_mate:3.75,m_ingl:5.0,m_fisi:4.375,media:4.6875,red:"Sim",s2_rank:74,s2_port:13,s2_mate:4,s2_ingl:11,s2_fisi:3,s2_m_port:8.13,s2_m_mate:2.5,s2_m_ingl:6.88,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"CAUA LOPES",ra:"MT26203059",rank:68,aprov:false,port:11,mate:5,ingl:9,fisi:5,m_port:6.875,m_mate:3.125,m_ingl:5.625,m_fisi:3.125,media:4.6875,red:"Não",s2_rank:58,s2_port:15,s2_mate:5,s2_ingl:10,s2_fisi:4,s2_m_port:9.38,s2_m_mate:3.13,s2_m_ingl:6.25,s2_m_fisi:2.5,s2_media:5.31,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #69",ra:"MTERRORA12",rank:69,aprov:false,port:9,mate:8,ingl:8,fisi:5,m_port:5.625,m_mate:5.0,m_ingl:5.0,m_fisi:3.125,media:4.6875,red:"Não"},
-{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:70,aprov:false,port:9,mate:8,ingl:8,fisi:5,m_port:5.625,m_mate:5.0,m_ingl:5.0,m_fisi:3.125,media:4.6875,red:"Não",s2_rank:72,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:70,aprov:false,port:9,mate:8,ingl:8,fisi:5,m_port:5.625,m_mate:5.0,m_ingl:5.0,m_fisi:3.125,media:4.6875,red:"Não",s2_rank:72,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:63,s3_port:9,s3_mate:5,s3_ingl:9,s3_fisi:5,s3_m_port:5.63,s3_m_mate:3.13,s3_m_ingl:5.63,s3_m_fisi:3.13,s3_media:4.38,s3_red:"Não",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #71",ra:"MTERRORA6",rank:71,aprov:false,port:8,mate:7,ingl:10,fisi:5,m_port:5.0,m_mate:4.375,m_ingl:6.25,m_fisi:3.125,media:4.6875,red:"Não"},
 {unidade:"MADUREIRA",nome:"GUILHERME LEAL",ra:"MT25177403",rank:72,aprov:false,port:8,mate:7,ingl:10,fisi:5,m_port:5.0,m_mate:4.375,m_ingl:6.25,m_fisi:3.125,media:4.6875,red:"Não"},
 {unidade:"CAMPO GRANDE",nome:"FERNANDO TRINDADE",ra:"MT22087480",rank:73,aprov:false,port:7,mate:8,ingl:10,fisi:5,m_port:4.375,m_mate:5.0,m_ingl:6.25,m_fisi:3.125,media:4.6875,red:"Não"},
-{unidade:"NOVA IGUACU",nome:"SAMUEL RIMOLO",ra:"MT25177932",rank:74,aprov:false,port:12,mate:7,ingl:4,fisi:6,m_port:7.5,m_mate:4.375,m_ingl:2.5,m_fisi:3.75,media:4.5312,red:"Sim",s2_rank:63,s2_port:15,s2_mate:9,s2_ingl:4,s2_fisi:5,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:2.5,s2_m_fisi:3.13,s2_media:5.16,s2_red:"Sim",s2_aprov:false},
-{unidade:"BANGU",nome:"DANIEL VALENTIM",ra:"MT25197096",rank:75,aprov:false,port:9,mate:6,ingl:8,fisi:6,m_port:5.625,m_mate:3.75,m_ingl:5.0,m_fisi:3.75,media:4.5312,red:"Sim",s2_rank:101,s2_port:10,s2_mate:6,s2_ingl:2,s2_fisi:3,s2_m_port:6.25,s2_m_mate:3.75,s2_m_ingl:1.25,s2_m_fisi:1.88,s2_media:3.28,s2_red:"Sim",s2_aprov:false},
+{unidade:"NOVA IGUACU",nome:"SAMUEL RIMOLO",ra:"MT25177932",rank:74,aprov:false,port:12,mate:7,ingl:4,fisi:6,m_port:7.5,m_mate:4.375,m_ingl:2.5,m_fisi:3.75,media:4.5312,red:"Sim",s2_rank:63,s2_port:15,s2_mate:9,s2_ingl:4,s2_fisi:5,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:2.5,s2_m_fisi:3.13,s2_media:5.16,s2_red:"Sim",s2_aprov:false,s3_rank:23,s3_port:12,s3_mate:7,s3_ingl:9,s3_fisi:10,s3_m_port:7.5,s3_m_mate:4.38,s3_m_ingl:5.63,s3_m_fisi:6.25,s3_media:5.94,s3_red:"Sim",s3_aprov:false},
+{unidade:"BANGU",nome:"DANIEL VALENTIM",ra:"MT25197096",rank:75,aprov:false,port:9,mate:6,ingl:8,fisi:6,m_port:5.625,m_mate:3.75,m_ingl:5.0,m_fisi:3.75,media:4.5312,red:"Sim",s2_rank:101,s2_port:10,s2_mate:6,s2_ingl:2,s2_fisi:3,s2_m_port:6.25,s2_m_mate:3.75,s2_m_ingl:1.25,s2_m_fisi:1.88,s2_media:3.28,s2_red:"Sim",s2_aprov:false,s3_rank:88,s3_port:11,s3_mate:2,s3_ingl:2,s3_fisi:5,s3_m_port:6.88,s3_m_mate:1.25,s3_m_ingl:1.25,s3_m_fisi:3.13,s3_media:3.13,s3_red:"Sim",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #76",ra:"MT**",rank:76,aprov:false,port:10,mate:10,ingl:4,fisi:5,m_port:6.25,m_mate:6.25,m_ingl:2.5,m_fisi:3.125,media:4.5312,red:"Não",s2_rank:70,s2_port:11,s2_mate:6,s2_ingl:10,s2_fisi:5,s2_m_port:6.88,s2_m_mate:3.75,s2_m_ingl:6.25,s2_m_fisi:3.13,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #77",ra:"MTERRORA7",rank:77,aprov:false,port:9,mate:8,ingl:6,fisi:6,m_port:5.625,m_mate:5.0,m_ingl:3.75,m_fisi:3.75,media:4.5312,red:"Não",s2_rank:77,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.69,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"GUILHERME NASCIMENTO",ra:"MT23111651",rank:78,aprov:false,port:9,mate:8,ingl:6,fisi:6,m_port:5.625,m_mate:5.0,m_ingl:3.75,m_fisi:3.75,media:4.5312,red:"Não",s2_rank:22,s2_port:11,s2_mate:10,s2_ingl:15,s2_fisi:6,s2_m_port:6.88,s2_m_mate:6.25,s2_m_ingl:9.38,s2_m_fisi:3.75,s2_media:6.56,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"AMANDA SILVA",ra:"MT23129406",rank:79,aprov:false,port:9,mate:7,ingl:7,fisi:6,m_port:5.625,m_mate:4.375,m_ingl:4.375,m_fisi:3.75,media:4.5312,red:"Não"},
+{unidade:"MADUREIRA",nome:"AMANDA SILVA",ra:"MT23129406",rank:79,aprov:false,port:9,mate:7,ingl:7,fisi:6,m_port:5.625,m_mate:4.375,m_ingl:4.375,m_fisi:3.75,media:4.5312,red:"Não",s3_rank:84,s3_port:8,s3_mate:4,s3_ingl:6,s3_fisi:4,s3_m_port:5,s3_m_mate:2.5,s3_m_ingl:3.75,s3_m_fisi:2.5,s3_media:3.44,s3_red:"Não",s3_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"FELIPE BRUN",ra:"MT23133705",rank:80,aprov:false,port:10,mate:7,ingl:7,fisi:4,m_port:6.25,m_mate:4.375,m_ingl:4.375,m_fisi:2.5,media:4.375,red:"Sim"},
-{unidade:"BANGU",nome:"FILIPE RIBEIRO",ra:"MT19026004",rank:81,aprov:false,port:8,mate:5,ingl:8,fisi:7,m_port:5.0,m_mate:3.125,m_ingl:5.0,m_fisi:4.375,media:4.375,red:"Sim",s2_rank:87,s2_port:10,s2_mate:2,s2_ingl:12,s2_fisi:4,s2_m_port:6.25,s2_m_mate:1.25,s2_m_ingl:7.5,s2_m_fisi:2.5,s2_media:4.38,s2_red:"Sim",s2_aprov:false},
+{unidade:"BANGU",nome:"FILIPE RIBEIRO",ra:"MT19026004",rank:81,aprov:false,port:8,mate:5,ingl:8,fisi:7,m_port:5.0,m_mate:3.125,m_ingl:5.0,m_fisi:4.375,media:4.375,red:"Sim",s2_rank:87,s2_port:10,s2_mate:2,s2_ingl:12,s2_fisi:4,s2_m_port:6.25,s2_m_mate:1.25,s2_m_ingl:7.5,s2_m_fisi:2.5,s2_media:4.38,s2_red:"Sim",s2_aprov:false,s3_rank:68,s3_port:6,s3_mate:8,s3_ingl:11,s3_fisi:2,s3_m_port:3.75,s3_m_mate:5,s3_m_ingl:6.88,s3_m_fisi:1.25,s3_media:4.22,s3_red:"Sim",s3_aprov:false},
 {unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:82,aprov:false,port:8,mate:6,ingl:8,fisi:6,m_port:5.0,m_mate:3.75,m_ingl:5.0,m_fisi:3.75,media:4.375,red:"Sim"},
-{unidade:"BANGU",nome:"MAURICIO MONTEIRO",ra:"MT23132988",rank:83,aprov:false,port:7,mate:7,ingl:8,fisi:6,m_port:4.375,m_mate:4.375,m_ingl:5.0,m_fisi:3.75,media:4.375,red:"Sim",s2_rank:79,s2_port:5,s2_mate:7,s2_ingl:14,s2_fisi:4,s2_m_port:3.13,s2_m_mate:4.38,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:4.69,s2_red:"Não",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"GABRIEL LIRA",ra:"MT23108715",rank:84,aprov:false,port:11,mate:9,ingl:1,fisi:7,m_port:6.875,m_mate:5.625,m_ingl:0.625,m_fisi:4.375,media:4.375,red:"Não",s2_rank:14,s2_port:15,s2_mate:11,s2_ingl:13,s2_fisi:8,s2_m_port:9.38,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:5.0,s2_media:7.34,s2_red:"Não",s2_aprov:false},
-{unidade:"BANGU",nome:"CAIO FRAGA",ra:"MT23123888",rank:85,aprov:false,port:10,mate:8,ingl:4,fisi:6,m_port:6.25,m_mate:5.0,m_ingl:2.5,m_fisi:3.75,media:4.375,red:"Não",s2_rank:21,s2_port:14,s2_mate:7,s2_ingl:15,s2_fisi:6,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:3.75,s2_media:6.56,s2_red:"Sim",s2_aprov:false},
+{unidade:"BANGU",nome:"MAURICIO MONTEIRO",ra:"MT23132988",rank:83,aprov:false,port:7,mate:7,ingl:8,fisi:6,m_port:4.375,m_mate:4.375,m_ingl:5.0,m_fisi:3.75,media:4.375,red:"Sim",s2_rank:79,s2_port:5,s2_mate:7,s2_ingl:14,s2_fisi:4,s2_m_port:3.13,s2_m_mate:4.38,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:4.69,s2_red:"Não",s2_aprov:false,s3_rank:52,s3_port:7,s3_mate:8,s3_ingl:13,s3_fisi:3,s3_m_port:4.38,s3_m_mate:5,s3_m_ingl:8.13,s3_m_fisi:1.88,s3_media:4.84,s3_red:"Não",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"GABRIEL LIRA",ra:"MT23108715",rank:84,aprov:false,port:11,mate:9,ingl:1,fisi:7,m_port:6.875,m_mate:5.625,m_ingl:0.625,m_fisi:4.375,media:4.375,red:"Não",s2_rank:14,s2_port:15,s2_mate:11,s2_ingl:13,s2_fisi:8,s2_m_port:9.38,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:5.0,s2_media:7.34,s2_red:"Não",s2_aprov:false,s3_rank:46,s3_port:11,s3_mate:9,s3_ingl:7,s3_fisi:5,s3_m_port:6.88,s3_m_mate:5.63,s3_m_ingl:4.38,s3_m_fisi:3.13,s3_media:5,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"CAIO FRAGA",ra:"MT23123888",rank:85,aprov:false,port:10,mate:8,ingl:4,fisi:6,m_port:6.25,m_mate:5.0,m_ingl:2.5,m_fisi:3.75,media:4.375,red:"Não",s2_rank:21,s2_port:14,s2_mate:7,s2_ingl:15,s2_fisi:6,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:3.75,s2_media:6.56,s2_red:"Sim",s2_aprov:false,s3_rank:24,s3_port:10,s3_mate:9,s3_ingl:15,s3_fisi:4,s3_m_port:6.25,s3_m_mate:5.63,s3_m_ingl:9.38,s3_m_fisi:2.5,s3_media:5.94,s3_red:"Sim",s3_aprov:false},
 {unidade:"BANGU",nome:"JOAO SOUZA",ra:"MT23107709",rank:86,aprov:false,port:11,mate:6,ingl:4,fisi:6,m_port:6.875,m_mate:3.75,m_ingl:2.5,m_fisi:3.75,media:4.2188,red:"Sim"},
 {unidade:"NOVA IGUACU",nome:"GUILHERME WARRAK",ra:"MT24135584",rank:87,aprov:false,port:9,mate:8,ingl:7,fisi:3,m_port:5.625,m_mate:5.0,m_ingl:4.375,m_fisi:1.875,media:4.2188,red:"Sim"},
-{unidade:"MADUREIRA",nome:"ENZO LIMA",ra:"MT23123334",rank:88,aprov:false,port:9,mate:7,ingl:9,fisi:2,m_port:5.625,m_mate:4.375,m_ingl:5.625,m_fisi:1.25,media:4.2188,red:"Não",s2_rank:65,s2_port:13,s2_mate:4,s2_ingl:15,s2_fisi:1,s2_m_port:8.13,s2_m_mate:2.5,s2_m_ingl:9.38,s2_m_fisi:0.63,s2_media:5.16,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"BERNARDO AGUIAR",ra:"MT23132731",rank:89,aprov:false,port:7,mate:9,ingl:6,fisi:5,m_port:4.375,m_mate:5.625,m_ingl:3.75,m_fisi:3.125,media:4.2188,red:"Não"},
+{unidade:"MADUREIRA",nome:"ENZO LIMA",ra:"MT23123334",rank:88,aprov:false,port:9,mate:7,ingl:9,fisi:2,m_port:5.625,m_mate:4.375,m_ingl:5.625,m_fisi:1.25,media:4.2188,red:"Não",s2_rank:65,s2_port:13,s2_mate:4,s2_ingl:15,s2_fisi:1,s2_m_port:8.13,s2_m_mate:2.5,s2_m_ingl:9.38,s2_m_fisi:0.63,s2_media:5.16,s2_red:"Sim",s2_aprov:false,s3_rank:43,s3_port:11,s3_mate:5,s3_ingl:14,s3_fisi:3,s3_m_port:6.88,s3_m_mate:3.13,s3_m_ingl:8.75,s3_m_fisi:1.88,s3_media:5.16,s3_red:"Sim",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"BERNARDO AGUIAR",ra:"MT23132731",rank:89,aprov:false,port:7,mate:9,ingl:6,fisi:5,m_port:4.375,m_mate:5.625,m_ingl:3.75,m_fisi:3.125,media:4.2188,red:"Não",s3_rank:77,s3_port:11,s3_mate:6,s3_ingl:7,s3_fisi:1,s3_m_port:6.88,s3_m_mate:3.75,s3_m_ingl:4.38,s3_m_fisi:0.63,s3_media:3.91,s3_red:"Não",s3_aprov:false},
 {unidade:"TAQUARA",nome:"AMANDA ROSA",ra:"MT23131576",rank:90,aprov:false,port:9,mate:5,ingl:6,fisi:6,m_port:5.625,m_mate:3.125,m_ingl:3.75,m_fisi:3.75,media:4.0625,red:"Sim"},
 {unidade:"NOVA IGUACU",nome:"LORENNA PAIXÃO",ra:"MT24161218",rank:91,aprov:false,port:7,mate:6,ingl:5,fisi:8,m_port:4.375,m_mate:3.75,m_ingl:3.125,m_fisi:5.0,media:4.0625,red:"Sim",s2_rank:90,s2_port:8,s2_mate:5,s2_ingl:8,s2_fisi:6,s2_m_port:5.0,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:3.75,s2_media:4.22,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"LETICIA SILVA",ra:"MT24158479",rank:92,aprov:false,port:10,mate:3,ingl:7,fisi:6,m_port:6.25,m_mate:1.875,m_ingl:4.375,m_fisi:3.75,media:4.0625,red:"Não"},
-{unidade:"MADUREIRA",nome:"MATHEUS OLIVEIRA",ra:"MT23129125",rank:93,aprov:false,port:10,mate:6,ingl:6,fisi:4,m_port:6.25,m_mate:3.75,m_ingl:3.75,m_fisi:2.5,media:4.0625,red:"Não"},
+{unidade:"MADUREIRA",nome:"MATHEUS OLIVEIRA",ra:"MT23129125",rank:93,aprov:false,port:10,mate:6,ingl:6,fisi:4,m_port:6.25,m_mate:3.75,m_ingl:3.75,m_fisi:2.5,media:4.0625,red:"Não",s3_rank:60,s3_port:10,s3_mate:6,s3_ingl:9,s3_fisi:4,s3_m_port:6.25,s3_m_mate:3.75,s3_m_ingl:5.63,s3_m_fisi:2.5,s3_media:4.53,s3_red:"Não",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #94",ra:"MTERRORA2",rank:94,aprov:false,port:10,mate:5,ingl:7,fisi:4,m_port:6.25,m_mate:3.125,m_ingl:4.375,m_fisi:2.5,media:4.0625,red:"Não"},
-{unidade:"MADUREIRA",nome:"GUILHERME OLIVEIRA",ra:"MT23124365",rank:95,aprov:false,port:7,mate:8,ingl:5,fisi:6,m_port:4.375,m_mate:5.0,m_ingl:3.125,m_fisi:3.75,media:4.0625,red:"Não",s2_rank:16,s2_port:16,s2_mate:10,s2_ingl:11,s2_fisi:7,s2_m_port:10.0,s2_m_mate:6.25,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.88,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"MARIA MANHAES",ra:"MT23111610",rank:96,aprov:false,port:7,mate:7,ingl:7,fisi:5,m_port:4.375,m_mate:4.375,m_ingl:4.375,m_fisi:3.125,media:4.0625,red:"Não",s2_rank:34,s2_port:14,s2_mate:10,s2_ingl:9,s2_fisi:6,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:5.63,s2_m_fisi:3.75,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
-{unidade:"TAQUARA",nome:"MARCIO BENEDITO",ra:"MT22076434",rank:97,aprov:false,port:6,mate:7,ingl:5,fisi:8,m_port:3.75,m_mate:4.375,m_ingl:3.125,m_fisi:5.0,media:4.0625,red:"Não",s2_rank:80,s2_port:14,s2_mate:4,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:2.5,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.53,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"PAULO VIEIRA",ra:"MT24158255",rank:98,aprov:false,port:11,mate:3,ingl:8,fisi:3,m_port:6.875,m_mate:1.875,m_ingl:5.0,m_fisi:1.875,media:3.9062,red:"Sim"},
-{unidade:"TAQUARA",nome:"RENATO MENDONÇA",ra:"MT24147308",rank:99,aprov:false,port:9,mate:6,ingl:7,fisi:3,m_port:5.625,m_mate:3.75,m_ingl:4.375,m_fisi:1.875,media:3.9062,red:"Sim",s2_rank:27,s2_port:16,s2_mate:8,s2_ingl:13,s2_fisi:3,s2_m_port:10.0,s2_m_mate:5.0,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"GUILHERME OLIVEIRA",ra:"MT23124365",rank:95,aprov:false,port:7,mate:8,ingl:5,fisi:6,m_port:4.375,m_mate:5.0,m_ingl:3.125,m_fisi:3.75,media:4.0625,red:"Não",s2_rank:16,s2_port:16,s2_mate:10,s2_ingl:11,s2_fisi:7,s2_m_port:10.0,s2_m_mate:6.25,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.88,s2_red:"Sim",s2_aprov:false,s3_rank:31,s3_port:10,s3_mate:9,s3_ingl:12,s3_fisi:6,s3_m_port:6.25,s3_m_mate:5.63,s3_m_ingl:7.5,s3_m_fisi:3.75,s3_media:5.78,s3_red:"Não",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"MARIA MANHAES",ra:"MT23111610",rank:96,aprov:false,port:7,mate:7,ingl:7,fisi:5,m_port:4.375,m_mate:4.375,m_ingl:4.375,m_fisi:3.125,media:4.0625,red:"Não",s2_rank:34,s2_port:14,s2_mate:10,s2_ingl:9,s2_fisi:6,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:5.63,s2_m_fisi:3.75,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s3_rank:79,s3_port:10,s3_mate:2,s3_ingl:6,s3_fisi:6,s3_m_port:6.25,s3_m_mate:1.25,s3_m_ingl:3.75,s3_m_fisi:3.75,s3_media:3.75,s3_red:"Não",s3_aprov:false},
+{unidade:"TAQUARA",nome:"MARCIO BENEDITO",ra:"MT22076434",rank:97,aprov:false,port:6,mate:7,ingl:5,fisi:8,m_port:3.75,m_mate:4.375,m_ingl:3.125,m_fisi:5.0,media:4.0625,red:"Não",s2_rank:80,s2_port:14,s2_mate:4,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:2.5,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.53,s2_red:"Sim",s2_aprov:false,s3_rank:62,s3_port:10,s3_mate:5,s3_ingl:8,s3_fisi:5,s3_m_port:6.25,s3_m_mate:3.13,s3_m_ingl:5,s3_m_fisi:3.13,s3_media:4.38,s3_red:"Não",s3_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"PAULO VIEIRA",ra:"MT24158255",rank:98,aprov:false,port:11,mate:3,ingl:8,fisi:3,m_port:6.875,m_mate:1.875,m_ingl:5.0,m_fisi:1.875,media:3.9062,red:"Sim",s3_rank:56,s3_port:5,s3_mate:5,s3_ingl:16,s3_fisi:4,s3_m_port:3.13,s3_m_mate:3.13,s3_m_ingl:10,s3_m_fisi:2.5,s3_media:4.69,s3_red:"Não",s3_aprov:false},
+{unidade:"TAQUARA",nome:"RENATO MENDONÇA",ra:"MT24147308",rank:99,aprov:false,port:9,mate:6,ingl:7,fisi:3,m_port:5.625,m_mate:3.75,m_ingl:4.375,m_fisi:1.875,media:3.9062,red:"Sim",s2_rank:27,s2_port:16,s2_mate:8,s2_ingl:13,s2_fisi:3,s2_m_port:10.0,s2_m_mate:5.0,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s3_rank:57,s3_port:11,s3_mate:4,s3_ingl:12,s3_fisi:2,s3_m_port:6.88,s3_m_mate:2.5,s3_m_ingl:7.5,s3_m_fisi:1.25,s3_media:4.53,s3_red:"Sim",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #100",ra:"MT190238*3",rank:100,aprov:false,port:12,mate:5,ingl:6,fisi:2,m_port:7.5,m_mate:3.125,m_ingl:3.75,m_fisi:1.25,media:3.9062,red:"Não"},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #101",ra:"MTERRORA3",rank:101,aprov:false,port:10,mate:6,ingl:6,fisi:3,m_port:6.25,m_mate:3.75,m_ingl:3.75,m_fisi:1.875,media:3.9062,red:"Não"},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #102",ra:"MTERRORA10",rank:102,aprov:false,port:8,mate:8,ingl:4,fisi:5,m_port:5.0,m_mate:5.0,m_ingl:2.5,m_fisi:3.125,media:3.9062,red:"Não"},
 {unidade:"MADUREIRA",nome:"LUCAS ARAUJO",ra:"MT25173006",rank:103,aprov:false,port:8,mate:8,ingl:4,fisi:5,m_port:5.0,m_mate:5.0,m_ingl:2.5,m_fisi:3.125,media:3.9062,red:"Não"},
-{unidade:"MADUREIRA",nome:"VITOR FREITAS",ra:"MT24137143",rank:104,aprov:false,port:7,mate:9,ingl:4,fisi:5,m_port:4.375,m_mate:5.625,m_ingl:2.5,m_fisi:3.125,media:3.9062,red:"Não",s2_rank:78,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.69,s2_red:"Sim",s2_aprov:false},
-{unidade:"BANGU",nome:"JÚLIO SILVA",ra:"MT23128002",rank:105,aprov:false,port:8,mate:6,ingl:2,fisi:8,m_port:5.0,m_mate:3.75,m_ingl:1.25,m_fisi:5.0,media:3.75,red:"Sim",s2_rank:99,s2_port:10,s2_mate:4,s2_ingl:7,s2_fisi:1,s2_m_port:6.25,s2_m_mate:2.5,s2_m_ingl:4.38,s2_m_fisi:0.63,s2_media:3.44,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"VITOR FREITAS",ra:"MT24137143",rank:104,aprov:false,port:7,mate:9,ingl:4,fisi:5,m_port:4.375,m_mate:5.625,m_ingl:2.5,m_fisi:3.125,media:3.9062,red:"Não",s2_rank:78,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.69,s2_red:"Sim",s2_aprov:false,s3_rank:70,s3_port:12,s3_mate:4,s3_ingl:5,s3_fisi:6,s3_m_port:7.5,s3_m_mate:2.5,s3_m_ingl:3.13,s3_m_fisi:3.75,s3_media:4.22,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"JÚLIO SILVA",ra:"MT23128002",rank:105,aprov:false,port:8,mate:6,ingl:2,fisi:8,m_port:5.0,m_mate:3.75,m_ingl:1.25,m_fisi:5.0,media:3.75,red:"Sim",s2_rank:99,s2_port:10,s2_mate:4,s2_ingl:7,s2_fisi:1,s2_m_port:6.25,s2_m_mate:2.5,s2_m_ingl:4.38,s2_m_fisi:0.63,s2_media:3.44,s2_red:"Sim",s2_aprov:false,s3_rank:67,s3_port:7,s3_mate:5,s3_ingl:12,s3_fisi:3,s3_m_port:4.38,s3_m_mate:3.13,s3_m_ingl:7.5,s3_m_fisi:1.88,s3_media:4.22,s3_red:"Sim",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #106",ra:"MTERRORA4",rank:106,aprov:false,port:11,mate:6,ingl:5,fisi:2,m_port:6.875,m_mate:3.75,m_ingl:3.125,m_fisi:1.25,media:3.75,red:"Não"},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #107",ra:"MT23189895",rank:107,aprov:false,port:11,mate:6,ingl:5,fisi:2,m_port:6.875,m_mate:3.75,m_ingl:3.125,m_fisi:1.25,media:3.75,red:"Não"},
 {unidade:"BANGU",nome:"JOÃO SOUSA",ra:"MT22096168",rank:108,aprov:false,port:10,mate:7,ingl:1,fisi:6,m_port:6.25,m_mate:4.375,m_ingl:0.625,m_fisi:3.75,media:3.75,red:"Não",s2_rank:89,s2_port:11,s2_mate:5,s2_ingl:7,s2_fisi:4,s2_m_port:6.88,s2_m_mate:3.13,s2_m_ingl:4.38,s2_m_fisi:2.5,s2_media:4.22,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"ADILSON FREITAS",ra:"MT24143216",rank:109,aprov:false,port:6,mate:5,ingl:5,fisi:8,m_port:3.75,m_mate:3.125,m_ingl:3.125,m_fisi:5.0,media:3.75,red:"Não",s2_rank:105,s2_port:2,s2_mate:3,s2_ingl:4,s2_fisi:4,s2_m_port:1.25,s2_m_mate:1.88,s2_m_ingl:2.5,s2_m_fisi:2.5,s2_media:2.03,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"DAVI SANTOS",ra:"MT23119332",rank:110,aprov:false,port:9,mate:4,ingl:6,fisi:4,m_port:5.625,m_mate:2.5,m_ingl:3.75,m_fisi:2.5,media:3.5938,red:"Sim",s2_rank:93,s2_port:10,s2_mate:5,s2_ingl:9,s2_fisi:2,s2_m_port:6.25,s2_m_mate:3.13,s2_m_ingl:5.63,s2_m_fisi:1.25,s2_media:4.06,s2_red:"Não",s2_aprov:false},
-{unidade:"BANGU",nome:"LUCAS HIDALGO",ra:"MT23120769",rank:111,aprov:false,port:10,mate:5,ingl:4,fisi:4,m_port:6.25,m_mate:3.125,m_ingl:2.5,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:84,s2_port:14,s2_mate:6,s2_ingl:6,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:3.75,s2_m_fisi:1.88,s2_media:4.53,s2_red:"Não",s2_aprov:false},
+{unidade:"BANGU",nome:"LUCAS HIDALGO",ra:"MT23120769",rank:111,aprov:false,port:10,mate:5,ingl:4,fisi:4,m_port:6.25,m_mate:3.125,m_ingl:2.5,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:84,s2_port:14,s2_mate:6,s2_ingl:6,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:3.75,s2_m_fisi:1.88,s2_media:4.53,s2_red:"Não",s2_aprov:false,s3_rank:72,s3_port:10,s3_mate:3,s3_ingl:10,s3_fisi:4,s3_m_port:6.25,s3_m_mate:1.88,s3_m_ingl:6.25,s3_m_fisi:2.5,s3_media:4.22,s3_red:"Não",s3_aprov:false},
 {unidade:"MADUREIRA",nome:"GABRIEL ALMEIDA",ra:"MT23130198",rank:112,aprov:false,port:9,mate:6,ingl:4,fisi:4,m_port:5.625,m_mate:3.75,m_ingl:2.5,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:64,s2_port:14,s2_mate:4,s2_ingl:11,s2_fisi:4,s2_m_port:8.75,s2_m_mate:2.5,s2_m_ingl:6.88,s2_m_fisi:2.5,s2_media:5.16,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"ENZO ALEGRIO",ra:"MT23129745",rank:113,aprov:false,port:8,mate:4,ingl:7,fisi:4,m_port:5.0,m_mate:2.5,m_ingl:4.375,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:98,s2_port:8,s2_mate:5,s2_ingl:9,s2_fisi:1,s2_m_port:5.0,s2_m_mate:3.13,s2_m_ingl:5.63,s2_m_fisi:0.63,s2_media:3.59,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"JULIA FERNANDES",ra:"MT22094858",rank:114,aprov:false,port:7,mate:4,ingl:5,fisi:7,m_port:4.375,m_mate:2.5,m_ingl:3.125,m_fisi:4.375,media:3.5938,red:"Não",s2_rank:73,s2_port:14,s2_mate:6,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"ENZO ALEGRIO",ra:"MT23129745",rank:113,aprov:false,port:8,mate:4,ingl:7,fisi:4,m_port:5.0,m_mate:2.5,m_ingl:4.375,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:98,s2_port:8,s2_mate:5,s2_ingl:9,s2_fisi:1,s2_m_port:5.0,s2_m_mate:3.13,s2_m_ingl:5.63,s2_m_fisi:0.63,s2_media:3.59,s2_red:"Sim",s2_aprov:false,s3_rank:86,s3_port:7,s3_mate:7,s3_ingl:6,s3_fisi:1,s3_m_port:4.38,s3_m_mate:4.38,s3_m_ingl:3.75,s3_m_fisi:0.63,s3_media:3.28,s3_red:"Não",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"JULIA FERNANDES",ra:"MT22094858",rank:114,aprov:false,port:7,mate:4,ingl:5,fisi:7,m_port:4.375,m_mate:2.5,m_ingl:3.125,m_fisi:4.375,media:3.5938,red:"Não",s2_rank:73,s2_port:14,s2_mate:6,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:76,s3_port:8,s3_mate:5,s3_ingl:7,s3_fisi:6,s3_m_port:5,s3_m_mate:3.13,s3_m_ingl:4.38,s3_m_fisi:3.75,s3_media:4.06,s3_red:"Não",s3_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"LEVI SILVA",ra:"MT21064100",rank:115,aprov:false,port:7,mate:6,ingl:5,fisi:5,m_port:4.375,m_mate:3.75,m_ingl:3.125,m_fisi:3.125,media:3.5938,red:"Não"},
 {unidade:"BANGU",nome:"BRYAN CARNEIRO",ra:"MT25197468",rank:116,aprov:false,port:6,mate:6,ingl:4,fisi:7,m_port:3.75,m_mate:3.75,m_ingl:2.5,m_fisi:4.375,media:3.5938,red:"Não"},
 {unidade:"BANGU",nome:"RITA RIBEIRO",ra:"MT21072566",rank:117,aprov:false,port:8,mate:5,ingl:5,fisi:4,m_port:5.0,m_mate:3.125,m_ingl:3.125,m_fisi:2.5,media:3.4375,red:"Sim"},
@@ -674,27 +494,27 @@ const RAW_AFA = [
 {unidade:"MADUREIRA",nome:"LETHICIA SANTOS",ra:"MT23127327",rank:119,aprov:false,port:4,mate:8,ingl:4,fisi:6,m_port:2.5,m_mate:5.0,m_ingl:2.5,m_fisi:3.75,media:3.4375,red:"Não",s2_rank:96,s2_port:12,s2_mate:3,s2_ingl:7,s2_fisi:3,s2_m_port:7.5,s2_m_mate:1.88,s2_m_ingl:4.38,s2_m_fisi:1.88,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"MARCIO SÁ",ra:"MT24160806",rank:120,aprov:false,port:7,mate:3,ingl:4,fisi:7,m_port:4.375,m_mate:1.875,m_ingl:2.5,m_fisi:4.375,media:3.2812,red:"Sim"},
 {unidade:"BANGU",nome:"LUCAS VEIGA",ra:"MT23131683",rank:121,aprov:false,port:7,mate:7,ingl:1,fisi:6,m_port:4.375,m_mate:4.375,m_ingl:0.625,m_fisi:3.75,media:3.2812,red:"Não"},
-{unidade:"MADUREIRA",nome:"BRENDA VALE",ra:"MT23127376",rank:122,aprov:false,port:3,mate:9,ingl:5,fisi:4,m_port:1.875,m_mate:5.625,m_ingl:3.125,m_fisi:2.5,media:3.2812,red:"Não"},
-{unidade:"BANGU",nome:"BERNARDO CARVALHO",ra:"MT23126246",rank:123,aprov:false,port:9,mate:3,ingl:5,fisi:3,m_port:5.625,m_mate:1.875,m_ingl:3.125,m_fisi:1.875,media:3.125,red:"Sim"},
+{unidade:"MADUREIRA",nome:"BRENDA VALE",ra:"MT23127376",rank:122,aprov:false,port:3,mate:9,ingl:5,fisi:4,m_port:1.875,m_mate:5.625,m_ingl:3.125,m_fisi:2.5,media:3.2812,red:"Não",s3_rank:64,s3_port:9,s3_mate:8,s3_ingl:7,s3_fisi:4,s3_m_port:5.63,s3_m_mate:5,s3_m_ingl:4.38,s3_m_fisi:2.5,s3_media:4.38,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"BERNARDO CARVALHO",ra:"MT23126246",rank:123,aprov:false,port:9,mate:3,ingl:5,fisi:3,m_port:5.625,m_mate:1.875,m_ingl:3.125,m_fisi:1.875,media:3.125,red:"Sim",s3_rank:25,s3_port:10,s3_mate:7,s3_ingl:14,s3_fisi:7,s3_m_port:6.25,s3_m_mate:4.38,s3_m_ingl:8.75,s3_m_fisi:4.38,s3_media:5.94,s3_red:"Não",s3_aprov:false},
 {unidade:"BANGU",nome:"EMANUELLY GOMES",ra:"MT22102933",rank:124,aprov:false,port:6,mate:4,ingl:4,fisi:6,m_port:3.75,m_mate:2.5,m_ingl:2.5,m_fisi:3.75,media:3.125,red:"Sim"},
-{unidade:"TAQUARA",nome:"PEDRO ABREU",ra:"MT25192386",rank:125,aprov:false,port:6,mate:4,ingl:5,fisi:5,m_port:3.75,m_mate:2.5,m_ingl:3.125,m_fisi:3.125,media:3.125,red:"Sim"},
-{unidade:"BANGU",nome:"PHYETRO SACRAMENTO",ra:"MT24147290",rank:126,aprov:false,port:7,mate:4,ingl:2,fisi:7,m_port:4.375,m_mate:2.5,m_ingl:1.25,m_fisi:4.375,media:3.125,red:"Não"},
-{unidade:"BANGU",nome:"THIAGO SILVA",ra:"MT23123706",rank:127,aprov:false,port:6,mate:4,ingl:5,fisi:5,m_port:3.75,m_mate:2.5,m_ingl:3.125,m_fisi:3.125,media:3.125,red:"Não",s2_rank:100,s2_port:9,s2_mate:5,s2_ingl:5,s2_fisi:3,s2_m_port:5.63,s2_m_mate:3.13,s2_m_ingl:3.13,s2_m_fisi:1.88,s2_media:3.44,s2_red:"Sim",s2_aprov:false},
+{unidade:"TAQUARA",nome:"PEDRO ABREU",ra:"MT25192386",rank:125,aprov:false,port:6,mate:4,ingl:5,fisi:5,m_port:3.75,m_mate:2.5,m_ingl:3.125,m_fisi:3.125,media:3.125,red:"Sim",s3_rank:89,s3_port:10,s3_mate:2,s3_ingl:5,s3_fisi:3,s3_m_port:6.25,s3_m_mate:1.25,s3_m_ingl:3.13,s3_m_fisi:1.88,s3_media:3.13,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"PHYETRO SACRAMENTO",ra:"MT24147290",rank:126,aprov:false,port:7,mate:4,ingl:2,fisi:7,m_port:4.375,m_mate:2.5,m_ingl:1.25,m_fisi:4.375,media:3.125,red:"Não",s3_rank:61,s3_port:9,s3_mate:5,s3_ingl:9,s3_fisi:6,s3_m_port:5.63,s3_m_mate:3.13,s3_m_ingl:5.63,s3_m_fisi:3.75,s3_media:4.53,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"THIAGO SILVA",ra:"MT23123706",rank:127,aprov:false,port:6,mate:4,ingl:5,fisi:5,m_port:3.75,m_mate:2.5,m_ingl:3.125,m_fisi:3.125,media:3.125,red:"Não",s2_rank:100,s2_port:9,s2_mate:5,s2_ingl:5,s2_fisi:3,s2_m_port:5.63,s2_m_mate:3.13,s2_m_ingl:3.13,s2_m_fisi:1.88,s2_media:3.44,s2_red:"Sim",s2_aprov:false,s3_rank:69,s3_port:13,s3_mate:4,s3_ingl:4,s3_fisi:6,s3_m_port:8.13,s3_m_mate:2.5,s3_m_ingl:2.5,s3_m_fisi:3.75,s3_media:4.22,s3_red:"Não",s3_aprov:false},
 {unidade:"BANGU",nome:"DANIEL GIUSTI",ra:"MT25187501",rank:128,aprov:false,port:6,mate:6,ingl:5,fisi:3,m_port:3.75,m_mate:3.75,m_ingl:3.125,m_fisi:1.875,media:3.125,red:"Não",s2_rank:95,s2_port:12,s2_mate:1,s2_ingl:8,s2_fisi:4,s2_m_port:7.5,s2_m_mate:0.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"GABRIEL ALVES",ra:"MT22096762",rank:129,aprov:false,port:5,mate:4,ingl:4,fisi:7,m_port:3.125,m_mate:2.5,m_ingl:2.5,m_fisi:4.375,media:3.125,red:"Não",s2_rank:88,s2_port:9,s2_mate:5,s2_ingl:9,s2_fisi:5,s2_m_port:5.63,s2_m_mate:3.13,s2_m_ingl:5.63,s2_m_fisi:3.13,s2_media:4.38,s2_red:"Não",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #130",ra:"MT25*97146",rank:130,aprov:false,port:4,mate:5,ingl:3,fisi:8,m_port:2.5,m_mate:3.125,m_ingl:1.875,m_fisi:5.0,media:3.125,red:"Não"},
-{unidade:"CAMPO GRANDE",nome:"PEDRO CRUZ",ra:"MT23119860",rank:131,aprov:false,port:8,mate:7,ingl:1,fisi:3,m_port:5.0,m_mate:4.375,m_ingl:0.625,m_fisi:1.875,media:2.9688,red:"Sim"},
-{unidade:"BANGU",nome:"SAMUEL CRUZ",ra:"MT23118458",rank:132,aprov:false,port:5,mate:4,ingl:5,fisi:5,m_port:3.125,m_mate:2.5,m_ingl:3.125,m_fisi:3.125,media:2.9688,red:"Não"},
+{unidade:"CAMPO GRANDE",nome:"PEDRO CRUZ",ra:"MT23119860",rank:131,aprov:false,port:8,mate:7,ingl:1,fisi:3,m_port:5.0,m_mate:4.375,m_ingl:0.625,m_fisi:1.875,media:2.9688,red:"Sim",s3_rank:83,s3_port:12,s3_mate:5,s3_ingl:3,s3_fisi:2,s3_m_port:7.5,s3_m_mate:3.13,s3_m_ingl:1.88,s3_m_fisi:1.25,s3_media:3.44,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"SAMUEL CRUZ",ra:"MT23118458",rank:132,aprov:false,port:5,mate:4,ingl:5,fisi:5,m_port:3.125,m_mate:2.5,m_ingl:3.125,m_fisi:3.125,media:2.9688,red:"Não",s3_rank:14,s3_port:10,s3_mate:9,s3_ingl:11,s3_fisi:9,s3_m_port:6.25,s3_m_mate:5.63,s3_m_ingl:6.88,s3_m_fisi:5.63,s3_media:6.09,s3_red:"Sim",s3_aprov:true},
 {unidade:"NOVA IGUACU",nome:"MARIA SIQUEIRA",ra:"MT25197617",rank:133,aprov:false,port:3,mate:6,ingl:4,fisi:5,m_port:1.875,m_mate:3.75,m_ingl:2.5,m_fisi:3.125,media:2.8125,red:"Sim"},
-{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:7,s2_port:14,s2_mate:10,s2_ingl:14,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:8.75,s2_m_fisi:5.63,s2_media:7.34,s2_red:"Sim",s2_aprov:true},
+{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:7,s2_port:14,s2_mate:10,s2_ingl:14,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:8.75,s2_m_fisi:5.63,s2_media:7.34,s2_red:"Sim",s2_aprov:true,s3_rank:27,s3_port:14,s3_mate:9,s3_ingl:14,s3_fisi:0,s3_m_port:8.75,s3_m_mate:5.63,s3_m_ingl:8.75,s3_m_fisi:0,s3_media:5.78,s3_red:"Sim",s3_aprov:false},
 {unidade:"BANGU",nome:"LUCAS CRUZ",ra:"MT20039806",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:9,s2_port:14,s2_mate:11,s2_ingl:14,s2_fisi:8,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:8.75,s2_m_fisi:5.0,s2_media:7.34,s2_red:"Sim",s2_aprov:true},
-{unidade:"CAMPO GRANDE",nome:"GUSTAVO BORGES",ra:"MT25195157",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:11,s2_port:13,s2_mate:13,s2_ingl:11,s2_fisi:9,s2_m_port:8.13,s2_m_mate:8.13,s2_m_ingl:6.88,s2_m_fisi:5.63,s2_media:7.19,s2_red:"Sim",s2_aprov:true},
+{unidade:"CAMPO GRANDE",nome:"GUSTAVO BORGES",ra:"MT25195157",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:11,s2_port:13,s2_mate:13,s2_ingl:11,s2_fisi:9,s2_m_port:8.13,s2_m_mate:8.13,s2_m_ingl:6.88,s2_m_fisi:5.63,s2_media:7.19,s2_red:"Sim",s2_aprov:true,s3_rank:13,s3_port:11,s3_mate:8,s3_ingl:12,s3_fisi:9,s3_m_port:6.88,s3_m_mate:5,s3_m_ingl:7.5,s3_m_fisi:5.63,s3_media:6.25,s3_red:"Sim",s3_aprov:true},
 {unidade:"BANGU",nome:"VANDERSON FREITAS",ra:"MT25197641",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:30,s2_port:13,s2_mate:9,s2_ingl:11,s2_fisi:7,s2_m_port:8.13,s2_m_mate:5.63,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"JOÃO SILVA",ra:"MT22087209",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:31,s2_port:13,s2_mate:8,s2_ingl:13,s2_fisi:6,s2_m_port:8.13,s2_m_mate:5.0,s2_m_ingl:8.13,s2_m_fisi:3.75,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"RAMON VALENTE",ra:"MT25201732",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:38,s2_port:13,s2_mate:7,s2_ingl:15,s2_fisi:4,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"MARIANNA ROMANELLI",ra:"MT25179599",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:39,s2_port:12,s2_mate:8,s2_ingl:15,s2_fisi:4,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.09,s2_red:"Não",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"KAUÃ BUIATE",ra:"MT25193970",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:41,s2_port:13,s2_mate:10,s2_ingl:10,s2_fisi:5,s2_m_port:8.13,s2_m_mate:6.25,s2_m_ingl:6.25,s2_m_fisi:3.13,s2_media:5.94,s2_red:"Sim",s2_aprov:false},
-{unidade:"TAQUARA",nome:"PAULO OLIVEIRA",ra:"MT26204339",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:46,s2_port:14,s2_mate:6,s2_ingl:13,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:8.13,s2_m_fisi:2.5,s2_media:5.78,s2_red:"Sim",s2_aprov:false},
+{unidade:"TAQUARA",nome:"PAULO OLIVEIRA",ra:"MT26204339",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:46,s2_port:14,s2_mate:6,s2_ingl:13,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:8.13,s2_m_fisi:2.5,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:39,s3_port:12,s3_mate:5,s3_ingl:13,s3_fisi:4,s3_m_port:7.5,s3_m_mate:3.13,s3_m_ingl:8.13,s3_m_fisi:2.5,s3_media:5.31,s3_red:"Não",s3_aprov:false},
 {unidade:"BANGU",nome:"MILLENA PEREIRA",ra:"MT25192949",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:49,s2_port:15,s2_mate:6,s2_ingl:11,s2_fisi:5,s2_m_port:9.38,s2_m_mate:3.75,s2_m_ingl:6.88,s2_m_fisi:3.13,s2_media:5.78,s2_red:"Não",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"DANIEL BRITO",ra:"MT25189895",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:52,s2_port:12,s2_mate:6,s2_ingl:12,s2_fisi:6,s2_m_port:7.5,s2_m_mate:3.75,s2_m_ingl:7.5,s2_m_fisi:3.75,s2_media:5.63,s2_red:"Não",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"GABRIEL MOREIRA",ra:"MT25187899",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:54,s2_port:14,s2_mate:6,s2_ingl:8,s2_fisi:7,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:5.0,s2_m_fisi:4.38,s2_media:5.47,s2_red:"Sim",s2_aprov:false},
@@ -702,25 +522,32 @@ const RAW_AFA = [
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #66",ra:"MT24165735",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:66,s2_port:14,s2_mate:8,s2_ingl:6,s2_fisi:4,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:3.75,s2_m_fisi:2.5,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"SAMYRA VILAR",ra:"MT24153819",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:68,s2_port:14,s2_mate:7,s2_ingl:10,s2_fisi:1,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:6.25,s2_m_fisi:0.63,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"LUISA CARVALHO",ra:"MT24138612",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:71,s2_port:14,s2_mate:3,s2_ingl:9,s2_fisi:5,s2_m_port:8.75,s2_m_mate:1.88,s2_m_ingl:5.63,s2_m_fisi:3.13,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
-{unidade:"BANGU",nome:"GABRIEL PEREIRA",ra:"MT24148454",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:75,s2_port:11,s2_mate:5,s2_ingl:12,s2_fisi:3,s2_m_port:6.88,s2_m_mate:3.13,s2_m_ingl:7.5,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
-{unidade:"BANGU",nome:"DAVI NETO",ra:"MT24136780",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:76,s2_port:11,s2_mate:3,s2_ingl:14,s2_fisi:3,s2_m_port:6.88,s2_m_mate:1.88,s2_m_ingl:8.75,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
+{unidade:"BANGU",nome:"GABRIEL PEREIRA",ra:"MT24148454",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:75,s2_port:11,s2_mate:5,s2_ingl:12,s2_fisi:3,s2_m_port:6.88,s2_m_mate:3.13,s2_m_ingl:7.5,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:87,s3_port:6,s3_mate:4,s3_ingl:8,s3_fisi:3,s3_m_port:3.75,s3_m_mate:2.5,s3_m_ingl:5,s3_m_fisi:1.88,s3_media:3.28,s3_red:"Não",s3_aprov:false},
+{unidade:"BANGU",nome:"DAVI NETO",ra:"MT24136780",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:76,s2_port:11,s2_mate:3,s2_ingl:14,s2_fisi:3,s2_m_port:6.88,s2_m_mate:1.88,s2_m_ingl:8.75,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:65,s3_port:12,s3_mate:3,s3_ingl:7,s3_fisi:5,s3_m_port:7.5,s3_m_mate:1.88,s3_m_ingl:4.38,s3_m_fisi:3.13,s3_media:4.22,s3_red:"Sim",s3_aprov:false},
 {unidade:"BANGU",nome:"THAIS TAVARES",ra:"MT25198102",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:81,s2_port:13,s2_mate:5,s2_ingl:7,s2_fisi:4,s2_m_port:8.13,s2_m_mate:3.13,s2_m_ingl:4.38,s2_m_fisi:2.5,s2_media:4.53,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #82",ra:"MT2517095",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:82,s2_port:13,s2_mate:2,s2_ingl:11,s2_fisi:3,s2_m_port:8.13,s2_m_mate:1.25,s2_m_ingl:6.88,s2_m_fisi:1.88,s2_media:4.53,s2_red:"Sim",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"GUSTAVO MORAES",ra:"MT24150179",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:83,s2_port:12,s2_mate:5,s2_ingl:7,s2_fisi:5,s2_m_port:7.5,s2_m_mate:3.13,s2_m_ingl:4.38,s2_m_fisi:3.13,s2_media:4.53,s2_red:"Sim",s2_aprov:false},
 {unidade:"TAQUARA",nome:"SOPHIA COSTA",ra:"MT24140030",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:85,s2_port:13,s2_mate:7,s2_ingl:3,s2_fisi:5,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:1.88,s2_m_fisi:3.13,s2_media:4.38,s2_red:"Sim",s2_aprov:false},
-{unidade:"BANGU",nome:"MIGUEL SOUZA",ra:"MT19023803",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:86,s2_port:13,s2_mate:7,s2_ingl:5,s2_fisi:3,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:3.13,s2_m_fisi:1.88,s2_media:4.38,s2_red:"Sim",s2_aprov:false},
+{unidade:"BANGU",nome:"MIGUEL SOUZA",ra:"MT19023803",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:86,s2_port:13,s2_mate:7,s2_ingl:5,s2_fisi:3,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:3.13,s2_m_fisi:1.88,s2_media:4.38,s2_red:"Sim",s2_aprov:false,s3_rank:85,s3_port:9,s3_mate:4,s3_ingl:0,s3_fisi:8,s3_m_port:5.63,s3_m_mate:2.5,s3_m_ingl:0,s3_m_fisi:5,s3_media:3.28,s3_red:"Não",s3_aprov:false},
 {unidade:"BANGU",nome:"VINICIUS SILVA",ra:"MT25197146",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:91,s2_port:9,s2_mate:5,s2_ingl:11,s2_fisi:2,s2_m_port:5.63,s2_m_mate:3.13,s2_m_ingl:6.88,s2_m_fisi:1.25,s2_media:4.22,s2_red:"Não",s2_aprov:false},
-{unidade:"BANGU",nome:"PEDRO VELOSO",ra:"MT25198532",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:92,s2_port:14,s2_mate:2,s2_ingl:4,s2_fisi:6,s2_m_port:8.75,s2_m_mate:1.25,s2_m_ingl:2.5,s2_m_fisi:3.75,s2_media:4.06,s2_red:"Sim",s2_aprov:false},
+{unidade:"BANGU",nome:"PEDRO VELOSO",ra:"MT25198532",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:92,s2_port:14,s2_mate:2,s2_ingl:4,s2_fisi:6,s2_m_port:8.75,s2_m_mate:1.25,s2_m_ingl:2.5,s2_m_fisi:3.75,s2_media:4.06,s2_red:"Sim",s2_aprov:false,s3_rank:82,s3_port:9,s3_mate:6,s3_ingl:4,s3_fisi:3,s3_m_port:5.63,s3_m_mate:3.75,s3_m_ingl:2.5,s3_m_fisi:1.88,s3_media:3.44,s3_red:"Sim",s3_aprov:false},
 {unidade:"TAQUARA",nome:"ALICE SILVA",ra:"MT24144529",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:97,s2_port:11,s2_mate:5,s2_ingl:3,s2_fisi:6,s2_m_port:6.88,s2_m_mate:3.13,s2_m_ingl:1.88,s2_m_fisi:3.75,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"GABRIEL OLIVEIRA",ra:"MT24148793",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:104,s2_port:5,s2_mate:3,s2_ingl:2,s2_fisi:3,s2_m_port:3.13,s2_m_mate:1.88,s2_m_ingl:1.25,s2_m_fisi:1.88,s2_media:2.03,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"JOÃO SANTOS",ra:"MT25201658",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:106,s2_port:2,s2_mate:3,s2_ingl:1,s2_fisi:5,s2_m_port:1.25,s2_m_mate:1.88,s2_m_ingl:0.63,s2_m_fisi:3.13,s2_media:1.72,s2_red:"Sim",s2_aprov:false},
 {unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:107,s2_port:6,s2_mate:0,s2_ingl:2,s2_fisi:2,s2_m_port:3.75,s2_m_mate:0.0,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.56,s2_red:"Sim",s2_aprov:false},
 {unidade:"TAQUARA",nome:"ALEXANDRE AUGUSTINHO",ra:"MT21052444",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:108,s2_port:5,s2_mate:0,s2_ingl:2,s2_fisi:2,s2_m_port:3.13,s2_m_mate:0.0,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.41,s2_red:"Sim",s2_aprov:false},
-{unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #109",ra:"MTSEM-RA-01",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:109,s2_port:4,s2_mate:1,s2_ingl:2,s2_fisi:2,s2_m_port:2.5,s2_m_mate:0.63,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.41,s2_red:"Sim",s2_aprov:false}
+{unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #109",ra:"MTSEM-RA-01",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:109,s2_port:4,s2_mate:1,s2_ingl:2,s2_fisi:2,s2_m_port:2.5,s2_m_mate:0.63,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.41,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"GABRIEL ROSADAS",ra:"MT23111719",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:28,s3_port:11,s3_mate:7,s3_ingl:12,s3_fisi:7,s3_m_port:6.88,s3_m_mate:4.38,s3_m_ingl:7.5,s3_m_fisi:4.38,s3_media:5.78,s3_red:"Sim",s3_aprov:false},
+{unidade:"BANGU",nome:"LÍVIA SILVA",ra:"MT23106347",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:35,s3_port:9,s3_mate:10,s3_ingl:10,s3_fisi:6,s3_m_port:5.63,s3_m_mate:6.25,s3_m_ingl:6.25,s3_m_fisi:3.75,s3_media:5.47,s3_red:"Não",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"JOÃO SANTOS",ra:"MT25188707",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:41,s3_port:12,s3_mate:8,s3_ingl:10,s3_fisi:3,s3_m_port:7.5,s3_m_mate:5,s3_m_ingl:6.25,s3_m_fisi:1.88,s3_media:5.16,s3_red:"Sim",s3_aprov:false},
+{unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME S3 #42",ra:"MT29203059",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:42,s3_port:12,s3_mate:5,s3_ingl:13,s3_fisi:3,s3_m_port:7.5,s3_m_mate:3.13,s3_m_ingl:8.13,s3_m_fisi:1.88,s3_media:5.16,s3_red:"Sim",s3_aprov:false},
+{unidade:"BANGU",nome:"LUIZA ALVES",ra:"MT24137747",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:44,s3_port:13,s3_mate:3,s3_ingl:12,s3_fisi:4,s3_m_port:8.13,s3_m_mate:1.88,s3_m_ingl:7.5,s3_m_fisi:2.5,s3_media:5,s3_red:"Sim",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"GABRIEL SILVA",ra:"MT22089213",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:58,s3_port:10,s3_mate:8,s3_ingl:6,s3_fisi:5,s3_m_port:6.25,s3_m_mate:5,s3_m_ingl:3.75,s3_m_fisi:3.13,s3_media:4.53,s3_red:"Sim",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"GABRIEL SILVA",ra:"MT25198656",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:66,s3_port:11,s3_mate:5,s3_ingl:7,s3_fisi:4,s3_m_port:6.88,s3_m_mate:3.13,s3_m_ingl:4.38,s3_m_fisi:2.5,s3_media:4.22,s3_red:"Sim",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"MATHEUS PIRES",ra:"MT26203927",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:74,s3_port:14,s3_mate:7,s3_ingl:3,s3_fisi:2,s3_m_port:8.75,s3_m_mate:4.38,s3_m_ingl:1.88,s3_m_fisi:1.25,s3_media:4.06,s3_red:"Não",s3_aprov:false},
+{unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME S3 #80",ra:"MT25165770",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:80,s3_port:12,s3_mate:2,s3_ingl:3,s3_fisi:6,s3_m_port:7.5,s3_m_mate:1.25,s3_m_ingl:1.88,s3_m_fisi:3.75,s3_media:3.59,s3_red:"Não",s3_aprov:false},
+{unidade:"MADUREIRA",nome:"GIOVANNA SIMÕES",ra:"MT23117831",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s3_rank:91,s3_port:5,s3_mate:6,s3_ingl:5,s3_fisi:2,s3_m_port:3.13,s3_m_mate:3.75,s3_m_ingl:3.13,s3_m_fisi:1.25,s3_media:2.81,s3_red:"Não",s3_aprov:false}
 ];
-
-</script>
-<script>
 
 function buildTurma(raw){
   raw.forEach(a=>{
@@ -732,6 +559,15 @@ function buildTurma(raw){
     a.ok2_fisi=(a.s2_m_fisi||0)>=5.0; a.ok2_ingl=(a.s2_m_ingl||0)>=5.0;
     a.ok2_red=(a.s2_red||'')==='Sim';
     a.s2_gtot=(a.s2_port||0)+(a.s2_mate||0)+(a.s2_fisi||0)+(a.s2_ingl||0);
+    a.ok3_port=(a.s3_m_port||0)>=5.0; a.ok3_mate=(a.s3_m_mate||0)>=5.0;
+    a.ok3_fisi=(a.s3_m_fisi||0)>=5.0; a.ok3_ingl=(a.s3_m_ingl||0)>=5.0;
+    a.ok3_red=(a.s3_red||'')==='Sim';
+    a.s3_gtot=(a.s3_port||0)+(a.s3_mate||0)+(a.s3_fisi||0)+(a.s3_ingl||0);
+    const f3=[];
+    if(!a.ok3_port)f3.push('Português'); if(!a.ok3_mate)f3.push('Matemática');
+    if(!a.ok3_fisi)f3.push('Física');    if(!a.ok3_ingl)f3.push('Inglês');
+    if(!a.ok3_red) f3.push('Redação');
+    a.motivo3=f3.length?f3.join(', ')+' abaixo do mín.':'';
     const f=[];
     if(!a.ok_port)f.push('Português'); if(!a.ok_mate)f.push('Matemática');
     if(!a.ok_fisi)f.push('Física');    if(!a.ok_ingl)f.push('Inglês');
@@ -745,10 +581,12 @@ function buildTurma(raw){
   });
   const sorted1=[...raw].filter(a=>a.rank>0).sort((a,b)=>a.rank-b.rank);
   const sorted2=[...raw].filter(a=>(a.s2_rank||0)>0).sort((a,b)=>(a.s2_rank||999)-(b.s2_rank||999));
+  const sorted3=[...raw].filter(a=>(a.s3_rank||0)>0).sort((a,b)=>(a.s3_rank||999)-(b.s3_rank||999));
   const avg=k=>raw.reduce((s,x)=>s+(x[k]||0),0)/raw.length;
-  return{list:raw,sorted1,sorted2,
+  return{list:raw,sorted1,sorted2,sorted3,
     avgs:{port:avg('m_port'),mate:avg('m_mate'),fisi:avg('m_fisi'),ingl:avg('m_ingl'),media:avg('media')},
-    avgs2:{port:avg('s2_m_port'),mate:avg('s2_m_mate'),fisi:avg('s2_m_fisi'),ingl:avg('s2_m_ingl'),media:avg('s2_media')}};
+    avgs2:{port:avg('s2_m_port'),mate:avg('s2_m_mate'),fisi:avg('s2_m_fisi'),ingl:avg('s2_m_ingl'),media:avg('s2_media')},
+    avgs3:{port:avg('s3_m_port'),mate:avg('s3_m_mate'),fisi:avg('s3_m_fisi'),ingl:avg('s3_m_ingl'),media:avg('s3_media')}};
 }
 
 // ═══ STATE ═══
@@ -756,7 +594,7 @@ let fRk='todos', atual=null, secaoOrigem='ranking', chartObjRadar=null, chartObj
 let CUR_SIM='geral';
 
 // ═══ DATA INIT ═══
-let T=buildTurma(RAW_AFA);
+const T=buildTurma(RAW_AFA);
 
 (()=>{
   const sel=document.getElementById('uniSelRk');
@@ -778,10 +616,6 @@ function goSec(s,btn){
   if(s==='ranking') renderRanking();
   if(s==='efomm')   renderEfomm();
   if(s==='en')      renderEn();
-  if(s==='efomm2')     renderEfomm2();
-  if(s==='en2')        renderEn2();
-  if(s==='efommGeral') renderEfommGeral();
-  if(s==='enGeral')    renderEnGeral();
 }
 
 function goTab(id,btn){
@@ -806,7 +640,7 @@ function setSimTab(tab,btn){
   CUR_SIM=tab;
   document.querySelectorAll('.sim-btn').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  const lbl=tab==='geral'?'Total S1+S2 /128':tab==='s2'?'Total Sim.2 /64':'Total Sim.1 /64';
+  const lbl=tab==='geral'?'Total Geral /192':tab==='s3'?'Total Sim.3 /64':tab==='s2'?'Total Sim.2 /64':'Total Sim.1 /64';
   document.getElementById('thTotal').textContent=lbl;
   renderRanking();
 }
@@ -826,16 +660,25 @@ function renderRanking(){
   let base;
   if(tab==='geral'){
     base=T.list.map(a=>{
-      const has1=a.rank>0, has2=(a.s2_rank||0)>0;
-      const t1=has1?a.gtot:0, t2=has2?(a.s2_gtot||0):0;
-      const _aprov=has1&&has2?(a.aprov&&a.s2_aprov):has1?a.aprov:(a.s2_aprov||false);
-      return {...a,_total:t1+t2,_sims:(has1?1:0)+(has2?1:0),_aprov,
-        _motivo:!a.aprov?(a.motivo||''):!(a.s2_aprov)?(a.motivo2||''):''};
+      const has1=a.rank>0, has2=(a.s2_rank||0)>0, has3=(a.s3_rank||0)>0;
+      const t1=has1?a.gtot:0, t2=has2?(a.s2_gtot||0):0, t3=has3?(a.s3_gtot||0):0;
+      const _sims=(has1?1:0)+(has2?1:0)+(has3?1:0);
+      const _aprov=_sims>0&&[has1&&a.aprov,has2&&(a.s2_aprov||false),has3&&(a.s3_aprov||false)].some(x=>x);
+      const _motivo=!a.aprov?(a.motivo||''):!(a.s2_aprov||true)?(a.motivo2||''):!(a.s3_aprov||true)?(a.motivo3||''):'';
+      return {...a,_total:t1+t2+t3,_sims,_aprov,_motivo};
     }).filter(a=>a._sims>0).sort((a,b)=>{
       if(a._sims!==b._sims) return b._sims-a._sims;
       if(a._aprov!==b._aprov) return a._aprov?-1:1;
       return b._total-a._total;
     });
+  } else if(tab==='s3'){
+    base=T.list.filter(a=>(a.s3_rank||0)>0)
+      .map(a=>({...a,_total:a.s3_gtot||0,_rank:a.s3_rank||0,
+        _aprov:a.s3_aprov,_motivo:a.motivo3||''}))
+      .sort((a,b)=>{
+        if(a._aprov!==b._aprov) return a._aprov?-1:1;
+        return a._rank-b._rank;
+      });
   } else if(tab==='s2'){
     base=T.list.filter(a=>(a.s2_rank||0)>0)
       .map(a=>({...a,_total:a.s2_gtot||0,_rank:a.s2_rank||0,
@@ -863,8 +706,8 @@ function renderRanking(){
   document.getElementById('aprovRk').textContent=apvN;
   document.getElementById('reprovRk').textContent=tot-apvN;
 
-  const maxT=tab==='geral'?128:64;
-  const avgs=tab==='s2'?T.avgs2:T.avgs;
+  const maxT=tab==='geral'?192:64;
+  const avgs=tab==='s3'?T.avgs3:tab==='s2'?T.avgs2:T.avgs;
 
   document.getElementById('bodyRk').innerHTML=lst.map((a,i)=>{
     const pos=tab==='geral'?i+1:(a._rank||i+1);
@@ -876,7 +719,7 @@ function renderRanking(){
       :'<span class="chip chip-reprov">✗ Reprovado</span>';
     const pct=Math.min(100,Math.round(a._total/maxT*100));
     const barCol=pct>=70?'#16a34a':pct>=50?'#d97706':'#dc2626';
-    const simBadge=tab==='geral'&&a._sims===1
+    const simBadge=tab==='geral'&&a._sims<3
       ?' <span style="font-size:10px;background:#fef9c3;color:#a16207;padding:1px 6px;border-radius:8px">1 sim.</span>':'';
     return `<tr class="${rc}" onclick="openAluno('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
       <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
@@ -895,7 +738,7 @@ function renderRanking(){
   }).join('');
 
   document.getElementById('statsRk').innerHTML=`
-    <div class="stat-item"><div class="s-label">Total de Alunos</div><div class="s-val">${tot}</div><div class="s-hint">${tab==='geral'?'geral':tab==='s2'?'07/03':'28/02'}</div></div>
+    <div class="stat-item"><div class="s-label">Total de Alunos</div><div class="s-val">${tot}</div><div class="s-hint">${tab==='geral'?'geral':tab==='s3'?'28/03':tab==='s2'?'07/03':'28/02'}</div></div>
     <div class="stat-item"><div class="s-label">Aprovados</div><div class="s-val" style="color:var(--green)">${apvN}</div><div class="s-hint">${Math.round(apvN/tot*100)}% da turma</div></div>
     <div class="stat-item"><div class="s-label">Reprovados</div><div class="s-val" style="color:var(--red)">${tot-apvN}</div><div class="s-hint">${Math.round((tot-apvN)/tot*100)}%</div></div>
     <div class="stat-item"><div class="s-label">Maior Pontuação</div><div class="s-val" style="color:var(--navy)">${base[0]?base[0]._total:0}</div><div class="s-hint">de ${maxT}</div></div>
@@ -1488,10 +1331,6 @@ function buildEstudos(){
 
 // ══════════════════════════════
 // EFOMM + EN DATA & FUNCTIONS
-// ══════════════════════════════
-</script>
-<script>
-// Dados EFOMM
 const RAW_EFOMM = [
 {unidade:"BANGU",nome:"MANUELLE VERNECK",ra:"MT25173634",rank:1,aprov:true,status:"Classificado",port:17,ingl:19,m_port:8.5,m_ingl:9.5,media:9.0},
 {unidade:"MADUREIRA",nome:"LUIZ REIS",ra:"MT24139594",rank:2,aprov:true,status:"Classificado",port:16,ingl:19,m_port:8.0,m_ingl:9.5,media:8.75},
@@ -1600,10 +1439,6 @@ const RAW_EFOMM = [
 {unidade:"CAMPO GRANDE",nome:"FERNANDA VARGAS",ra:"MT24134603",rank:105,aprov:false,status:"Reprovado",port:3,ingl:6,m_port:1.5,m_ingl:3.0,media:2.25},
 {unidade:"MADUREIRA",nome:"THIAGO SILVA",ra:"MT24158404",rank:106,aprov:false,status:"Reprovado",port:3,ingl:4,m_port:1.5,m_ingl:2.0,media:1.75}
 ];
-
-</script>
-<script>
-// Dados EN
 const RAW_EN = [
 {unidade:"MADUREIRA",nome:"ROGER CUNHA",ra:"MT22059950",rank:1,aprov:true,status:"Aprovado",mate:22,ingl:17,m_mate:10.0,m_ingl:9.44,media:9.72},
 {unidade:"BANGU",nome:"MARCOS CARVALHO",ra:"MT20041455",rank:2,aprov:true,status:"Aprovado",mate:18,ingl:17,m_mate:8.18,m_ingl:9.44,media:8.81},
@@ -1655,21 +1490,6 @@ const RAW_EN = [
 {unidade:"TAQUARA",nome:"BRENO GARCIA",ra:"MT24135089",rank:48,aprov:false,status:"Reprovado",mate:4,ingl:8,m_mate:1.82,m_ingl:4.44,media:3.13}
 ];
 
-</script>
-<script>
-// Dados EFOMM — 2º Simulado
-// Gerado automaticamente via painel "Atualizar Dados"
-const RAW_EFOMM_S2 = [{"nome": "DAVI CARVALHO", "unidade": "NI", "turma": "NI-3AFA11", "ra": "MT25188145", "rank": 1, "media": 8.5, "status": "Classificado", "red": "Sim", "port": 17, "m_port": 8.5, "mate": 10, "m_mate": 5.0, "ingl": 17, "m_ingl": 8.5, "fisi": 13, "m_fisi": 6.5, "aprov": true}, {"nome": "GUSTAVO OLIVEIRA", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT22058218", "rank": 2, "media": 8.0, "status": "Classificado", "red": "Sim", "port": 14, "m_port": 7.0, "mate": 13, "m_mate": 6.5, "ingl": 18, "m_ingl": 9.0, "fisi": 10, "m_fisi": 5.0, "aprov": true}, {"nome": "LUCIANO OLIVEIRA", "unidade": "BG", "turma": "BG-PAFA11", "ra": "MT22096622", "rank": 3, "media": 8.0, "status": "Classificado", "red": "Sim", "port": 13, "m_port": 6.5, "mate": 12, "m_mate": 6.0, "ingl": 19, "m_ingl": 9.5, "fisi": 13, "m_fisi": 6.5, "aprov": true}, {"nome": "MARCOS CARVALHO", "unidade": "BG", "turma": "BG-PAFA11", "ra": "MT20041455", "rank": 4, "media": 7.0, "status": "Classificado", "red": "Sim", "port": 11, "m_port": 5.5, "mate": 12, "m_mate": 6.0, "ingl": 17, "m_ingl": 8.5, "fisi": 12, "m_fisi": 6.0, "aprov": true}, {"nome": "MANUELLE VERNECK", "unidade": "BG", "turma": "BG-PAFA11", "ra": "MT25173634", "rank": 5, "media": 9.0, "status": "Pós-Classificado", "red": "Sim", "port": 17, "m_port": 8.5, "mate": 6, "m_mate": 3.0, "ingl": 19, "m_ingl": 9.5, "fisi": 7, "m_fisi": 3.5, "aprov": true}, {"nome": "LUIZ REIS", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT24139594", "rank": 6, "media": 8.75, "status": "Pós-Classificado", "red": "Sim", "port": 16, "m_port": 8.0, "mate": 5, "m_mate": 2.5, "ingl": 19, "m_ingl": 9.5, "fisi": 4, "m_fisi": 2.0, "aprov": true}, {"nome": "YASMIM ROMÃO", "unidade": "TQ", "turma": "TQ-PAFA11", "ra": "MT23134059", "rank": 7, "media": 7.75, "status": "Pós-Classificado", "red": "Sim", "port": 14, "m_port": 7.0, "mate": 12, "m_mate": 6.0, "ingl": 17, "m_ingl": 8.5, "fisi": 8, "m_fisi": 4.0, "aprov": true}, {"nome": "PEDRO CONCEICAO", "unidade": "TQ", "turma": "TQ-3AFA11", "ra": "MT25189275", "rank": 8, "media": 7.75, "status": "Pós-Classificado", "red": "Sim", "port": 12, "m_port": 6.0, "mate": 14, "m_mate": 7.0, "ingl": 19, "m_ingl": 9.5, "fisi": 7, "m_fisi": 3.5, "aprov": true}, {"nome": "SIDNEY LOURENÇO", "unidade": "NI", "turma": "NI-PAFA11", "ra": "MT25194226", "rank": 9, "media": 7.5, "status": "Pós-Classificado", "red": "Sim", "port": 11, "m_port": 5.5, "mate": 9, "m_mate": 4.5, "ingl": 19, "m_ingl": 9.5, "fisi": 3, "m_fisi": 1.5, "aprov": true}, {"nome": "CAIO FRAGA", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23123888", "rank": 10, "media": 7.25, "status": "Pós-Classificado", "red": "Sim", "port": 11, "m_port": 5.5, "mate": 5, "m_mate": 2.5, "ingl": 18, "m_ingl": 9.0, "fisi": 8, "m_fisi": 4.0, "aprov": true}, {"nome": "LÍVIA BARBOSA", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23122203", "rank": 11, "media": 7.25, "status": "Pós-Classificado", "red": "Sim", "port": 11, "m_port": 5.5, "mate": 8, "m_mate": 4.0, "ingl": 18, "m_ingl": 9.0, "fisi": 5, "m_fisi": 2.5, "aprov": true}, {"nome": "SOPHIA BASTOS", "unidade": "BG", "turma": "BG-PAFA11", "ra": "MT25198466", "rank": 12, "media": 7.25, "status": "Pós-Classificado", "red": "Sim", "port": 10, "m_port": 5.0, "mate": 6, "m_mate": 3.0, "ingl": 19, "m_ingl": 9.5, "fisi": 5, "m_fisi": 2.5, "aprov": true}, {"nome": "VAGNER SOUZA", "unidade": "TQ", "turma": "TQ-PAFA11", "ra": "MT25198953", "rank": 13, "media": 7.25, "status": "Pós-Classificado", "red": "Sim", "port": 9, "m_port": 4.5, "mate": 8, "m_mate": 4.0, "ingl": 20, "m_ingl": 10.0, "fisi": 5, "m_fisi": 2.5, "aprov": true}, {"nome": "MARIANNA ROMANELLI", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT25179599", "rank": 14, "media": 7.0, "status": "Pós-Classificado", "red": "Sim", "port": 11, "m_port": 5.5, "mate": 4, "m_mate": 2.0, "ingl": 17, "m_ingl": 8.5, "fisi": 8, "m_fisi": 4.0, "aprov": true}, {"nome": "PAULO OLIVEIRA", "unidade": "TQ", "turma": "TQ-PAFA11", "ra": "MT26204339", "rank": 15, "media": 7.0, "status": "Pós-Classificado", "red": "Sim", "port": 11, "m_port": 5.5, "mate": 8, "m_mate": 4.0, "ingl": 17, "m_ingl": 8.5, "fisi": 4, "m_fisi": 2.0, "aprov": true}, {"nome": "GUSTAVO BORGES", "unidade": "CG", "turma": "CG-PAAE11", "ra": "MT25195157", "rank": 16, "media": 7.0, "status": "Pós-Classificado", "red": "Sim", "port": 10, "m_port": 5.0, "mate": 6, "m_mate": 3.0, "ingl": 18, "m_ingl": 9.0, "fisi": 13, "m_fisi": 6.5, "aprov": true}, {"nome": "NIKOLAS SANTOS", "unidade": "TQ", "turma": "TQ-PAFA11", "ra": "MT24158446", "rank": 17, "media": 6.75, "status": "Pós-Classificado", "red": "Sim", "port": 10, "m_port": 5.0, "mate": 8, "m_mate": 4.0, "ingl": 17, "m_ingl": 8.5, "fisi": 8, "m_fisi": 4.0, "aprov": true}, {"nome": "PALOMA ABREU", "unidade": "RM", "turma": "RM-PESP11", "ra": "MT22059828", "rank": 18, "media": 6.75, "status": "Pós-Classificado", "red": "Sim", "port": 10, "m_port": 5.0, "mate": 11, "m_mate": 5.5, "ingl": 17, "m_ingl": 8.5, "fisi": 4, "m_fisi": 2.0, "aprov": true}, {"nome": "ARTHUR ALBUQUERQUE", "unidade": "CG", "turma": "CG-3AFA11", "ra": "MT22097604", "rank": 19, "media": 6.75, "status": "Pós-Classificado", "red": "Sim", "port": 8, "m_port": 4.0, "mate": 3, "m_mate": 1.5, "ingl": 19, "m_ingl": 9.5, "fisi": 4, "m_fisi": 2.0, "aprov": true}, {"nome": "ISABELE NUNES", "unidade": "TQ", "turma": "TQ-PAFA11", "ra": "MT25189374", "rank": 20, "media": 6.5, "status": "Pós-Classificado", "red": "Sim", "port": 10, "m_port": 5.0, "mate": 2, "m_mate": 1.0, "ingl": 16, "m_ingl": 8.0, "fisi": 6, "m_fisi": 3.0, "aprov": true}, {"nome": "BEATRIZ GAMMINE", "unidade": "NI", "turma": "NI-PAFA11", "ra": "MT22095475", "rank": 21, "media": 6.5, "status": "Pós-Classificado", "red": "Sim", "port": 9, "m_port": 4.5, "mate": 3, "m_mate": 1.5, "ingl": 17, "m_ingl": 8.5, "fisi": 6, "m_fisi": 3.0, "aprov": true}, {"nome": "GABRIEL ALVES", "unidade": "NI", "turma": "NI-PAFA11", "ra": "MT24161879", "rank": 22, "media": 6.5, "status": "Pós-Classificado", "red": "Sim", "port": 8, "m_port": 4.0, "mate": 4, "m_mate": 2.0, "ingl": 18, "m_ingl": 9.0, "fisi": 4, "m_fisi": 2.0, "aprov": true}, {"nome": "RENATO MENDONÇA", "unidade": "TQ", "turma": "TQ-3AFA11", "ra": "MT24147308", "rank": 23, "media": 6.25, "status": "Pós-Classificado", "red": "Sim", "port": 9, "m_port": 4.5, "mate": 4, "m_mate": 2.0, "ingl": 16, "m_ingl": 8.0, "fisi": 5, "m_fisi": 2.5, "aprov": true}, {"nome": "JHONATAN SILVA", "unidade": "NI", "turma": "NI-PAFA11", "ra": "MT25192337", "rank": 24, "media": 6.25, "status": "Pós-Classificado", "red": "Sim", "port": 6, "m_port": 3.0, "mate": 4, "m_mate": 2.0, "ingl": 19, "m_ingl": 9.5, "fisi": 8, "m_fisi": 4.0, "aprov": true}, {"nome": "LUIZA SANTOS", "unidade": "NI", "turma": "NI-PAFA11", "ra": "MT25188046", "rank": 25, "media": 6.0, "status": "Pós-Classificado", "red": "Sim", "port": 10, "m_port": 5.0, "mate": 7, "m_mate": 3.5, "ingl": 14, "m_ingl": 7.0, "fisi": 8, "m_fisi": 4.0, "aprov": true}, {"nome": "ENZO LIMA", "unidade": "MD", "turma": "MD-3AFA11", "ra": "MT23123334", "rank": 26, "media": 6.0, "status": "Pós-Classificado", "red": "Sim", "port": 7, "m_port": 3.5, "mate": 3, "m_mate": 1.5, "ingl": 17, "m_ingl": 8.5, "fisi": 4, "m_fisi": 2.0, "aprov": true}, {"nome": "DAVI SANTOS", "unidade": "MD", "turma": "MD-3AFA11", "ra": "MT22098230", "rank": 27, "media": 5.5, "status": "Pós-Classificado", "red": "Sim", "port": 6, "m_port": 3.0, "mate": 6, "m_mate": 3.0, "ingl": 16, "m_ingl": 8.0, "fisi": 5, "m_fisi": 2.5, "aprov": true}, {"nome": "PEDRO WERNECK", "unidade": "NI", "turma": "NI-3AFA11", "ra": "MT25188095", "rank": 28, "media": 8.5, "status": "Reprovado", "red": "Não", "port": 15, "m_port": 7.5, "mate": 12, "m_mate": 6.0, "ingl": 19, "m_ingl": 9.5, "fisi": 11, "m_fisi": 5.5, "aprov": false}, {"nome": "JOÃO DIAS", "unidade": "MD", "turma": "MD-3AFA11", "ra": "MT23122104", "rank": 29, "media": 8.5, "status": "Reprovado", "red": "Não", "port": 14, "m_port": 7.0, "mate": 7, "m_mate": 3.5, "ingl": 20, "m_ingl": 10.0, "fisi": 7, "m_fisi": 3.5, "aprov": false}, {"nome": "LANAY LINS", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT24163974", "rank": 30, "media": 8.0, "status": "Reprovado", "red": "Não", "port": 17, "m_port": 8.5, "mate": 0, "m_mate": 0.0, "ingl": 15, "m_ingl": 7.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "GABRIEL LIRA", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT23108715", "rank": 31, "media": 7.75, "status": "Reprovado", "red": "Não", "port": 15, "m_port": 7.5, "mate": 11, "m_mate": 5.5, "ingl": 16, "m_ingl": 8.0, "fisi": 7, "m_fisi": 3.5, "aprov": false}, {"nome": "DAVI NETO", "unidade": "BG", "turma": "-", "ra": "MT24136780", "rank": 32, "media": 7.75, "status": "Reprovado", "red": "Não", "port": 14, "m_port": 7.0, "mate": 3, "m_mate": 1.5, "ingl": 17, "m_ingl": 8.5, "fisi": 6, "m_fisi": 3.0, "aprov": false}, {"nome": "DANILO ALMEIDA", "unidade": "CG", "turma": "CG-PAAE11", "ra": "MT26203620", "rank": 33, "media": 7.75, "status": "Reprovado", "red": "Não", "port": 13, "m_port": 6.5, "mate": 3, "m_mate": 1.5, "ingl": 18, "m_ingl": 9.0, "fisi": 5, "m_fisi": 2.5, "aprov": false}, {"nome": "KAUAN MELO", "unidade": "MD", "turma": "MD-PESP11", "ra": "MT25187923", "rank": 34, "media": 7.5, "status": "Reprovado", "red": "Não", "port": 13, "m_port": 6.5, "mate": 0, "m_mate": 0.0, "ingl": 17, "m_ingl": 8.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "LETICIA SILVA", "unidade": "CG", "turma": "CG-PAAE11", "ra": "MT24158479", "rank": 35, "media": 7.5, "status": "Reprovado", "red": "Não", "port": 12, "m_port": 6.0, "mate": 3, "m_mate": 1.5, "ingl": 18, "m_ingl": 9.0, "fisi": 1, "m_fisi": 0.5, "aprov": false}, {"nome": "ARTHUR NETO", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT24138562", "rank": 36, "media": 7.5, "status": "Reprovado", "red": "Não", "port": 11, "m_port": 5.5, "mate": 0, "m_mate": 0.0, "ingl": 19, "m_ingl": 9.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "CAIO GAGLIARDI", "unidade": "MD", "turma": "MD-PIME11", "ra": "MT22103022", "rank": 37, "media": 7.25, "status": "Reprovado", "red": "Não", "port": 11, "m_port": 5.5, "mate": 0, "m_mate": 0.0, "ingl": 18, "m_ingl": 9.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "MD_EFOMM_SIMULADO_16_03_2026 0011", "unidade": "-", "turma": "_SIMULADO_16_0", "ra": "MT26305530", "rank": 38, "media": 7.25, "status": "Reprovado", "red": "Não", "port": 11, "m_port": 5.5, "mate": 0, "m_mate": 0.0, "ingl": 18, "m_ingl": 9.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "RAMON VALENTE", "unidade": "CG", "turma": "CG-3AFA11", "ra": "MT25201732", "rank": 39, "media": 7.0, "status": "Reprovado", "red": "Não", "port": 12, "m_port": 6.0, "mate": 7, "m_mate": 3.5, "ingl": 16, "m_ingl": 8.0, "fisi": 2, "m_fisi": 1.0, "aprov": false}, {"nome": "SAMUEL MOURA", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT23111438", "rank": 40, "media": 7.0, "status": "Reprovado", "red": "Não", "port": 12, "m_port": 6.0, "mate": 0, "m_mate": 0.0, "ingl": 16, "m_ingl": 8.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "BRYAN CARNEIRO", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT25197468", "rank": 41, "media": 7.0, "status": "Reprovado", "red": "Não", "port": 9, "m_port": 4.5, "mate": 6, "m_mate": 3.0, "ingl": 19, "m_ingl": 9.5, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "JONAS AGUIAR", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT25187782", "rank": 42, "media": 6.75, "status": "Reprovado", "red": "Não", "port": 13, "m_port": 6.5, "mate": 0, "m_mate": 0.0, "ingl": 14, "m_ingl": 7.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "RAFAELLA SANTOS", "unidade": "MD", "turma": "MD-3AFA11", "ra": "MT24162687", "rank": 43, "media": 6.75, "status": "Reprovado", "red": "Não", "port": 11, "m_port": 5.5, "mate": 0, "m_mate": 0.0, "ingl": 16, "m_ingl": 8.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "DANILO PINTO", "unidade": "NI", "turma": "NI-3AFA11", "ra": "MT24153348", "rank": 44, "media": 6.5, "status": "Reprovado", "red": "Não", "port": 11, "m_port": 5.5, "mate": 0, "m_mate": 0.0, "ingl": 15, "m_ingl": 7.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "GABRIEL MOREIRA", "unidade": "NI", "turma": "NI-PAFA11", "ra": "MT25187899", "rank": 45, "media": 6.25, "status": "Reprovado", "red": "Não", "port": 8, "m_port": 4.0, "mate": 11, "m_mate": 5.5, "ingl": 17, "m_ingl": 8.5, "fisi": 4, "m_fisi": 2.0, "aprov": false}, {"nome": "GABRIEL DOLZANI", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT23121577", "rank": 46, "media": 6.25, "status": "Reprovado", "red": "Não", "port": 8, "m_port": 4.0, "mate": 0, "m_mate": 0.0, "ingl": 17, "m_ingl": 8.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "DAVI COSTA", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT25181447", "rank": 47, "media": 6.25, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 0, "m_mate": 0.0, "ingl": 18, "m_ingl": 9.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "LEONARDO FERREIRA", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT22101067", "rank": 48, "media": 6.25, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 0, "m_mate": 0.0, "ingl": 18, "m_ingl": 9.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "YANNI VIANA", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT21065735", "rank": 49, "media": 6.25, "status": "Reprovado", "red": "Não", "port": 6, "m_port": 3.0, "mate": 6, "m_mate": 3.0, "ingl": 19, "m_ingl": 9.5, "fisi": 8, "m_fisi": 4.0, "aprov": false}, {"nome": "GIOVANNI BARBATTO", "unidade": "MD", "turma": "MD-PIME11", "ra": "MT23105059", "rank": 50, "media": 6.0, "status": "Reprovado", "red": "Não", "port": 10, "m_port": 5.0, "mate": 0, "m_mate": 0.0, "ingl": 14, "m_ingl": 7.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "VICTORIA SILVA", "unidade": "MD", "turma": "MD-PIME11", "ra": "MT24144644", "rank": 51, "media": 6.0, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 9, "m_mate": 4.5, "ingl": 17, "m_ingl": 8.5, "fisi": 13, "m_fisi": 6.5, "aprov": false}, {"nome": "GABRIELLY MACHADO", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT23124407", "rank": 52, "media": 6.0, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 0, "m_mate": 0.0, "ingl": 17, "m_ingl": 8.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "GUILHERME BLUM", "unidade": "TQ", "turma": "TQ-3AFA11", "ra": "MT19021575", "rank": 53, "media": 5.75, "status": "Reprovado", "red": "Sim", "port": 12, "m_port": 6.0, "mate": 7, "m_mate": 3.5, "ingl": 11, "m_ingl": 5.5, "fisi": 7, "m_fisi": 3.5, "aprov": false}, {"nome": "GABRIEL ALMEIDA", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT23130198", "rank": 54, "media": 5.75, "status": "Reprovado", "red": "Não", "port": 10, "m_port": 5.0, "mate": 4, "m_mate": 2.0, "ingl": 13, "m_ingl": 6.5, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "PATRICK ASSUNÇÃO", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT25174756", "rank": 55, "media": 5.5, "status": "Reprovado", "red": "Não", "port": 9, "m_port": 4.5, "mate": 0, "m_mate": 0.0, "ingl": 13, "m_ingl": 6.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "JOÃO DECOTHÉ", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT23131030", "rank": 56, "media": 5.5, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 3, "m_mate": 1.5, "ingl": 15, "m_ingl": 7.5, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "NICHOLAS GONÇALVES", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23118466", "rank": 57, "media": 5.25, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 8, "m_mate": 4.0, "ingl": 14, "m_ingl": 7.0, "fisi": 4, "m_fisi": 2.0, "aprov": false}, {"nome": "LEONARDO BORGES", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23131139", "rank": 58, "media": 5.25, "status": "Reprovado", "red": "Não", "port": 6, "m_port": 3.0, "mate": 10, "m_mate": 5.0, "ingl": 15, "m_ingl": 7.5, "fisi": 1, "m_fisi": 0.5, "aprov": false}, {"nome": "FERNANDO TRINDADE", "unidade": "CG", "turma": "CG-3AFA11", "ra": "MT22087480", "rank": 59, "media": 5.25, "status": "Reprovado", "red": "Não", "port": 5, "m_port": 2.5, "mate": 0, "m_mate": 0.0, "ingl": 16, "m_ingl": 8.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "MARCIO BENEDITO", "unidade": "TQ", "turma": "TQ-PAFA11", "ra": "MT22076434", "rank": 60, "media": 4.75, "status": "Reprovado", "red": "Não", "port": 9, "m_port": 4.5, "mate": 4, "m_mate": 2.0, "ingl": 10, "m_ingl": 5.0, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "DANIEL BRITO", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT25189895", "rank": 61, "media": 4.75, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 3, "m_mate": 1.5, "ingl": 12, "m_ingl": 6.0, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "JOAO REGATO", "unidade": "TQ", "turma": "TQ-3AFA11", "ra": "MT25193178", "rank": 62, "media": 4.75, "status": "Reprovado", "red": "Não", "port": 5, "m_port": 2.5, "mate": 2, "m_mate": 1.0, "ingl": 14, "m_ingl": 7.0, "fisi": 4, "m_fisi": 2.0, "aprov": false}, {"nome": "LEVI SILVA", "unidade": "CG", "turma": "CG-PAAE11", "ra": "MT21064100", "rank": 63, "media": 4.5, "status": "Reprovado", "red": "Não", "port": 9, "m_port": 4.5, "mate": 0, "m_mate": 0.0, "ingl": 9, "m_ingl": 4.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "DAVI SANTOS", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23119332", "rank": 64, "media": 4.5, "status": "Reprovado", "red": "Não", "port": 7, "m_port": 3.5, "mate": 1, "m_mate": 0.5, "ingl": 11, "m_ingl": 5.5, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "BRENO GARCIA", "unidade": "TQ", "turma": "TQ-3AFA11", "ra": "MT24135089", "rank": 65, "media": 4.5, "status": "Reprovado", "red": "Não", "port": 5, "m_port": 2.5, "mate": 6, "m_mate": 3.0, "ingl": 13, "m_ingl": 6.5, "fisi": 5, "m_fisi": 2.5, "aprov": false}, {"nome": "DAVI RODRIGUES", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT23121965", "rank": 66, "media": 4.25, "status": "Reprovado", "red": "Não", "port": 9, "m_port": 4.5, "mate": 0, "m_mate": 0.0, "ingl": 8, "m_ingl": 4.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "CAYO COSTA", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23118631", "rank": 67, "media": 4.25, "status": "Reprovado", "red": "Não", "port": 8, "m_port": 4.0, "mate": 2, "m_mate": 1.0, "ingl": 9, "m_ingl": 4.5, "fisi": 5, "m_fisi": 2.5, "aprov": false}, {"nome": "LUIZ DIAS", "unidade": "MD", "turma": "MD-3IME11", "ra": "MT22093330", "rank": 68, "media": 4.25, "status": "Reprovado", "red": "Não", "port": 8, "m_port": 4.0, "mate": 0, "m_mate": 0.0, "ingl": 9, "m_ingl": 4.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "MILLENA PEREIRA", "unidade": "BG", "turma": "BG-PAFA11", "ra": "MT25192949", "rank": 69, "media": 4.25, "status": "Reprovado", "red": "Não", "port": 4, "m_port": 2.0, "mate": 1, "m_mate": 0.5, "ingl": 13, "m_ingl": 6.5, "fisi": 8, "m_fisi": 4.0, "aprov": false}, {"nome": "JÚLIO SILVA", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23128002", "rank": 70, "media": 4.0, "status": "Reprovado", "red": "Sim", "port": 5, "m_port": 2.5, "mate": 3, "m_mate": 1.5, "ingl": 11, "m_ingl": 5.5, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "MARIANNA SILVA", "unidade": "CG", "turma": "CG-PAAE11", "ra": "MT25192105", "rank": 71, "media": 4.0, "status": "Reprovado", "red": "Não", "port": 6, "m_port": 3.0, "mate": 0, "m_mate": 0.0, "ingl": 10, "m_ingl": 5.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "THAIS TAVARES", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT25198102", "rank": 72, "media": 4.0, "status": "Reprovado", "red": "Não", "port": 5, "m_port": 2.5, "mate": 2, "m_mate": 1.0, "ingl": 11, "m_ingl": 5.5, "fisi": 3, "m_fisi": 1.5, "aprov": false}, {"nome": "PEDRO SÁ", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23118482", "rank": 73, "media": 4.0, "status": "Reprovado", "red": "Não", "port": 4, "m_port": 2.0, "mate": 0, "m_mate": 0.0, "ingl": 12, "m_ingl": 6.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "GABRIEL GOMES", "unidade": "NI", "turma": "NI-PAFA11", "ra": "MT21063284", "rank": 74, "media": 3.75, "status": "Reprovado", "red": "Sim", "port": 7, "m_port": 3.5, "mate": 10, "m_mate": 5.0, "ingl": 8, "m_ingl": 4.0, "fisi": 6, "m_fisi": 3.0, "aprov": false}, {"nome": "MARCOS LEITE", "unidade": "CG", "turma": "CG-3AFA11", "ra": "MT25191180", "rank": 75, "media": 3.75, "status": "Reprovado", "red": "Sim", "port": 3, "m_port": 1.5, "mate": 4, "m_mate": 2.0, "ingl": 12, "m_ingl": 6.0, "fisi": 4, "m_fisi": 2.0, "aprov": false}, {"nome": "FILIPE RIBEIRO", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT19026004", "rank": 76, "media": 3.75, "status": "Reprovado", "red": "Não", "port": 6, "m_port": 3.0, "mate": 7, "m_mate": 3.5, "ingl": 9, "m_ingl": 4.5, "fisi": 6, "m_fisi": 3.0, "aprov": false}, {"nome": "THIAGO SILVA", "unidade": "BG", "turma": "BG-3AFA11", "ra": "MT23123706", "rank": 77, "media": 3.75, "status": "Reprovado", "red": "Não", "port": 6, "m_port": 3.0, "mate": 0, "m_mate": 0.0, "ingl": 9, "m_ingl": 4.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "LARA LIMA", "unidade": "MD", "turma": "MD-3AFA11", "ra": "MT25167057", "rank": 78, "media": 3.75, "status": "Reprovado", "red": "Não", "port": 4, "m_port": 2.0, "mate": 0, "m_mate": 0.0, "ingl": 11, "m_ingl": 5.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "MARIA MANHAES", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT23111610", "rank": 79, "media": 3.5, "status": "Reprovado", "red": "Não", "port": 8, "m_port": 4.0, "mate": 0, "m_mate": 0.0, "ingl": 6, "m_ingl": 3.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "MARIA PONTES", "unidade": "BG", "turma": "BG-PAFA11", "ra": "MT24159279", "rank": 80, "media": 3.25, "status": "Reprovado", "red": "Não", "port": 6, "m_port": 3.0, "mate": 0, "m_mate": 0.0, "ingl": 7, "m_ingl": 3.5, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "BERNARDO AGUIAR", "unidade": "MD", "turma": "MD-3AFA11", "ra": "MT23132731", "rank": 81, "media": 3.25, "status": "Reprovado", "red": "Não", "port": 3, "m_port": 1.5, "mate": 5, "m_mate": 2.5, "ingl": 10, "m_ingl": 5.0, "fisi": 6, "m_fisi": 3.0, "aprov": false}, {"nome": "ALICE SILVA", "unidade": "TQ", "turma": "TQ-3AFA11", "ra": "MT24144529", "rank": 82, "media": 2.5, "status": "Reprovado", "red": "Sim", "port": 3, "m_port": 1.5, "mate": 3, "m_mate": 1.5, "ingl": 7, "m_ingl": 3.5, "fisi": 6, "m_fisi": 3.0, "aprov": false}, {"nome": "FERNANDA VARGAS", "unidade": "CG", "turma": "CG-3AFA11", "ra": "MT24134603", "rank": 83, "media": 2.25, "status": "Reprovado", "red": "Não", "port": 3, "m_port": 1.5, "mate": 0, "m_mate": 0.0, "ingl": 6, "m_ingl": 3.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "THIAGO SILVA", "unidade": "MD", "turma": "MD-PAFA11", "ra": "MT24158404", "rank": 84, "media": 1.75, "status": "Reprovado", "red": "Não", "port": 3, "m_port": 1.5, "mate": 0, "m_mate": 0.0, "ingl": 4, "m_ingl": 2.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}];
-
-</script>
-<script>
-// Dados EN — 2º Simulado
-// Gerado automaticamente via painel "Atualizar Dados"
-const RAW_EN_S2 = [{"nome": "ROGER CUNHA", "unidade": "MD", "turma": "-", "ra": "MT22059950", "rank": 1, "media": 9.75, "status": "Aprovado", "red": "Sim", "port": 16, "m_port": 8.89, "mate": 22, "m_mate": 10.0, "ingl": 17, "m_ingl": 9.44, "fisi": 15, "m_fisi": 6.82, "aprov": true}, {"nome": "LANAY LINS", "unidade": "MD", "turma": "-", "ra": "MT24163974", "rank": 2, "media": 7.75, "status": "Aprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 16, "m_mate": 7.27, "ingl": 15, "m_ingl": 8.33, "fisi": 12, "m_fisi": 5.45, "aprov": true}, {"nome": "LEVI LOYOLA", "unidade": "NI", "turma": "-", "ra": "MT22092506", "rank": 3, "media": 7.5, "status": "Aprovado", "red": "Sim", "port": 10, "m_port": 5.56, "mate": 17, "m_mate": 7.73, "ingl": 13, "m_ingl": 7.22, "fisi": 11, "m_fisi": 5.0, "aprov": true}, {"nome": "PEDRO SEGUNDO", "unidade": "BG", "turma": "-", "ra": "MT21056205", "rank": 4, "media": 7.25, "status": "Aprovado", "red": "Sim", "port": 14, "m_port": 7.78, "mate": 12, "m_mate": 5.45, "ingl": 17, "m_ingl": 9.44, "fisi": 13, "m_fisi": 5.91, "aprov": true}, {"nome": "GUILHERME NASCIMENTO", "unidade": "MD", "turma": "-", "ra": "MT23111651", "rank": 5, "media": 7.0, "status": "Aprovado", "red": "Sim", "port": 13, "m_port": 7.22, "mate": 13, "m_mate": 5.91, "ingl": 15, "m_ingl": 8.33, "fisi": 11, "m_fisi": 5.0, "aprov": true}, {"nome": "SAMUEL MOURA", "unidade": "MD", "turma": "-", "ra": "MT23111438", "rank": 6, "media": 6.75, "status": "Aprovado", "red": "Sim", "port": 14, "m_port": 7.78, "mate": 11, "m_mate": 5.0, "ingl": 16, "m_ingl": 8.89, "fisi": 14, "m_fisi": 6.36, "aprov": true}, {"nome": "BEATRIZ VELLASCO", "unidade": "BG", "turma": "-", "ra": "MT20040838", "rank": 7, "media": 6.75, "status": "Aprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 13, "m_mate": 5.91, "ingl": 14, "m_ingl": 7.78, "fisi": 13, "m_fisi": 5.91, "aprov": true}, {"nome": "SAMUEL FERNANDES", "unidade": "MD", "turma": "-", "ra": "MT24156572", "rank": 8, "media": 6.5, "status": "Aprovado", "red": "Sim", "port": 15, "m_port": 8.33, "mate": 12, "m_mate": 5.45, "ingl": 14, "m_ingl": 7.78, "fisi": 16, "m_fisi": 7.27, "aprov": true}, {"nome": "LUCAS CRUZ", "unidade": "BG", "turma": "-", "ra": "MT20039806", "rank": 9, "media": 6.5, "status": "Aprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 13, "m_mate": 5.91, "ingl": 13, "m_ingl": 7.22, "fisi": 13, "m_fisi": 5.91, "aprov": true}, {"nome": "MARCOS CARVALHO", "unidade": "BG", "turma": "-", "ra": "MT20041455", "rank": 10, "media": 8.75, "status": "Reprovado", "red": "Sim", "port": 13, "m_port": 7.22, "mate": 18, "m_mate": 8.18, "ingl": 17, "m_ingl": 9.44, "fisi": 9, "m_fisi": 4.09, "aprov": false}, {"nome": "YASMIM ROMÃO", "unidade": "TQ", "turma": "-", "ra": "MT23134059", "rank": 11, "media": 8.5, "status": "Reprovado", "red": "Sim", "port": 14, "m_port": 7.78, "mate": 19, "m_mate": 8.64, "ingl": 15, "m_ingl": 8.33, "fisi": 9, "m_fisi": 4.09, "aprov": false}, {"nome": "MARIA COSTA", "unidade": "NI", "turma": "-", "ra": "MT25170952", "rank": 12, "media": 8.5, "status": "Reprovado", "red": "Sim", "port": 14, "m_port": 7.78, "mate": 18, "m_mate": 8.18, "ingl": 16, "m_ingl": 8.89, "fisi": 9, "m_fisi": 4.09, "aprov": false}, {"nome": "MIGUEL COSTA", "unidade": "NI", "turma": "-", "ra": "MT23134281", "rank": 13, "media": 8.0, "status": "Reprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 16, "m_mate": 7.27, "ingl": 16, "m_ingl": 8.89, "fisi": 10, "m_fisi": 4.55, "aprov": false}, {"nome": "MD_EN_SIMULADO_14_03_2026 0006", "unidade": "-", "turma": "-", "ra": "MT26305530", "rank": 14, "media": 8.0, "status": "Reprovado", "red": "Sim", "port": 7, "m_port": 3.89, "mate": 15, "m_mate": 6.82, "ingl": 17, "m_ingl": 9.44, "fisi": 13, "m_fisi": 5.91, "aprov": false}, {"nome": "LUCAS PINHEIRO", "unidade": "TQ", "turma": "-", "ra": "MT21067715", "rank": 15, "media": 7.5, "status": "Reprovado", "red": "Sim", "port": 14, "m_port": 7.78, "mate": 14, "m_mate": 6.36, "ingl": 16, "m_ingl": 8.89, "fisi": 10, "m_fisi": 4.55, "aprov": false}, {"nome": "CAIO GAGLIARDI", "unidade": "MD", "turma": "-", "ra": "MT22103022", "rank": 16, "media": 7.5, "status": "Reprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 12, "m_mate": 5.45, "ingl": 18, "m_ingl": 10.0, "fisi": 10, "m_fisi": 4.55, "aprov": false}, {"nome": "EDUARDO AUGUSTINHO", "unidade": "TQ", "turma": "-", "ra": "MT21052451", "rank": 17, "media": 7.25, "status": "Reprovado", "red": "Sim", "port": 11, "m_port": 6.11, "mate": 14, "m_mate": 6.36, "ingl": 15, "m_ingl": 8.33, "fisi": 7, "m_fisi": 3.18, "aprov": false}, {"nome": "LUCAS FILIPAK", "unidade": "NI", "turma": "-", "ra": "MT24160137", "rank": 18, "media": 7.0, "status": "Reprovado", "red": "Sim", "port": 9, "m_port": 5.0, "mate": 11, "m_mate": 5.0, "ingl": 17, "m_ingl": 9.44, "fisi": 7, "m_fisi": 3.18, "aprov": false}, {"nome": "PEDRO CONCEICAO", "unidade": "TQ", "turma": "-", "ra": "MT25189275", "rank": 19, "media": 6.75, "status": "Reprovado", "red": "Sim", "port": 11, "m_port": 6.11, "mate": 10, "m_mate": 4.55, "ingl": 17, "m_ingl": 9.44, "fisi": 11, "m_fisi": 5.0, "aprov": false}, {"nome": "NICHOLAS GONÇALVES", "unidade": "BG", "turma": "-", "ra": "MT23118466", "rank": 20, "media": 6.75, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 11, "m_mate": 5.0, "ingl": 16, "m_ingl": 8.89, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "FABIANO NASCIMENTO", "unidade": "MD", "turma": "-", "ra": "MT22098065", "rank": 21, "media": 6.5, "status": "Reprovado", "red": "Sim", "port": 10, "m_port": 5.56, "mate": 10, "m_mate": 4.55, "ingl": 16, "m_ingl": 8.89, "fisi": 11, "m_fisi": 5.0, "aprov": false}, {"nome": "ARTHUR NETO", "unidade": "MD", "turma": "-", "ra": "MT24138562", "rank": 22, "media": 6.25, "status": "Reprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 9, "m_mate": 4.09, "ingl": 16, "m_ingl": 8.89, "fisi": 7, "m_fisi": 3.18, "aprov": false}, {"nome": "LÍVIA BARBOSA", "unidade": "BG", "turma": "-", "ra": "MT23122203", "rank": 23, "media": 6.25, "status": "Reprovado", "red": "Sim", "port": 10, "m_port": 5.56, "mate": 9, "m_mate": 4.09, "ingl": 16, "m_ingl": 8.89, "fisi": 2, "m_fisi": 0.91, "aprov": false}, {"nome": "GABRIEL DOLZANI", "unidade": "MD", "turma": "-", "ra": "MT23121577", "rank": 24, "media": 6.25, "status": "Reprovado", "red": "Sim", "port": 9, "m_port": 5.0, "mate": 9, "m_mate": 4.09, "ingl": 16, "m_ingl": 8.89, "fisi": 11, "m_fisi": 5.0, "aprov": false}, {"nome": "GIOVANNI BARBATTO", "unidade": "MD", "turma": "-", "ra": "MT23105059", "rank": 25, "media": 6.25, "status": "Reprovado", "red": "Sim", "port": 8, "m_port": 4.44, "mate": 8, "m_mate": 3.64, "ingl": 17, "m_ingl": 9.44, "fisi": 9, "m_fisi": 4.09, "aprov": false}, {"nome": "RAMON VALENTE", "unidade": "CG", "turma": "-", "ra": "MT25201732", "rank": 26, "media": 6.0, "status": "Reprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 7, "m_mate": 3.18, "ingl": 17, "m_ingl": 9.44, "fisi": 7, "m_fisi": 3.18, "aprov": false}, {"nome": "DAVI COSTA", "unidade": "MD", "turma": "-", "ra": "MT25181447", "rank": 27, "media": 6.0, "status": "Reprovado", "red": "Sim", "port": 7, "m_port": 3.89, "mate": 7, "m_mate": 3.18, "ingl": 17, "m_ingl": 9.44, "fisi": 6, "m_fisi": 2.73, "aprov": false}, {"nome": "MATHEUS PINTO", "unidade": "BG", "turma": "-", "ra": "MT20037883", "rank": 28, "media": 6.0, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 9, "m_mate": 4.09, "ingl": 15, "m_ingl": 8.33, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "MATHEUS BAPTISTA", "unidade": "TQ", "turma": "-", "ra": "MT25186164", "rank": 29, "media": 6.0, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 6, "m_mate": 2.73, "ingl": 18, "m_ingl": 10.0, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "PAULO OLIVEIRA", "unidade": "TQ", "turma": "-", "ra": "MT26204339", "rank": 30, "media": 5.75, "status": "Reprovado", "red": "Sim", "port": 9, "m_port": 5.0, "mate": 6, "m_mate": 2.73, "ingl": 17, "m_ingl": 9.44, "fisi": 8, "m_fisi": 3.64, "aprov": false}, {"nome": "MAURICIO MONTEIRO", "unidade": "BG", "turma": "-", "ra": "MT23132988", "rank": 31, "media": 5.75, "status": "Reprovado", "red": "Sim", "port": 8, "m_port": 4.44, "mate": 8, "m_mate": 3.64, "ingl": 15, "m_ingl": 8.33, "fisi": 5, "m_fisi": 2.27, "aprov": false}, {"nome": "LEONARDO FERREIRA", "unidade": "MD", "turma": "-", "ra": "MT22101067", "rank": 32, "media": 5.75, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 7, "m_mate": 3.18, "ingl": 16, "m_ingl": 8.89, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "GUILHERME BLUM", "unidade": "TQ", "turma": "-", "ra": "MT19021575", "rank": 33, "media": 5.5, "status": "Reprovado", "red": "Sim", "port": 14, "m_port": 7.78, "mate": 6, "m_mate": 2.73, "ingl": 16, "m_ingl": 8.89, "fisi": 1, "m_fisi": 0.45, "aprov": false}, {"nome": "PAULO VIEIRA", "unidade": "CG", "turma": "-", "ra": "MT24158255", "rank": 34, "media": 5.5, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 9, "m_mate": 4.09, "ingl": 13, "m_ingl": 7.22, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "FILIPE RIBEIRO", "unidade": "BG", "turma": "-", "ra": "MT19026004", "rank": 35, "media": 5.5, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 8, "m_mate": 3.64, "ingl": 14, "m_ingl": 7.78, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "PEDRO PINTO", "unidade": "CG", "turma": "-", "ra": "MT22089403", "rank": 36, "media": 5.5, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 5, "m_mate": 2.27, "ingl": 17, "m_ingl": 9.44, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "BRENO OLIVEIRA", "unidade": "CG", "turma": "-", "ra": "MT23120876", "rank": 37, "media": 5.5, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 5, "m_mate": 2.27, "ingl": 17, "m_ingl": 9.44, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "NICOLAS SILVA", "unidade": "MD", "turma": "-", "ra": "MT23124514", "rank": 38, "media": 5.25, "status": "Reprovado", "red": "Sim", "port": 11, "m_port": 6.11, "mate": 6, "m_mate": 2.73, "ingl": 15, "m_ingl": 8.33, "fisi": 9, "m_fisi": 4.09, "aprov": false}, {"nome": "LEONARDO BORGES", "unidade": "BG", "turma": "-", "ra": "MT23131139", "rank": 39, "media": 5.25, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 6, "m_mate": 2.73, "ingl": 15, "m_ingl": 8.33, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "EZEQUIEL TREZENA", "unidade": "BG", "turma": "-", "ra": "MT25188749", "rank": 40, "media": 4.75, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 3, "m_mate": 1.36, "ingl": 16, "m_ingl": 8.89, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "THAIS TAVARES", "unidade": "BG", "turma": "-", "ra": "MT25198102", "rank": 41, "media": 4.25, "status": "Reprovado", "red": "Sim", "port": 8, "m_port": 4.44, "mate": 8, "m_mate": 3.64, "ingl": 9, "m_ingl": 5.0, "fisi": 5, "m_fisi": 2.27, "aprov": false}, {"nome": "AMANDA ROSA", "unidade": "TQ", "turma": "-", "ra": "MT23131576", "rank": 42, "media": 4.0, "status": "Reprovado", "red": "Sim", "port": 8, "m_port": 4.44, "mate": 4, "m_mate": 1.82, "ingl": 12, "m_ingl": 6.67, "fisi": 4, "m_fisi": 1.82, "aprov": false}, {"nome": "LORENNA PAIXÃO", "unidade": "NI", "turma": "-", "ra": "MT24161218", "rank": 43, "media": 4.0, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 9, "m_mate": 4.09, "ingl": 7, "m_ingl": 3.89, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "LUIZ DIAS", "unidade": "MD", "turma": "-", "ra": "MT22093330", "rank": 44, "media": 4.0, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 5, "m_mate": 2.27, "ingl": 11, "m_ingl": 6.11, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "SOPHIA COSTA", "unidade": "TQ", "turma": "-", "ra": "MT24140030", "rank": 45, "media": 3.5, "status": "Reprovado", "red": "Sim", "port": 7, "m_port": 3.89, "mate": 3, "m_mate": 1.36, "ingl": 11, "m_ingl": 6.11, "fisi": 4, "m_fisi": 1.82, "aprov": false}, {"nome": "DAVI RODRIGUES", "unidade": "MD", "turma": "-", "ra": "MT23121965", "rank": 46, "media": 3.25, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 7, "m_mate": 3.18, "ingl": 6, "m_ingl": 3.33, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "LETHICIA SANTOS", "unidade": "MD", "turma": "-", "ra": "MT23127327", "rank": 47, "media": 3.25, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 5, "m_mate": 2.27, "ingl": 8, "m_ingl": 4.44, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "BRENO GARCIA", "unidade": "TQ", "turma": "-", "ra": "MT24135089", "rank": 48, "media": 3.0, "status": "Reprovado", "red": "Sim", "port": 0, "m_port": 0.0, "mate": 4, "m_mate": 1.82, "ingl": 8, "m_ingl": 4.44, "fisi": 0, "m_fisi": 0.0, "aprov": false}, {"nome": "CAIO FRAGA", "unidade": "BG", "turma": "-", "ra": "MT23123888", "rank": 49, "media": 0.0, "status": "Reprovado", "red": "Sim", "port": 12, "m_port": 6.67, "mate": 0, "m_mate": 0.0, "ingl": 0, "m_ingl": 0.0, "fisi": 6, "m_fisi": 2.73, "aprov": false}, {"nome": "SOPHIA BASTOS", "unidade": "BG", "turma": "-", "ra": "MT25198466", "rank": 50, "media": 0.0, "status": "Reprovado", "red": "Sim", "port": 9, "m_port": 5.0, "mate": 0, "m_mate": 0.0, "ingl": 0, "m_ingl": 0.0, "fisi": 6, "m_fisi": 2.73, "aprov": false}, {"nome": "MD_EN_SIMULADO_21_03_2026 0011", "unidade": "-", "turma": "-", "ra": "MT25188651", "rank": 51, "media": 0.0, "status": "Reprovado", "red": "Sim", "port": 9, "m_port": 5.0, "mate": 0, "m_mate": 0.0, "ingl": 0, "m_ingl": 0.0, "fisi": 4, "m_fisi": 1.82, "aprov": false}, {"nome": "GUILHERME OLIVEIRA", "unidade": "MD", "turma": "-", "ra": "MT23124365", "rank": 52, "media": 0.0, "status": "Reprovado", "red": "Sim", "port": 8, "m_port": 4.44, "mate": 0, "m_mate": 0.0, "ingl": 0, "m_ingl": 0.0, "fisi": 14, "m_fisi": 6.36, "aprov": false}, {"nome": "ISRAEL SILVA", "unidade": "TQ", "turma": "-", "ra": "MT26203919", "rank": 53, "media": 0.0, "status": "Reprovado", "red": "Sim", "port": 8, "m_port": 4.44, "mate": 0, "m_mate": 0.0, "ingl": 0, "m_ingl": 0.0, "fisi": 10, "m_fisi": 4.55, "aprov": false}, {"nome": "TQ_3AFA_EN_21_03_20260005", "unidade": "-", "turma": "-", "ra": "MT2518616", "rank": 54, "media": 0.0, "status": "Reprovado", "red": "Sim", "port": 7, "m_port": 3.89, "mate": 0, "m_mate": 0.0, "ingl": 0, "m_ingl": 0.0, "fisi": 3, "m_fisi": 1.36, "aprov": false}, {"nome": "GABRIELLY MACHADO", "unidade": "MD", "turma": "-", "ra": "MT23124407", "rank": 55, "media": 0.0, "status": "Reprovado", "red": "Sim", "port": 6, "m_port": 3.33, "mate": 0, "m_mate": 0.0, "ingl": 0, "m_ingl": 0.0, "fisi": 4, "m_fisi": 1.82, "aprov": false}];
-
-</script>
-<script>
-
 // ── Generic ranking renderer for EFOMM / EN ──
 function buildExamTurma(raw, exam){
   raw.forEach(a=>{
@@ -1704,50 +1524,8 @@ function buildExamTurma(raw, exam){
   }
 }
 
-let TEF  = buildExamTurma(RAW_EFOMM,    'efomm');
-let TEN  = buildExamTurma(RAW_EN,       'en');
-let TEF2 = RAW_EFOMM_S2.length ? buildExamTurma(RAW_EFOMM_S2, 'efomm') : {list:[]};
-let TEN2 = RAW_EN_S2.length    ? buildExamTurma(RAW_EN_S2,    'en')    : {list:[]};
-let TEFG = (TEF.list.length||TEF2.list.length) ? buildCombinedRanking(TEF,TEF2) : {list:[]};
-let TENG = (TEN.list.length||TEN2.list.length) ? buildCombinedRanking(TEN,TEN2) : {list:[]};
-
-function refreshUniSel(selId, list){
-  const sel=document.getElementById(selId); if(!sel) return;
-  const v=sel.value; while(sel.options.length>1) sel.remove(1);
-  [...new Set(list.map(a=>a.unidade))].sort().forEach(u=>{
-    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
-  });
-  sel.value=v;
-}
-function atualizarLive(tipo, dados){
-  if(tipo==='afa_s1'){
-    T=buildTurma(dados); refreshUniSel('uniSelRk',T.list); renderRanking();
-  } else if(tipo==='efomm_s1'){
-    TEF=buildExamTurma(dados,'efomm'); refreshUniSel('uniSelEf',TEF.list); renderEfomm();
-    TEFG=buildCombinedRanking(TEF,TEF2); renderEfommGeral();
-  } else if(tipo==='efomm_s2'){
-    TEF2=buildExamTurma(dados,'efomm'); refreshUniSel('uniSelEf2',TEF2.list); renderEfomm2();
-    TEFG=buildCombinedRanking(TEF,TEF2); renderEfommGeral();
-  } else if(tipo==='en_s1'){
-    TEN=buildExamTurma(dados,'en'); refreshUniSel('uniSelEn',TEN.list); renderEn();
-    TENG=buildCombinedRanking(TEN,TEN2); renderEnGeral();
-  } else if(tipo==='en_s2'){
-    TEN2=buildExamTurma(dados,'en'); refreshUniSel('uniSelEn2',TEN2.list); renderEn2();
-    TENG=buildCombinedRanking(TEN,TEN2); renderEnGeral();
-  }
-  // Salva automaticamente no navegador
-  try{ localStorage.setItem('mz_afa_'+tipo, JSON.stringify(dados)); }catch(e){}
-}
-
-// Carrega dados salvos no navegador ao abrir a página
-(function carregarSalvos(){
-  ['afa_s1','efomm_s1','efomm_s2','en_s1','en_s2'].forEach(tipo=>{
-    try{
-      const s=localStorage.getItem('mz_afa_'+tipo);
-      if(s){ const d=JSON.parse(s); if(d && d.length>0) atualizarLive(tipo,d); }
-    }catch(e){}
-  });
-})();
+const TEF = buildExamTurma(RAW_EFOMM, 'efomm');
+const TEN = buildExamTurma(RAW_EN, 'en');
 
 let fEf='todos', fEn='todos';
 
@@ -1841,120 +1619,13 @@ function renderExam(T, filt, ids, maxQ, label){
 
 function renderEfomm(){
   renderExam(TEF, fEf,
-    {search:'searchEf',uniSel:'uniSelEf',uniWrap:'uniWrapEf',total:'totalEf',aprov:'aprovEf',reprov:'reprovEf',body:'bodyEf',stats:'statsEf'},
+    {search:'searchEf',uniSel:'uniSelEf',total:'totalEf',aprov:'aprovEf',reprov:'reprovEf',body:'bodyEf',stats:'statsEf'},
     40, 'efomm');
 }
 function renderEn(){
   renderExam(TEN, fEn,
-    {search:'searchEn',uniSel:'uniSelEn',uniWrap:'uniWrapEn',total:'totalEn',aprov:'aprovEn',reprov:'reprovEn',body:'bodyEn',stats:'statsEn'},
+    {search:'searchEn',uniSel:'uniSelEn',total:'totalEn',aprov:'aprovEn',reprov:'reprovEn',body:'bodyEn',stats:'statsEn'},
     40, 'en');
-}
-
-let fEf2='todos', fEn2='todos';
-function setFEf2(f,btn){ fEf2=f; document.querySelectorAll('#efomm2Section .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('uniWrapEf2').style.display=f==='unidade'?'block':'none'; renderEfomm2(); }
-function setFEn2(f,btn){ fEn2=f; document.querySelectorAll('#en2Section .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('uniWrapEn2').style.display=f==='unidade'?'block':'none'; renderEn2(); }
-function renderEfomm2(){
-  if(!TEF2.list.length){ document.getElementById('bodyEf2').innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">Dados ainda não carregados. Use "Atualizar Dados" para publicar o ranking.</td></tr>'; return; }
-  renderExam(TEF2, fEf2,
-    {search:'searchEf2',uniSel:'uniSelEf2',uniWrap:'uniWrapEf2',total:'totalEf2',aprov:'aprovEf2',reprov:'reprovEf2',body:'bodyEf2',stats:'statsEf2'},
-    40, 'efomm');
-}
-function renderEn2(){
-  if(!TEN2.list.length){ document.getElementById('bodyEn2').innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">Dados ainda não carregados. Use "Atualizar Dados" para publicar o ranking.</td></tr>'; return; }
-  renderExam(TEN2, fEn2,
-    {search:'searchEn2',uniSel:'uniSelEn2',uniWrap:'uniWrapEn2',total:'totalEn2',aprov:'aprovEn2',reprov:'reprovEn2',body:'bodyEn2',stats:'statsEn2'},
-    40, 'en');
-}
-
-// ── Ranking Geral (Combined 1°Sim + 2°Sim) ──
-function buildCombinedRanking(T1, T2){
-  const map1={}, map2={};
-  T1.list.forEach(a=>{ map1[a.nome.trim().toUpperCase()]=a; });
-  T2.list.forEach(a=>{ map2[a.nome.trim().toUpperCase()]=a; });
-  const allNames=new Set([...Object.keys(map1),...Object.keys(map2)]);
-  const combined=[];
-  allNames.forEach(key=>{
-    const a1=map1[key], a2=map2[key], base=a1||a2;
-    const gtot1=a1?a1.gtot:0, gtot2=a2?a2.gtot:0;
-    combined.push({
-      nome:base.nome, unidade:base.unidade, turma:base.turma||'', ra:base.ra||'',
-      gtot1, gtot2, gtotC:gtot1+gtot2,
-      aprov1:a1?a1.aprov:false, aprov2:a2?a2.aprov:false,
-      aprovC:(a1?a1.aprov:false)&&(a2?a2.aprov:false),
-      presente1:!!a1, presente2:!!a2
-    });
-  });
-  combined.sort((a,b)=>{ if(a.aprovC!==b.aprovC) return a.aprovC?-1:1; return b.gtotC-a.gtotC; });
-  combined.forEach((a,i)=>a.rankC=i+1);
-  const tot=combined.length||1;
-  return {list:combined, avgs:{gtot1:combined.reduce((s,x)=>s+x.gtot1,0)/tot, gtot2:combined.reduce((s,x)=>s+x.gtot2,0)/tot, gtotC:combined.reduce((s,x)=>s+x.gtotC,0)/tot}};
-}
-
-function refreshUniSelGeral(selId, list){
-  const sel=document.getElementById(selId); if(!sel) return;
-  const unis=[...new Set(list.map(a=>a.unidade).filter(Boolean))].sort();
-  const cur=sel.value;
-  sel.innerHTML='<option value="">— Todas as unidades —</option>'+unis.map(u=>`<option value="${u}"${u===cur?' selected':''}>${u}</option>`).join('');
-}
-
-let fEfG='todos', fEnG='todos';
-function setFEfG(f,btn){ fEfG=f; document.querySelectorAll('#efommGeralSection .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('uniWrapEfG').style.display=f==='unidade'?'block':'none'; renderEfommGeral(); }
-function setFEnG(f,btn){ fEnG=f; document.querySelectorAll('#enGeralSection .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('uniWrapEnG').style.display=f==='unidade'?'block':'none'; renderEnGeral(); }
-
-function renderGeralExam(TG, filt, ids, exam){
-  if(!TG.list.length){
-    document.getElementById(ids.body).innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Dados ainda não carregados. Carregue o 1°Sim e o 2°Sim para ver o ranking geral.</td></tr>';
-    return;
-  }
-  const q=(document.getElementById(ids.search).value||'').toLowerCase();
-  let lst=[...TG.list].filter(a=>!q||a.nome.toLowerCase().includes(q));
-  if(filt==='aprov')  lst=lst.filter(a=>a.aprovC);
-  if(filt==='reprov') lst=lst.filter(a=>!a.aprovC);
-  if(filt==='unidade'){const v=document.getElementById(ids.uniSel).value;if(v)lst=lst.filter(a=>a.unidade===v);}
-  lst.sort((a,b)=>{ if(a.aprovC!==b.aprovC) return a.aprovC?-1:1; return a.rankC-b.rankC; });
-  const tot=TG.list.length, apvN=TG.list.filter(a=>a.aprovC).length;
-  document.getElementById(ids.total).textContent=tot;
-  document.getElementById(ids.aprov).textContent=apvN;
-  document.getElementById(ids.reprov).textContent=tot-apvN;
-  const nd='<span style="color:var(--text3);font-size:12px">—</span>';
-  document.getElementById(ids.body).innerHTML=lst.map((a,i)=>{
-    const pos=i+1;
-    const pc=pos===1?'g1':pos===2?'g2':pos===3?'g3':'';
-    const em=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos;
-    const rc='ranking-row'+(pos<=3?' top3':'');
-    const st=a.aprovC
-      ?`<span class="chip chip-aprov">✓ ${exam==='efomm'?'Classificado':'Aprovado'}</span>`
-      :`<span class="chip chip-reprov">✗ Reprovado</span>`;
-    const pct=Math.min(100,Math.round(a.gtotC/80*100));
-    const barCol=pct>=70?'#16a34a':pct>=50?'#d97706':'#dc2626';
-    return `<tr class="${rc}">
-      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
-      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade}</span></td>
-      <td style="text-align:center">${a.presente1?`<b>${a.gtot1}</b><span style="font-size:11px;color:var(--text3)">/40</span>`:nd}</td>
-      <td style="text-align:center">${a.presente2?`<b>${a.gtot2}</b><span style="font-size:11px;color:var(--text3)">/40</span>`:nd}</td>
-      <td style="text-align:center">
-        <div style="font-size:22px;font-weight:900;color:var(--navy);line-height:1">${a.gtotC}<span style="font-size:11px;font-weight:500;color:var(--text3)">/80</span></div>
-        <div style="height:5px;background:#e5e9f0;border-radius:3px;margin-top:4px;width:80px;margin-left:auto;margin-right:auto;overflow:hidden"><div style="height:100%;width:${pct}%;background:${barCol};border-radius:3px"></div></div>
-      </td>
-      <td style="text-align:center">${st}</td>
-    </tr>`;
-  }).join('');
-  document.getElementById(ids.stats).innerHTML=`
-    <div class="stat-item"><div class="s-label">Total</div><div class="s-val">${tot}</div><div class="s-hint">alunos</div></div>
-    <div class="stat-item"><div class="s-label">${exam==='efomm'?'Classificados':'Aprovados'}</div><div class="s-val" style="color:var(--green)">${apvN}</div><div class="s-hint">${Math.round(apvN/(tot||1)*100)}%</div></div>
-    <div class="stat-item"><div class="s-label">Reprovados</div><div class="s-val" style="color:var(--red)">${tot-apvN}</div><div class="s-hint">${Math.round((tot-apvN)/(tot||1)*100)}%</div></div>
-    <div class="stat-item"><div class="s-label">Maior Total</div><div class="s-val" style="color:var(--navy)">${TG.list[0]?TG.list[0].gtotC:0}</div><div class="s-hint">de 80</div></div>
-    <div class="stat-item"><div class="s-label">Média 1°Sim</div><div class="s-val">${(TG.avgs.gtot1||0).toFixed(1)}</div><div class="s-hint">de 40</div></div>
-    <div class="stat-item"><div class="s-label">Média 2°Sim</div><div class="s-val">${(TG.avgs.gtot2||0).toFixed(1)}</div><div class="s-hint">de 40</div></div>
-  `;
-}
-function renderEfommGeral(){
-  refreshUniSelGeral('uniSelEfG', TEFG.list);
-  renderGeralExam(TEFG, fEfG, {search:'searchEfG',uniSel:'uniSelEfG',uniWrap:'uniWrapEfG',total:'totalEfG',aprov:'aprovEfG',reprov:'reprovEfG',body:'bodyEfG',stats:'statsEfG'}, 'efomm');
-}
-function renderEnGeral(){
-  refreshUniSelGeral('uniSelEnG', TENG.list);
-  renderGeralExam(TENG, fEnG, {search:'searchEnG',uniSel:'uniSelEnG',uniWrap:'uniWrapEnG',total:'totalEnG',aprov:'aprovEnG',reprov:'reprovEnG',body:'bodyEnG',stats:'statsEnG'}, 'en');
 }
 
 // ── Modal + Dashboard for EFOMM/EN ──
@@ -2300,269 +1971,6 @@ voltar = function(){
   _origVoltar();
 };
 
-// ═══════════════════════════════════════════════════════
-// SHA-256 hash da senha
-// ═══════════════════════════════════════════════════════
-const AFA_SENHA_HASH = '31f1842786791cc180b60060fcf0b782bb0ba6b9c665347f9473f2f4dc980a31';
-
-function abrirModalAtualizar(){
-  document.getElementById('afaSenhaInput').value='';
-  document.getElementById('afaSenhaError').style.display='none';
-  document.getElementById('afaModalSenha').classList.add('open');
-  setTimeout(()=>document.getElementById('afaSenhaInput').focus(),100);
-}
-function fecharModalSenha(){ document.getElementById('afaModalSenha').classList.remove('open'); }
-
-async function verificarSenhaAFA(){
-  const v = document.getElementById('afaSenhaInput').value;
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
-  const h = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  if(h === AFA_SENHA_HASH){ fecharModalSenha(); abrirPainelAtualizar(); }
-  else { document.getElementById('afaSenhaError').style.display='block'; document.getElementById('afaSenhaInput').select(); }
-}
-
-// ═══════════════════════════════════════════════════════
-// ATUALIZAR DADOS
-// ═══════════════════════════════════════════════════════
-const AFA_SIMULADO_MAP = {
-  'afa_s1':   { arquivo:'dados/afa.js',      varName:'RAW_AFA',      label:'AFA' },
-  'efomm_s1': { arquivo:'dados/efomm.js',    varName:'RAW_EFOMM',    label:'EFOMM 1°Sim' },
-  'efomm_s2': { arquivo:'dados/efomm_s2.js', varName:'RAW_EFOMM_S2', label:'EFOMM 2°Sim' },
-  'en_s1':    { arquivo:'dados/en.js',       varName:'RAW_EN',       label:'EN 1°Sim' },
-  'en_s2':    { arquivo:'dados/en_s2.js',    varName:'RAW_EN_S2',    label:'EN 2°Sim' },
-};
-
-
-function abrirPainelAtualizar(){
-  document.getElementById('afaAtMsg').style.display='none';
-  document.getElementById('afaAtPreview').innerHTML='';
-  document.getElementById('afaFileInput').value='';
-  window._afaDados = null;
-  document.getElementById('afaBtnBaixar').disabled=true;
-  document.getElementById('afaBtnBaixar').style.opacity='0.5';
-  document.getElementById('afaModalAtualizar').classList.add('open');
-}
-function fecharModalAtualizar(){ document.getElementById('afaModalAtualizar').classList.remove('open'); }
-
-function afaMsg(txt,tipo){
-  const el=document.getElementById('afaAtMsg'); el.textContent=txt; el.style.display='block';
-  el.style.background=tipo==='ok'?'#f0fdf4':'#fef2f2';
-  el.style.color=tipo==='ok'?'#15803d':'#dc2626';
-  el.style.border=tipo==='ok'?'1px solid #86efac':'1px solid #fca5a5';
-}
-
-function afaNorm(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
-function afaCol(headers,cands){
-  for(const c of cands){ const h=headers.find(h2=>afaNorm(h2).includes(afaNorm(c))); if(h!==undefined) return h; }
-  return null;
-}
-
-function afaLerExcel(file){
-  return new Promise((res,rej)=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      try{
-        const wb=XLSX.read(e.target.result,{type:'array'});
-        const ws=wb.Sheets[wb.SheetNames[0]];
-        // Lê como array 2D bruto — mostra as primeiras 5 linhas no diagnóstico
-        const raw=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-        // Mostra diagnóstico das primeiras 5 linhas para entender estrutura
-        const diag=raw.slice(0,5).map((row,i)=>'L'+i+':['+row.slice(0,5).map(c=>String(c).substring(0,15)).join('/')+']').join(' ');
-        window._afaDiag=diag;
-        // Procura linha com cabeçalho real: a que tem EXATAMENTE 'aluno' ou 'nome' em alguma célula
-        for(let i=0;i<Math.min(raw.length,25);i++){
-          for(let j=0;j<raw[i].length;j++){
-            const val=String(raw[i][j]||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
-            if(val==='aluno'||val==='nome'){
-              // Linha i é o cabeçalho
-              const headers=raw[i].map(h=>String(h));
-              const rows=[];
-              for(let k=i+1;k<raw.length;k++){
-                if(raw[k].every(c=>c===''||c===null||c===undefined)) continue;
-                const obj={};
-                headers.forEach((h,idx)=>{ obj[h]=raw[k][idx]!==undefined?raw[k][idx]:''; });
-                rows.push(obj);
-              }
-              if(rows.length>0){ res(rows); return; }
-            }
-          }
-        }
-        // Fallback com diagnóstico
-        rej(new Error('Cabeçalho não encontrado. Estrutura do arquivo: '+window._afaDiag));
-      }catch(err){rej(err);}
-    };
-    r.onerror=rej; r.readAsArrayBuffer(file);
-  });
-}
-
-function afaParseRows(rows, tipoExame){
-  if(!rows.length) return [];
-  const h=Object.keys(rows[0]);
-  const num=v=>+(String(v||'').replace(',','.'))||0;
-  const cNome  =afaCol(h,['aluno','nome']);
-  const cUni   =afaCol(h,['unidade','unid']);
-  const cTurma =afaCol(h,['turma','classe']);
-  const cRa    =afaCol(h,['ra','matricula','registro']);
-  const cClass =afaCol(h,['class','classif','pos','rank']);
-  const cMedia =afaCol(h,['media','nota final']);
-  const cStatus=afaCol(h,['status','resultado','situacao']);
-  const cRed   =afaCol(h,['redacao','red']);
-  const cAPor  =afaCol(h,['a. por','a.por']);
-  const cMPor  =afaCol(h,['m. por','m.por']);
-  const cAMat  =afaCol(h,['a. mat','a.mat']);
-  const cMMat  =afaCol(h,['m. mat','m.mat']);
-  const cAIng  =afaCol(h,['a. ing','a.ing']);
-  const cMIng  =afaCol(h,['m. ing','m.ing']);
-  const cAFis  =afaCol(h,['a. fis','a.fis','a. fis']);
-  const cMFis  =afaCol(h,['m. fis','m.fis','m. fis']);
-  if(!cNome) throw new Error('Coluna "Aluno" nao encontrada. Linhas lidas: '+rows.length+'. Cabecalhos: '+h.slice(0,8).join(' | '));
-  if(!cMedia) throw new Error('Coluna "Media" nao encontrada. Cabecalhos: '+h.slice(0,8).join(' | '));
-  const palavraAprov = tipoExame==='efomm'?'classif':'aprov';
-  return rows.filter(r=>r[cNome]&&String(r[cNome]).trim()).map(r=>({
-    nome:String(r[cNome]).trim().toUpperCase(), unidade:String(r[cUni]||'').trim().toUpperCase(),
-    turma:String(r[cTurma]||'-').trim(), ra:String(r[cRa]||'').trim(),
-    rank:Number(r[cClass])||0, media:num(r[cMedia]), status:String(r[cStatus]||'').trim(),
-    red:String(r[cRed]||'Nao').trim(),
-    port:cAPor?num(r[cAPor]):0, m_port:cMPor?num(r[cMPor]):0,
-    mate:cAMat?num(r[cAMat]):0, m_mate:cMMat?num(r[cMMat]):0,
-    ingl:cAIng?num(r[cAIng]):0, m_ingl:cMIng?num(r[cMIng]):0,
-    fisi:cAFis?num(r[cAFis]):0, m_fisi:cMFis?num(r[cMFis]):0,
-    aprov:String(r[cStatus]||'').toLowerCase().includes(palavraAprov),
-  }));
-}
-
-async function afaHandleFile(files){
-  const file=files[0]; if(!file) return;
-  const tipo=document.getElementById('afaTipo').value;
-  if(!tipo){ afaMsg('Selecione o tipo de simulado antes de carregar o arquivo.','err'); return; }
-  afaMsg('Lendo arquivo...','ok');
-  document.getElementById('afaAtPreview').innerHTML='';
-  document.getElementById('afaBtnBaixar').disabled=true;
-  document.getElementById('afaBtnBaixar').style.opacity='0.5';
-  try{
-    const rows=await afaLerExcel(file);
-    const tipoExame=tipo.startsWith('efomm')?'efomm':tipo.startsWith('en')?'en':'afa';
-    const dados=afaParseRows(rows,tipoExame);
-    window._afaDados={dados,tipo};
-    try{ atualizarLive(tipo,dados); }catch(e){ console.warn('atualizarLive:',e); }
-    document.getElementById('afaAtMsg').style.display='none';
-    const aprov=dados.filter(a=>a.aprov).length;
-    const info=AFA_SIMULADO_MAP[tipo];
-    let html='<div style="background:#f0f6ff;border:1px solid #c3d9f5;border-radius:10px;padding:14px;margin:12px 0;font-size:13px">'
-      +'<strong>'+dados.length+' alunos</strong> parseados &middot; Aprovados/Classificados: <span style="color:#16a34a;font-weight:700">'+aprov+'</span>'
-      +'<div style="font-size:12px;color:#4b5a6e;margin-top:6px">Arquivo a ser gerado: <strong>'+info.arquivo+'</strong></div>'
-      +'<table style="width:100%;margin-top:10px;font-size:12px;border-collapse:collapse">'
-      +'<tr style="background:#e0ecff"><th style="padding:4px 8px;text-align:left">Nome</th><th>Media</th><th>Status</th></tr>';
-    dados.slice(0,5).forEach(a=>{
-      html+='<tr style="border-bottom:1px solid #dde9fb"><td style="padding:4px 8px;font-weight:600">'+a.nome+'</td>'
-        +'<td style="text-align:center;font-weight:700">'+a.media+'</td>'
-        +'<td style="text-align:center;color:'+(a.aprov?'#16a34a':'#dc2626')+'">'+a.status+'</td></tr>';
-    });
-    if(dados.length>5) html+='<tr><td colspan="3" style="text-align:center;color:#8b99ab;padding:6px">... e mais '+(dados.length-5)+' alunos</td></tr>';
-    html+='</table></div>';
-    document.getElementById('afaAtPreview').innerHTML=html;
-    document.getElementById('afaBtnBaixar').disabled=false;
-    document.getElementById('afaBtnBaixar').style.opacity='1';
-  }catch(err){
-    afaMsg('Erro: '+err.message,'err');
-    console.error('afaHandleFile error:',err);
-    document.getElementById('afaBtnBaixar').disabled=true;
-    document.getElementById('afaBtnBaixar').style.opacity='0.5';
-  }
-}
-
-async function afaBaixarJS(){
-  try{
-    if(!window._afaDados){ afaMsg('Nenhum dado para baixar. Carregue o Excel primeiro.','err'); return; }
-    const {dados,tipo}=window._afaDados;
-    const info=AFA_SIMULADO_MAP[tipo];
-    if(!info){ afaMsg('Tipo de simulado inválido.','err'); return; }
-
-    afaMsg('⏳ Gerando index.html...','ok');
-
-    // Busca o HTML fonte limpo (sem DOM renderizado)
-    let html;
-    try{
-      const url=window.location.href.split('?')[0];
-      const resp=await fetch(url+'?_='+Date.now(),{cache:'no-store'});
-      if(!resp.ok) throw new Error('HTTP '+resp.status);
-      html=await resp.text();
-    }catch(e){
-      afaMsg('Abra o site pelo GitHub Pages para usar esta função (não funciona em arquivo local).','err');
-      return;
-    }
-
-    // Substitui a variável no HTML limpo
-    const jsonDados=JSON.stringify(dados);
-    const marker='const '+info.varName+' = ';
-    const altMarker='let '+info.varName+' = ';
-    let idx=html.indexOf(marker);
-    if(idx===-1) idx=html.indexOf(altMarker);
-    if(idx===-1){ afaMsg('Variável '+info.varName+' não encontrada.','err'); return; }
-    const endIdx=html.indexOf(';\n',idx);
-    if(endIdx===-1){ afaMsg('Fim da declaração não encontrado.','err'); return; }
-    html=html.substring(0,idx)+'const '+info.varName+' = '+jsonDados+html.substring(endIdx);
-
-    // Baixa o index.html limpo e atualizado
-    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-    const blobUrl=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=blobUrl; a.download='index.html'; a.style.display='none';
-    document.body.appendChild(a); a.click();
-    setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(blobUrl); },2000);
-    afaMsg('✅ index.html baixado! Substitua no GitHub para publicar.','ok');
-  }catch(err){
-    afaMsg('Erro: '+err.message,'err');
-    console.error(err);
-  }
-}
 </script>
-
-<!-- MODAL SENHA AFA -->
-<div id="afaModalSenha" class="modal-overlay" onclick="if(event.target===this)fecharModalSenha()">
-  <div class="modal-box">
-    <button class="modal-close" onclick="fecharModalSenha()">&#x2715;</button>
-    <h2>&#x1F510; Area Restrita</h2>
-    <p>Digite a senha para acessar o painel de atualizacao de dados.</p>
-    <div id="afaSenhaError" class="modal-error">Senha incorreta. Tente novamente.</div>
-    <input type="password" id="afaSenhaInput" class="modal-input" placeholder="Senha de acesso..." onkeydown="if(event.key==='Enter')verificarSenhaAFA()">
-    <button class="modal-btn" onclick="verificarSenhaAFA()">&#x1F513; Entrar</button>
-    <button class="modal-btn secondary" onclick="fecharModalSenha()">Cancelar</button>
-  </div>
-</div>
-
-<!-- MODAL ATUALIZAR DADOS AFA -->
-<div id="afaModalAtualizar" class="modal-overlay" onclick="if(event.target===this)fecharModalAtualizar()">
-  <div class="modal-box" style="max-width:560px">
-    <button class="modal-close" onclick="fecharModalAtualizar()">&#x2715;</button>
-    <h2>&#x2699;&#xFE0F; Atualizar Dados dos Rankings</h2>
-    <p>Selecione o simulado, carregue o Excel e baixe o arquivo .js gerado. Coloque-o na pasta dados/ e suba no GitHub.</p>
-    <div id="afaAtMsg" style="display:none;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:10px"></div>
-    <div style="margin-bottom:12px">
-      <label class="field-label">Qual simulado voce esta atualizando?</label>
-      <select id="afaTipo" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
-        <option value="">-- Selecione --</option>
-        <option value="afa_s1">AFA -- Ranking</option>
-        <option value="efomm_s1">EFOMM -- 1 Simulado</option>
-        <option value="efomm_s2">EFOMM -- 2 Simulado</option>
-        <option value="en_s1">EN -- 1 Simulado</option>
-        <option value="en_s2">EN -- 2 Simulado</option>
-      </select>
-    </div>
-    <label class="upload-area"
-      ondragover="event.preventDefault();this.classList.add('drag')"
-      ondragleave="this.classList.remove('drag')"
-      ondrop="event.preventDefault();this.classList.remove('drag');afaHandleFile(event.dataTransfer.files)">
-      <input type="file" id="afaFileInput" accept=".xlsx,.xls" onchange="afaHandleFile(this.files)">
-      <div class="ua-icon">&#x1F4CA;</div>
-      <div class="ua-text">Clique ou arraste o Excel aqui</div>
-      <div class="ua-hint">Aceita .xlsx -- A 1a linha deve ser o cabecalho</div>
-    </label>
-    <div id="afaAtPreview"></div>
-    <button class="modal-btn" id="afaBtnBaixar" onclick="afaBaixarJS()" disabled style="opacity:.5">&#x2B07; Baixar index.html atualizado</button>
-    <button class="modal-btn secondary" onclick="fecharModalAtualizar()">Fechar</button>
-  </div>
-</div>
-
 </body>
 </html>
