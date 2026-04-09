@@ -936,10 +936,10 @@ function openAluno(nome){
 function confirmarRA(){
   const modal=document.getElementById('raModal');
   const nome=modal.dataset.nome;
-  const candidato=T.list.find(a=>a.nome===nome);
   const digitado=document.getElementById('raInput').value.trim().toUpperCase();
-  const esperado=(candidato.ra||'').toUpperCase();
-  if(digitado!==esperado){
+  // Busca entre TODOS os homônimos o que tem exatamente esse RA
+  const candidato=T.list.find(a=>a.nome===nome&&(a.ra||'').toUpperCase()===digitado);
+  if(!candidato){
     document.getElementById('raError').style.display='block';
     document.getElementById('raInput').select();
     return;
@@ -955,13 +955,20 @@ function fecharRAModal(){
 function abrirDashboard(a){
   atual=a;
   document.getElementById('dashNome').textContent=a.nome;
+  const has1=a.rank>0;
   const has2=(a.s2_rank||0)>0;
-  const rankInfo=a.rank>0?`#${a.rank}º (28/02)`:'';
-  const rank2Info=has2?` · #${a.s2_rank}º (07/03)`:'';
+  const has3=(a.s3_rank||0)>0;
+  const parts=[];
+  if(has1)parts.push(`#${a.rank}º (28/02) MP:${a.media.toFixed(2)}`);
+  if(has2)parts.push(`#${a.s2_rank}º (07/03) MP:${(a.s2_media||0).toFixed(2)}`);
+  if(has3)parts.push(`#${a.s3_rank}º (28/03) MP:${(a.s3_media||0).toFixed(2)}`);
+  const latestAprov=has3?a.s3_aprov:has2?a.s2_aprov:a.aprov;
   document.getElementById('dashInfo').textContent=
-    `${rankInfo}${rank2Info} · ${a.unidade} · MP: ${a.media.toFixed(2)}${has2?' / '+a.s2_media.toFixed(2):''} · ${a.aprov?'✓ Aprovado':'✗ Reprovado'}`;
+    `${parts.join(' · ')} · ${a.unidade} · ${latestAprov?'✓ Aprovado':'✗ Reprovado'}`;
   const dd=document.getElementById('destDiv');
-  if(a.rank<=3&&a.rank>0){dd.style.display='block';document.getElementById('destText').textContent=`#${a.rank}º — AFA`;}
+  const allRanks=[has1?a.rank:0,has2?(a.s2_rank||0):0,has3?(a.s3_rank||0):0].filter(r=>r>0);
+  const bestRank=allRanks.length?Math.min(...allRanks):0;
+  if(bestRank>0&&bestRank<=3){dd.style.display='block';document.getElementById('destText').textContent=`#${bestRank}º — AFA`;}
   else dd.style.display='none';
   buildNotas();buildGrafico();buildPlano();buildAnalise();buildEstudos();
   goTab('pNotas',document.querySelector('.tab-btn'));
@@ -973,62 +980,86 @@ function abrirDashboard(a){
 // ═══ BUILD NOTAS ═══
 function buildNotas(){
   const a=atual;
-  const has2=(a.s2_rank||0)>0||(a.s2_media||0)>0;
-  const s1={port:a.port,mate:a.mate,fisi:a.fisi,ingl:a.ingl,
+  const has1=a.rank>0;
+  const has2=(a.s2_rank||0)>0;
+  const has3=(a.s3_rank||0)>0;
+
+  const sim1=has1?{n:1,label:'Sim. 1',date:'28/02',sorted:T.sorted1,
+    port:a.port,mate:a.mate,fisi:a.fisi,ingl:a.ingl,
     m_port:a.m_port,m_mate:a.m_mate,m_fisi:a.m_fisi,m_ingl:a.m_ingl,
     media:a.media,gtot:a.gtot,aprov:a.aprov,motivo:a.motivo,
-    ok_port:a.ok_port,ok_mate:a.ok_mate,ok_fisi:a.ok_fisi,ok_ingl:a.ok_ingl,red:a.red,rank:a.rank};
-  const s2=has2?{port:a.s2_port||0,mate:a.s2_mate||0,fisi:a.s2_fisi||0,ingl:a.s2_ingl||0,
+    ok_port:a.ok_port,ok_mate:a.ok_mate,ok_fisi:a.ok_fisi,ok_ingl:a.ok_ingl,rank:a.rank}:null;
+  const sim2=has2?{n:2,label:'Sim. 2',date:'07/03',sorted:T.sorted2,
+    port:a.s2_port||0,mate:a.s2_mate||0,fisi:a.s2_fisi||0,ingl:a.s2_ingl||0,
     m_port:a.s2_m_port||0,m_mate:a.s2_m_mate||0,m_fisi:a.s2_m_fisi||0,m_ingl:a.s2_m_ingl||0,
     media:a.s2_media||0,gtot:a.s2_gtot||0,aprov:a.s2_aprov,motivo:a.motivo2||'',
-    ok_port:a.ok2_port,ok_mate:a.ok2_mate,ok_fisi:a.ok2_fisi,ok_ingl:a.ok2_ingl,red:a.s2_red,rank:a.s2_rank||0}:null;
+    ok_port:a.ok2_port,ok_mate:a.ok2_mate,ok_fisi:a.ok2_fisi,ok_ingl:a.ok2_ingl,rank:a.s2_rank||0}:null;
+  const sim3=has3?{n:3,label:'Sim. 3',date:'28/03',sorted:T.sorted3,
+    port:a.s3_port||0,mate:a.s3_mate||0,fisi:a.s3_fisi||0,ingl:a.s3_ingl||0,
+    m_port:a.s3_m_port||0,m_mate:a.s3_m_mate||0,m_fisi:a.s3_m_fisi||0,m_ingl:a.s3_m_ingl||0,
+    media:a.s3_media||0,gtot:a.s3_gtot||0,aprov:a.s3_aprov,motivo:a.motivo3||'',
+    ok_port:a.ok3_port,ok_mate:a.ok3_mate,ok_fisi:a.ok3_fisi,ok_ingl:a.ok3_ingl,rank:a.s3_rank||0}:null;
+
+  const avail=[sim1,sim2,sim3].filter(Boolean);
+  const curr=avail[avail.length-1];
+  const prev=avail.length>=2?avail[avail.length-2]:null;
+  const hasPrev=!!prev;
 
   const dFmt=d=>d===null?'—':d>0?`<span style="color:#16a34a;font-weight:800">▲+${d.toFixed(2)}</span>`:
     d<0?`<span style="color:#dc2626;font-weight:800">▼${d.toFixed(2)}</span>`:
     `<span style="color:#6b7280;font-weight:700">= 0</span>`;
-  const dRank=has2&&s1.rank>0&&s2.rank>0?s1.rank-s2.rank:null;
+  const dRank=hasPrev&&prev.rank>0&&curr.rank>0?prev.rank-curr.rank:null;
 
+  const main=prev||curr;
   const discs=[
-    {nome:'Português',emoji:'📖',cor:'#3b82f6',ac1:s1.port,n1:s1.m_port,ok1:s1.ok_port,ac2:has2?s2.port:null,n2:has2?s2.m_port:null,ok2:has2?s2.ok_port:null},
-    {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',ac1:s1.mate,n1:s1.m_mate,ok1:s1.ok_mate,ac2:has2?s2.mate:null,n2:has2?s2.m_mate:null,ok2:has2?s2.ok_mate:null},
-    {nome:'Física',emoji:'⚡',cor:'#f59e0b',ac1:s1.fisi,n1:s1.m_fisi,ok1:s1.ok_fisi,ac2:has2?s2.fisi:null,n2:has2?s2.m_fisi:null,ok2:has2?s2.ok_fisi:null},
-    {nome:'Inglês',emoji:'🌐',cor:'#10b981',ac1:s1.ingl,n1:s1.m_ingl,ok1:s1.ok_ingl,ac2:has2?s2.ingl:null,n2:has2?s2.m_ingl:null,ok2:has2?s2.ok_ingl:null},
+    {nome:'Português',emoji:'📖',cor:'#3b82f6',
+      ac1:main.port,n1:main.m_port,ok1:main.ok_port,
+      ac2:hasPrev?curr.port:null,n2:hasPrev?curr.m_port:null,ok2:hasPrev?curr.ok_port:null},
+    {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',
+      ac1:main.mate,n1:main.m_mate,ok1:main.ok_mate,
+      ac2:hasPrev?curr.mate:null,n2:hasPrev?curr.m_mate:null,ok2:hasPrev?curr.ok_mate:null},
+    {nome:'Física',emoji:'⚡',cor:'#f59e0b',
+      ac1:main.fisi,n1:main.m_fisi,ok1:main.ok_fisi,
+      ac2:hasPrev?curr.fisi:null,n2:hasPrev?curr.m_fisi:null,ok2:hasPrev?curr.ok_fisi:null},
+    {nome:'Inglês',emoji:'🌐',cor:'#10b981',
+      ac1:main.ingl,n1:main.m_ingl,ok1:main.ok_ingl,
+      ac2:hasPrev?curr.ingl:null,n2:hasPrev?curr.m_ingl:null,ok2:hasPrev?curr.ok_ingl:null},
   ];
 
   document.getElementById('pNotas').innerHTML=`
   <div class="card fade-in">
     <div class="card-head"><h2>📊 Desempenho — ${a.nome.split(' ')[0]}</h2></div>
-    <p class="card-sub">${has2?'Comparativo Simulado 1 (28/02) vs Simulado 2 (07/03).':'Resultado do Simulado 1 — 28/02/2026.'}</p>
+    <p class="card-sub">${hasPrev?`Comparativo ${prev.label} (${prev.date}) vs ${curr.label} (${curr.date}).`:`Resultado do ${curr.label} — ${curr.date}/2026.`}</p>
     <div class="stat-grid" style="margin-bottom:20px">
-      <div class="stat-item"><div class="s-label">Ranking Sim. 1</div><div class="s-val" style="color:var(--navy)">${s1.rank>0?'#'+s1.rank+'º':'—'}</div><div class="s-hint">de ${T.sorted1.length}</div></div>
-      ${has2?`<div class="stat-item"><div class="s-label">Ranking Sim. 2</div><div class="s-val" style="color:var(--navy)">${s2.rank>0?'#'+s2.rank+'º':'—'}</div><div class="s-hint">de ${T.sorted2.length}</div></div>
+      <div class="stat-item"><div class="s-label">Ranking ${main.label}</div><div class="s-val" style="color:var(--navy)">${main.rank>0?'#'+main.rank+'º':'—'}</div><div class="s-hint">de ${main.sorted.length}</div></div>
+      ${hasPrev?`<div class="stat-item"><div class="s-label">Ranking ${curr.label}</div><div class="s-val" style="color:var(--navy)">${curr.rank>0?'#'+curr.rank+'º':'—'}</div><div class="s-hint">de ${curr.sorted.length}</div></div>
       <div class="stat-item"><div class="s-label">Variação</div><div class="s-val" style="color:${dRank>0?'#16a34a':dRank<0?'#dc2626':'#6b7280'}">${dRank===null?'—':dRank>0?'▲+'+dRank:dRank<0?'▼'+dRank:'=0'}</div><div class="s-hint">posições</div></div>`:''}
-      <div class="stat-item"><div class="s-label">MP Sim. 1</div><div class="s-val" style="color:${s1.aprov?'#16a34a':'#dc2626'}">${s1.media.toFixed(2)}</div><div class="s-hint">${s1.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>
-      ${has2?`<div class="stat-item"><div class="s-label">MP Sim. 2</div><div class="s-val" style="color:${s2.aprov?'#16a34a':'#dc2626'}">${s2.media.toFixed(2)}</div><div class="s-hint">${s2.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>
-      <div class="stat-item"><div class="s-label">∆ Média</div><div class="s-val">${dFmt(s2.media-s1.media)}</div><div class="s-hint">evolução</div></div>`:''}
+      <div class="stat-item"><div class="s-label">MP ${main.label}</div><div class="s-val" style="color:${main.aprov?'#16a34a':'#dc2626'}">${main.media.toFixed(2)}</div><div class="s-hint">${main.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>
+      ${hasPrev?`<div class="stat-item"><div class="s-label">MP ${curr.label}</div><div class="s-val" style="color:${curr.aprov?'#16a34a':'#dc2626'}">${curr.media.toFixed(2)}</div><div class="s-hint">${curr.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>
+      <div class="stat-item"><div class="s-label">∆ Média</div><div class="s-val">${dFmt(curr.media-prev.media)}</div><div class="s-hint">evolução</div></div>`:''}
     </div>
     <div class="disc-grid">
       ${discs.map(d=>`<div class="disc-card" style="border-left:4px solid ${d.cor}">
         <div class="dc-name">${d.emoji} ${d.nome}</div>
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin:4px 0">
-          <div><div style="font-size:11px;color:var(--text3);font-weight:600">Sim. 1</div>
+          <div><div style="font-size:11px;color:var(--text3);font-weight:600">${main.label}</div>
             <div class="dc-val" style="font-size:26px;color:${d.ok1?'#16a34a':'#dc2626'}">${d.n1.toFixed(2)}</div>
             <div class="dc-max">${d.ac1}/16</div></div>
-          ${has2?`<div style="text-align:right"><div style="font-size:11px;color:var(--text3);font-weight:600">Sim. 2</div>
+          ${hasPrev?`<div style="text-align:right"><div style="font-size:11px;color:var(--text3);font-weight:600">${curr.label}</div>
             <div style="font-size:26px;font-weight:900;color:${d.ok2?'#16a34a':'#dc2626'}">${d.n2.toFixed(2)}</div>
             <div style="font-size:11px;color:var(--text3)">${d.ac2}/16</div></div>`:''}
         </div>
-        ${has2?`<div style="text-align:center;font-size:13px;margin-top:4px">${dFmt(d.n2-d.n1)}</div>`:''}
+        ${hasPrev?`<div style="text-align:center;font-size:13px;margin-top:4px">${dFmt(d.n2-d.n1)}</div>`:''}
         <div style="margin-top:6px">
-          <span class="chip ${d.ok1?'chip-aprov':'chip-reprov'}" style="font-size:10px">S1: ${d.ok1?'✓':'✗'}</span>
-          ${has2?`<span class="chip ${d.ok2?'chip-aprov':'chip-reprov'}" style="font-size:10px;margin-left:4px">S2: ${d.ok2?'✓':'✗'}</span>`:''}
+          <span class="chip ${d.ok1?'chip-aprov':'chip-reprov'}" style="font-size:10px">S${main.n}: ${d.ok1?'✓':'✗'}</span>
+          ${hasPrev?`<span class="chip ${d.ok2?'chip-aprov':'chip-reprov'}" style="font-size:10px;margin-left:4px">S${curr.n}: ${d.ok2?'✓':'✗'}</span>`:''}
         </div>
       </div>`).join('')}
     </div>
-    ${has2?`<h3 style="font-size:14px;font-weight:800;color:var(--navy);margin:20px 0 8px">📋 Comparativo</h3>
+    ${hasPrev?`<h3 style="font-size:14px;font-weight:800;color:var(--navy);margin:20px 0 8px">📋 Comparativo</h3>
     <table class="dtable"><thead><tr>
-      <th style="text-align:left">Disciplina</th><th>Ac. S1</th><th>Nota S1</th>
-      <th>Ac. S2</th><th>Nota S2</th><th>∆</th><th>S2</th>
+      <th style="text-align:left">Disciplina</th><th>Ac. ${prev.label}</th><th>Nota ${prev.label}</th>
+      <th>Ac. ${curr.label}</th><th>Nota ${curr.label}</th><th>∆</th><th>${curr.label}</th>
     </tr></thead><tbody>
       ${discs.map(d=>`<tr>
         <td><strong style="color:${d.cor}">${d.emoji} ${d.nome}</strong></td>
@@ -1041,54 +1072,61 @@ function buildNotas(){
       </tr>`).join('')}
       <tr style="background:#f0f4ff">
         <td><strong>MP</strong></td>
-        <td style="text-align:center">${s1.gtot}/64</td>
-        <td style="text-align:center;font-weight:900;color:${s1.aprov?'#16a34a':'#dc2626'}">${s1.media.toFixed(2)}</td>
-        <td style="text-align:center">${s2.gtot}/64</td>
-        <td style="text-align:center;font-weight:900;color:${s2.aprov?'#16a34a':'#dc2626'}">${s2.media.toFixed(2)}</td>
-        <td style="text-align:center">${dFmt(s2.media-s1.media)}</td>
-        <td style="text-align:center">${s2.aprov?'<span class="chip chip-aprov" style="font-size:10px">Aprov.</span>':'<span class="chip chip-reprov" style="font-size:10px">Reprov.</span>'}</td>
+        <td style="text-align:center">${prev.gtot}/64</td>
+        <td style="text-align:center;font-weight:900;color:${prev.aprov?'#16a34a':'#dc2626'}">${prev.media.toFixed(2)}</td>
+        <td style="text-align:center">${curr.gtot}/64</td>
+        <td style="text-align:center;font-weight:900;color:${curr.aprov?'#16a34a':'#dc2626'}">${curr.media.toFixed(2)}</td>
+        <td style="text-align:center">${dFmt(curr.media-prev.media)}</td>
+        <td style="text-align:center">${curr.aprov?'<span class="chip chip-aprov" style="font-size:10px">Aprov.</span>':'<span class="chip chip-reprov" style="font-size:10px">Reprov.</span>'}</td>
       </tr>
     </tbody></table>`:''}
-    ${!s1.aprov?`<div class="warn-box" style="margin-top:14px"><h5>⚠️ Sim.1 — ${s1.motivo}</h5></div>`:''}
-    ${has2&&!s2.aprov?`<div class="warn-box" style="margin-top:8px"><h5>⚠️ Sim.2 — ${s2.motivo}</h5></div>`:''}
+    ${hasPrev&&!prev.aprov?`<div class="warn-box" style="margin-top:14px"><h5>⚠️ ${prev.label} — ${prev.motivo}</h5></div>`:''}
+    ${!curr.aprov?`<div class="warn-box" style="margin-top:${hasPrev?'8px':'14px'}"><h5>⚠️ ${curr.label} — ${curr.motivo}</h5></div>`:''}
   </div>`;
 }
 
 // ═══ BUILD GRÁFICO ═══
 function buildGrafico(){
   const a=atual;
-  const has2=(a.s2_rank||0)>0||(a.s2_media||0)>0;
-  const avg=T.avgs;
+  const has1=a.rank>0;
+  const has2=(a.s2_rank||0)>0;
+  const has3=(a.s3_rank||0)>0;
 
-  const labels=['Português','Matemática','Física','Inglês'];
-  const s1vals=[a.m_port,a.m_mate,a.m_fisi,a.m_ingl];
-  const s2vals=has2?[a.s2_m_port||0,a.s2_m_mate||0,a.s2_m_fisi||0,a.s2_m_ingl||0]:null;
-  const avgVals=[avg.port,avg.mate,avg.fisi,avg.ingl];
+  const simData=[];
+  const simColors=['#3b82f6','#10b981','#f59e0b'];
+  const simBg=['rgba(59,130,246,0.2)','rgba(16,185,129,0.2)','rgba(245,158,11,0.2)'];
+  const simBgBar=['rgba(59,130,246,0.8)','rgba(16,185,129,0.8)','rgba(245,158,11,0.8)'];
+  if(has1)simData.push({label:'Sim. 1',vals:[a.m_port,a.m_mate,a.m_fisi,a.m_ingl]});
+  if(has2)simData.push({label:'Sim. 2',vals:[a.s2_m_port||0,a.s2_m_mate||0,a.s2_m_fisi||0,a.s2_m_ingl||0]});
+  if(has3)simData.push({label:'Sim. 3',vals:[a.s3_m_port||0,a.s3_m_mate||0,a.s3_m_fisi||0,a.s3_m_ingl||0]});
+
+  const avgSrc=has3?T.avgs3:has2?T.avgs2:T.avgs;
+  const avgVals=[avgSrc.port,avgSrc.mate,avgSrc.fisi,avgSrc.ingl];
+  const barTitle=simData.length>=2?`Barras — ${simData[simData.length-2].label} vs ${simData[simData.length-1].label}`:'Barras — Notas por Disciplina';
 
   if(chartObjRadar){chartObjRadar.destroy();chartObjRadar=null;}
   if(chartObjBar){chartObjBar.destroy();chartObjBar=null;}
 
+  const labels=['Português','Matemática','Física','Inglês'];
   document.getElementById('pGrafico').innerHTML=`
   <div class="card fade-in">
     <div class="card-head"><h2>📈 Gráficos — ${a.nome.split(' ')[0]}</h2></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:16px">
       <div><h3 style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px">Radar — vs Média da Turma</h3>
         <canvas id="radarChart" height="260"></canvas></div>
-      <div><h3 style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px">${has2?'Barras — Sim.1 vs Sim.2':'Barras — Notas por Disciplina'}</h3>
+      <div><h3 style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px">${barTitle}</h3>
         <canvas id="barChart" height="260"></canvas></div>
     </div>
   </div>`;
 
   setTimeout(()=>{
   const rCtx=document.getElementById('radarChart').getContext('2d');
-  const datasets=[{label:'Sim. 1',data:s1vals,backgroundColor:'rgba(59,130,246,0.2)',borderColor:'#3b82f6',borderWidth:2,pointBackgroundColor:'#3b82f6'}];
-  if(has2)datasets.push({label:'Sim. 2',data:s2vals,backgroundColor:'rgba(16,185,129,0.2)',borderColor:'#10b981',borderWidth:2,pointBackgroundColor:'#10b981'});
+  const datasets=simData.map((s,i)=>({label:s.label,data:s.vals,backgroundColor:simBg[i],borderColor:simColors[i],borderWidth:2,pointBackgroundColor:simColors[i]}));
   datasets.push({label:'Média Turma',data:avgVals,backgroundColor:'rgba(156,163,175,0.1)',borderColor:'#9ca3af',borderWidth:1.5,borderDash:[4,4],pointBackgroundColor:'#9ca3af'});
   chartObjRadar=new Chart(rCtx,{type:'radar',data:{labels,datasets},options:{scales:{r:{min:0,max:10,ticks:{stepSize:2}}},plugins:{legend:{position:'bottom'}}}});
 
   const bCtx=document.getElementById('barChart').getContext('2d');
-  const bDatasets=[{label:'Sim. 1',data:s1vals,backgroundColor:'rgba(59,130,246,0.8)'}];
-  if(has2)bDatasets.push({label:'Sim. 2',data:s2vals,backgroundColor:'rgba(16,185,129,0.8)'});
+  const bDatasets=simData.map((s,i)=>({label:s.label,data:s.vals,backgroundColor:simBgBar[i]}));
   chartObjBar=new Chart(bCtx,{type:'bar',data:{labels,datasets:bDatasets},options:{scales:{y:{min:0,max:10,ticks:{stepSize:2}}},plugins:{legend:{position:'bottom'}}}});
   },120);
 }
@@ -1097,12 +1135,25 @@ function buildGrafico(){
 function buildPlano(){
   const a=atual;
   const CORTE=7.41;
-  const has2=(a.s2_rank||0)>0||(a.s2_media||0)>0;
+  const has1=a.rank>0;
+  const has2=(a.s2_rank||0)>0;
+  const has3=(a.s3_rank||0)>0;
 
-  // Use best available media for chance calculation
-  const mediaRef=has2?Math.max(a.media,a.s2_media||0):a.media;
-  const reprovDiscs=[a.ok_port,a.ok_mate,a.ok_fisi,a.ok_ingl].filter(x=>!x).length;
-  const reprovRed=!a.ok_red;
+  // Use most recent sim for criteria, best media for chance calculation
+  const currOkPort=has3?a.ok3_port:has2?a.ok2_port:a.ok_port;
+  const currOkMate=has3?a.ok3_mate:has2?a.ok2_mate:a.ok_mate;
+  const currOkFisi=has3?a.ok3_fisi:has2?a.ok2_fisi:a.ok_fisi;
+  const currOkIngl=has3?a.ok3_ingl:has2?a.ok2_ingl:a.ok_ingl;
+  const currOkRed=has3?a.ok3_red:has2?a.ok2_red:a.ok_red;
+  const currPort=has3?(a.s3_m_port||0):has2?(a.s2_m_port||0):a.m_port;
+  const currMate=has3?(a.s3_m_mate||0):has2?(a.s2_m_mate||0):a.m_mate;
+  const currFisi=has3?(a.s3_m_fisi||0):has2?(a.s2_m_fisi||0):a.m_fisi;
+  const currIngl=has3?(a.s3_m_ingl||0):has2?(a.s2_m_ingl||0):a.m_ingl;
+  const currLabel=has3?'Sim. 3':has2?'Sim. 2':'Sim. 1';
+  const mediaRef=Math.max(has1?a.media:0,has2?(a.s2_media||0):0,has3?(a.s3_media||0):0);
+
+  const reprovDiscs=[currOkPort,currOkMate,currOkFisi,currOkIngl].filter(x=>!x).length;
+  const reprovRed=!currOkRed;
 
   let chanceBase=mediaRef>=CORTE?100:Math.round((mediaRef/CORTE)*100);
   const penalidade=reprovDiscs*18+(reprovRed?15:0);
@@ -1112,10 +1163,15 @@ function buildPlano(){
   const chanceBorda=chance>=70?'#86efac':chance>=40?'#fde68a':'#fca5a5';
   const chanceLabel=chance>=70?'✅ Boa chance de classificação':chance>=40?'⚠️ Precisa melhorar':'❌ Risco alto de eliminação';
 
+  const mpCells=[];
+  if(has1)mpCells.push(`<div class="stat-item"><div class="s-label">MP Sim. 1</div><div class="s-val" style="color:${a.media>=CORTE?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div><div class="s-hint">de 10,0</div></div>`);
+  if(has2)mpCells.push(`<div class="stat-item"><div class="s-label">MP Sim. 2</div><div class="s-val" style="color:${(a.s2_media||0)>=CORTE?'#16a34a':'#dc2626'}">${(a.s2_media||0).toFixed(2)}</div><div class="s-hint">de 10,0</div></div>`);
+  if(has3)mpCells.push(`<div class="stat-item"><div class="s-label">MP Sim. 3</div><div class="s-val" style="color:${(a.s3_media||0)>=CORTE?'#16a34a':'#dc2626'}">${(a.s3_media||0).toFixed(2)}</div><div class="s-hint">de 10,0</div></div>`);
+
   document.getElementById('pPlano').innerHTML=`
   <div class="card fade-in" style="border:2px solid ${chanceBorda}">
     <div class="card-head"><h2 style="color:${chanceCor}">🎯 Chance de Classificação na AFA</h2></div>
-    <p class="card-sub" style="margin-bottom:20px">Baseada na MP vs corte histórico (7,41 = 100%). Penalidade por disciplinas eliminatórias.</p>
+    <p class="card-sub" style="margin-bottom:20px">Baseada na melhor MP vs corte histórico (7,41 = 100%). Critérios de ${currLabel}.</p>
     <div style="margin-bottom:28px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <span style="font-size:28px;font-weight:900;color:${chanceCor}">${chance}%</span>
@@ -1130,17 +1186,16 @@ function buildPlano(){
         <span>0%</span><span style="color:var(--navy)">100% = MP ≥ 7,41</span>
       </div>
     </div>
-    <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
-      <div class="stat-item"><div class="s-label">MP Sim. 1</div><div class="s-val" style="color:${a.media>=CORTE?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div><div class="s-hint">de 10,0</div></div>
-      ${has2?`<div class="stat-item"><div class="s-label">MP Sim. 2</div><div class="s-val" style="color:${(a.s2_media||0)>=CORTE?'#16a34a':'#dc2626'}">${(a.s2_media||0).toFixed(2)}</div><div class="s-hint">de 10,0</div></div>`:''}
+    <div class="stat-grid" style="margin-bottom:16px">
+      ${mpCells.join('')}
       <div class="stat-item"><div class="s-label">Corte AFA</div><div class="s-val" style="color:var(--navy)">${CORTE}</div><div class="s-hint">= 100%</div></div>
       <div class="stat-item"><div class="s-label">Critérios elim.</div><div class="s-val" style="color:${reprovDiscs+reprovRed>0?'#dc2626':'#16a34a'}">${reprovDiscs+(reprovRed?1:0)}</div><div class="s-hint">disciplina(s)</div></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
-      ${[{nome:'Português',nota:a.m_port,ok:a.ok_port,cor:'#3b82f6'},
-         {nome:'Matemática',nota:a.m_mate,ok:a.ok_mate,cor:'#8b5cf6'},
-         {nome:'Física',nota:a.m_fisi,ok:a.ok_fisi,cor:'#f59e0b'},
-         {nome:'Inglês',nota:a.m_ingl,ok:a.ok_ingl,cor:'#10b981'}].map(d=>`
+      ${[{nome:'Português',nota:currPort,ok:currOkPort,cor:'#3b82f6'},
+         {nome:'Matemática',nota:currMate,ok:currOkMate,cor:'#8b5cf6'},
+         {nome:'Física',nota:currFisi,ok:currOkFisi,cor:'#f59e0b'},
+         {nome:'Inglês',nota:currIngl,ok:currOkIngl,cor:'#10b981'}].map(d=>`
         <div>
           <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:3px">
             <span>${d.nome}</span>
@@ -1154,7 +1209,7 @@ function buildPlano(){
       <div style="font-size:11px;color:var(--text3);font-weight:600">▲ Linha central = mínimo 5,0</div>
     </div>
     ${reprovDiscs>0||reprovRed?`<div style="padding:10px 14px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;font-size:12px;color:#b91c1c;font-weight:700">
-      ⚠️ Eliminado por: ${[!a.ok_port?'Português':'',!a.ok_mate?'Matemática':'',!a.ok_fisi?'Física':'',!a.ok_ingl?'Inglês':'',!a.ok_red?'Redação não entregue':''].filter(Boolean).join(' · ')}
+      ⚠️ Eliminado por: ${[!currOkPort?'Português':'',!currOkMate?'Matemática':'',!currOkFisi?'Física':'',!currOkIngl?'Inglês':'',!currOkRed?'Redação não entregue':''].filter(Boolean).join(' · ')}
     </div>`:`<div style="padding:10px 14px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;font-size:12px;color:#15803d;font-weight:700">
       ✅ Aprovado em todos os critérios mínimos — foco em elevar a MP até 7,41
     </div>`}
@@ -1173,7 +1228,8 @@ function buildPlano(){
     <li>Para classificar, a MP precisa ser ≥ 7,41</li>
     <li>Priorize as disciplinas abaixo de 5,0 antes de elevar as que já passaram</li>
   </ul></div>
-  ${!a.ok_red?`<div class="warn-box"><h5>⚠️ Redação não entregue</h5><ul><li>Critério eliminatório — entrega obrigatória</li></ul></div>`:''}`;
+  ${!currOkRed?`<div class="warn-box"><h5>⚠️ Redação não entregue</h5><ul><li>Critério eliminatório — entrega obrigatória</li></ul></div>`:''}`;
+
 }
 
 // ═══ BUILD ANÁLISE ═══
@@ -1181,11 +1237,22 @@ function buildAnalise(){
   const a=atual;
   const CORTE=7.41;
   const TOTAL_Q=16;
+  const has1=a.rank>0, has2=(a.s2_rank||0)>0, has3=(a.s3_rank||0)>0;
+  const currLabel=has3?'Sim. 3':has2?'Sim. 2':'Sim. 1';
+  const currDate=has3?'28/03':has2?'07/03':'28/02';
+  const port=has3?(a.s3_port||0):has2?(a.s2_port||0):a.port;
+  const mate=has3?(a.s3_mate||0):has2?(a.s2_mate||0):a.mate;
+  const fisi=has3?(a.s3_fisi||0):has2?(a.s2_fisi||0):a.fisi;
+  const ingl=has3?(a.s3_ingl||0):has2?(a.s2_ingl||0):a.ingl;
+  const m_port=has3?(a.s3_m_port||0):has2?(a.s2_m_port||0):a.m_port;
+  const m_mate=has3?(a.s3_m_mate||0):has2?(a.s2_m_mate||0):a.m_mate;
+  const m_fisi=has3?(a.s3_m_fisi||0):has2?(a.s2_m_fisi||0):a.m_fisi;
+  const m_ingl=has3?(a.s3_m_ingl||0):has2?(a.s2_m_ingl||0):a.m_ingl;
   const discs=[
-    {nome:'Português',ac:a.port,nota:a.m_port,cor:'#3b82f6',emoji:'📖'},
-    {nome:'Matemática',ac:a.mate,nota:a.m_mate,cor:'#8b5cf6',emoji:'📐'},
-    {nome:'Física',ac:a.fisi,nota:a.m_fisi,cor:'#f59e0b',emoji:'⚡'},
-    {nome:'Inglês',ac:a.ingl,nota:a.m_ingl,cor:'#10b981',emoji:'🌐'},
+    {nome:'Português',ac:port,nota:m_port,cor:'#3b82f6',emoji:'📖'},
+    {nome:'Matemática',ac:mate,nota:m_mate,cor:'#8b5cf6',emoji:'📐'},
+    {nome:'Física',ac:fisi,nota:m_fisi,cor:'#f59e0b',emoji:'⚡'},
+    {nome:'Inglês',ac:ingl,nota:m_ingl,cor:'#10b981',emoji:'🌐'},
   ];
 
   const ic=d=>{const p=(d.ac/TOTAL_Q)*100;
@@ -1214,7 +1281,7 @@ function buildAnalise(){
   document.getElementById('pAnalise').innerHTML=`
   <div class="card fade-in">
     <div class="card-head"><h2>📋 Análise de Performance — ${a.nome.split(' ')[0]}</h2></div>
-    <p class="card-sub">Indicadores pedagógicos baseados no Simulado 1 (28/02/2026).</p>
+    <p class="card-sub">Indicadores pedagógicos baseados no ${currLabel} (${currDate}/2026).</p>
   </div>
   <div class="card fade-in">
     <div class="card-head"><h2>🔬 Índice de Confiabilidade (IC)</h2></div>
@@ -1309,22 +1376,30 @@ function buildAnalise(){
 function buildEstudos(){
   const a = atual;
 
-  // Determine weakest subjects by nota (sim1, or sim2 if available)
-  const has2 = (a.s2_rank||0)>0||(a.s2_media||0)>0;
+  // Determine weakest subjects by most recent sim
+  const has1=a.rank>0, has2=(a.s2_rank||0)>0, has3=(a.s3_rank||0)>0;
+  const currLabel=has3?'Sim. 3':has2?'Sim. 2':'Sim. 1';
+  const prevLabel=has3?(has2?'Sim. 2':has1?'Sim. 1':null):has2&&has1?'Sim. 1':null;
+  const hasPrev=!!prevLabel;
+
+  const cn_port=has3?(a.s3_m_port||0):has2?(a.s2_m_port||0):a.m_port;
+  const cn_mate=has3?(a.s3_m_mate||0):has2?(a.s2_m_mate||0):a.m_mate;
+  const cn_fisi=has3?(a.s3_m_fisi||0):has2?(a.s2_m_fisi||0):a.m_fisi;
+  const cn_ingl=has3?(a.s3_m_ingl||0):has2?(a.s2_m_ingl||0):a.m_ingl;
+  const pv_port=has3?(has2?(a.s2_m_port||0):a.m_port):has2?a.m_port:null;
+  const pv_mate=has3?(has2?(a.s2_m_mate||0):a.m_mate):has2?a.m_mate:null;
+  const pv_fisi=has3?(has2?(a.s2_m_fisi||0):a.m_fisi):has2?a.m_fisi:null;
+  const pv_ingl=has3?(has2?(a.s2_m_ingl||0):a.m_ingl):has2?a.m_ingl:null;
 
   const discs = [
-    {nome:'Português', emoji:'📖', cor:'#3b82f6',
-     nota: has2 ? (a.m_port + (a.s2_m_port||0))/2 : a.m_port,
-     nota1: a.m_port, nota2: a.s2_m_port||null, ok: a.ok_port},
-    {nome:'Matemática', emoji:'📐', cor:'#8b5cf6',
-     nota: has2 ? (a.m_mate + (a.s2_m_mate||0))/2 : a.m_mate,
-     nota1: a.m_mate, nota2: a.s2_m_mate||null, ok: a.ok_mate},
-    {nome:'Física', emoji:'⚡', cor:'#f59e0b',
-     nota: has2 ? (a.m_fisi + (a.s2_m_fisi||0))/2 : a.m_fisi,
-     nota1: a.m_fisi, nota2: a.s2_m_fisi||null, ok: a.ok_fisi},
-    {nome:'Inglês', emoji:'🌐', cor:'#10b981',
-     nota: has2 ? (a.m_ingl + (a.s2_m_ingl||0))/2 : a.m_ingl,
-     nota1: a.m_ingl, nota2: a.s2_m_ingl||null, ok: a.ok_ingl},
+    {nome:'Português', emoji:'📖', cor:'#3b82f6', nota:cn_port, nota_prev:pv_port,
+     ok: has3?a.ok3_port:has2?a.ok2_port:a.ok_port},
+    {nome:'Matemática', emoji:'📐', cor:'#8b5cf6', nota:cn_mate, nota_prev:pv_mate,
+     ok: has3?a.ok3_mate:has2?a.ok2_mate:a.ok_mate},
+    {nome:'Física', emoji:'⚡', cor:'#f59e0b', nota:cn_fisi, nota_prev:pv_fisi,
+     ok: has3?a.ok3_fisi:has2?a.ok2_fisi:a.ok_fisi},
+    {nome:'Inglês', emoji:'🌐', cor:'#10b981', nota:cn_ingl, nota_prev:pv_ingl,
+     ok: has3?a.ok3_ingl:has2?a.ok2_ingl:a.ok_ingl},
   ];
 
   // Sort by nota ascending (worst first = highest priority)
@@ -1420,13 +1495,13 @@ function buildEstudos(){
   <!-- Prioridades -->
   <div class="card fade-in">
     <div class="card-head"><h2>🎯 Prioridade por Disciplina</h2></div>
-    <p class="card-sub">Ordenado da maior para a menor dificuldade ${has2?'(média dos 2 simulados)':'(simulado 1)'}.</p>
+    <p class="card-sub">Ordenado da maior para a menor dificuldade (${currLabel}).</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
       ${sorted.map((d,i)=>{const p=prio(i); return `
         <div style="border:2px solid ${p.cor}33;background:${p.bg};border-radius:12px;padding:16px;border-left:4px solid ${p.cor}">
           <div style="font-size:13px;font-weight:900;color:var(--navy)">${d.emoji} ${d.nome}</div>
           <div style="font-size:28px;font-weight:900;color:${d.nota<5?'#dc2626':d.nota<7.41?'#d97706':'#16a34a'};margin:4px 0">${d.nota.toFixed(2)}</div>
-          ${has2?`<div style="font-size:11px;color:var(--text3)">S1: ${d.nota1.toFixed(2)} · S2: ${d.nota2!==null?d.nota2.toFixed(2):'—'}</div>`:''}
+          ${hasPrev&&d.nota_prev!==null?`<div style="font-size:11px;color:var(--text3)">${prevLabel}: ${d.nota_prev.toFixed(2)} · ${currLabel}: ${d.nota.toFixed(2)}</div>`:''}
           <div style="margin-top:6px"><span style="background:${p.cor};color:#fff;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:800">${p.label}</span></div>
           <div style="margin-top:8px;height:6px;background:#e5e9f0;border-radius:3px;overflow:hidden">
             <div style="height:100%;width:${Math.min(100,d.nota/10*100).toFixed(0)}%;background:${p.cor};border-radius:3px"></div>
@@ -2175,10 +2250,10 @@ confirmarRA = function(){
   if(exam === 'afa'){ _origConfirmarRA(); return; }
   const nome  = modal.dataset.nome;
   const T2    = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='en'?TEN:exam==='en2d'?TEN2D:TEN_GERAL;
-  const candidato = T2.list.find(a=>a.nome===nome);
   const digitado  = document.getElementById('raInput').value.trim().toUpperCase();
-  const esperado  = (candidato.ra||'').toUpperCase();
-  if(digitado!==esperado){
+  // Busca entre TODOS os homônimos o que tem exatamente esse RA
+  const candidato = T2.list.find(a=>a.nome===nome&&(a.ra||'').toUpperCase()===digitado);
+  if(!candidato){
     document.getElementById('raError').style.display='block';
     document.getElementById('raInput').select();
     return;
