@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -514,6 +514,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
     <div class="exam-subtabs" id="enSimTabs">
       <button class="sub-tab-btn active" onclick="switchEnSim('s1',this)">🥇 1º Simulado · 14/03</button>
       <button class="sub-tab-btn" onclick="switchEnSim('s2',this)">🥈 2º Simulado · 11/04</button>
+      <button class="sub-tab-btn" onclick="switchEnSim('s3',this)">🥉 3º Simulado · 02/05</button>
     </div>
     <div id="enSim1Wrap">
       <div class="exam-subtabs">
@@ -707,6 +708,101 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
       </div>
     </div>
     </div><!-- /enSim2Wrap -->
+    <!-- 3rd Sim EN -->
+    <div id="enSim3Wrap" style="display:none">
+      <div class="exam-subtabs">
+        <button class="sub-tab-btn active" onclick="switchEnS3Tab('d1',this)">&#128197; 1&#186; Dia &middot; 02/05</button>
+        <button class="sub-tab-btn" onclick="switchEnS3Tab('d2',this)">&#128197; 2&#186; Dia &middot; 09/05</button>
+        <button class="sub-tab-btn" onclick="switchEnS3Tab('geral',this)">&#127942; Geral</button>
+      </div>
+    <div id="enS3D1Wrap">
+      <div class="legend-box"><strong>3&#186; Simulado &middot; 1&#186; Dia &middot; 02/05/2026 &middot; Matem&#225;tica (22q) &middot; Ingl&#234;s (18q):</strong>
+        <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado = &#8805; 50% em todas</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado = abaixo do m&#237;nimo em ao menos 1</div>
+      </div>
+      <div class="ranking-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+          <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EN &mdash; 3&#186; Simulado &middot; 1&#186; Dia &middot; 02/05/2026</h2>
+            <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEnS3">0</span> &middot; Aprovados: <span id="aprovEnS3" style="color:var(--green);font-weight:700">0</span> &middot; Reprovados: <span id="reprovEnS3" style="color:var(--red);font-weight:700">0</span></p></div>
+          <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEnS3" placeholder="&#128269; Buscar pelo nome..." oninput="renderEnS3()">
+        </div>
+        <div class="ranking-filters">
+          <button class="filter-btn active" onclick="setFEnS3('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+          <button class="filter-btn" onclick="setFEnS3('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+          <button class="filter-btn" onclick="setFEnS3('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+          <button class="filter-btn" onclick="setFEnS3('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar</span></button>
+        </div>
+        <div id="uniWrapEnS3" style="display:none;margin-bottom:14px">
+          <select id="uniSelEnS3" onchange="renderEnS3()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">&#8212; Todas as unidades &#8212;</option></select>
+        </div>
+        <table class="ranking-table"><thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>M&#233;dia</th><th>Status</th>
+        </tr></thead><tbody id="bodyEnS3"></tbody></table>
+        <div class="stat-grid" id="statsEnS3" style="margin-top:20px"></div>
+      </div>
+    </div>
+    <div id="enS3D2Wrap" style="display:none">
+      <div class="legend-box"><strong>3&#186; Simulado &middot; 2&#186; Dia &middot; 09/05/2026 &middot; Portugu&#234;s (18q) &middot; Matem&#225;tica (22q) &middot; Ingl&#234;s (18q) &middot; F&#237;sica (22q):</strong>
+        <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado = &#8805; 50% em todas</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado = abaixo do m&#237;nimo em ao menos 1</div>
+      </div>
+      <div class="ranking-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+          <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EN &mdash; 3&#186; Simulado &middot; 2&#186; Dia &middot; 09/05/2026</h2>
+            <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEnS3D2">0</span> &middot; Aprovados: <span id="aprovEnS3D2" style="color:var(--green);font-weight:700">0</span> &middot; Reprovados: <span id="reprovEnS3D2" style="color:var(--red);font-weight:700">0</span></p></div>
+          <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEnS3D2" placeholder="&#128269; Buscar pelo nome..." oninput="renderEnS3D2()">
+        </div>
+        <div class="ranking-filters">
+          <button class="filter-btn active" onclick="setFEnS3D2('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+          <button class="filter-btn" onclick="setFEnS3D2('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+          <button class="filter-btn" onclick="setFEnS3D2('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+          <button class="filter-btn" onclick="setFEnS3D2('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar</span></button>
+        </div>
+        <div id="uniWrapEnS3D2" style="display:none;margin-bottom:14px">
+          <select id="uniSelEnS3D2" onchange="renderEnS3D2()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">&#8212; Todas as unidades &#8212;</option></select>
+        </div>
+        <table class="ranking-table"><thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>M&#233;dia</th><th>Status</th>
+        </tr></thead><tbody id="bodyEnS3D2"></tbody></table>
+        <div class="stat-grid" id="statsEnS3D2" style="margin-top:20px"></div>
+      </div>
+    </div>
+    <div id="enS3GeralWrap" style="display:none">
+      <div class="legend-box"><strong>3&#186; Simulado &middot; Geral (ambos os dias combinados):</strong>
+        <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado</div>
+      </div>
+      <div class="ranking-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+          <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EN &mdash; 3&#186; Simulado &middot; Ranking Geral</h2>
+            <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEnS3G">0</span> &middot; Aprovados: <span id="aprovEnS3G" style="color:var(--green);font-weight:700">0</span> &middot; Reprovados: <span id="reprovEnS3G" style="color:var(--red);font-weight:700">0</span></p></div>
+          <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEnS3G" placeholder="&#128269; Buscar pelo nome..." oninput="renderEnS3Geral()">
+        </div>
+        <div class="ranking-filters">
+          <button class="filter-btn active" onclick="setFEnS3G('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+          <button class="filter-btn" onclick="setFEnS3G('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+          <button class="filter-btn" onclick="setFEnS3G('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+          <button class="filter-btn" onclick="setFEnS3G('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar</span></button>
+        </div>
+        <div id="uniWrapEnS3G" style="display:none;margin-bottom:14px">
+          <select id="uniSelEnS3G" onchange="renderEnS3Geral()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">&#8212; Todas as unidades &#8212;</option></select>
+        </div>
+        <table class="ranking-table"><thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>M&#233;dia</th><th>Status</th>
+        </tr></thead><tbody id="bodyEnS3G"></tbody></table>
+        <div class="stat-grid" id="statsEnS3G" style="margin-top:20px"></div>
+      </div>
+    </div>
+    </div><!-- /enSim3Wrap -->
   </div>
 </div>
 <!-- BUSCA -->
@@ -1205,7 +1301,7 @@ function showSug(){
     `<div class="sug-item" onclick="selectSug('${esc(a.nome)}')">${a.nome} <span style="color:var(--text3);font-size:12px">[AFA] ${a.unidade||'—'}</span></div>`);
   const examSets=[
     {T:TEF_S2,exam:'efomm_s2',lbl:'EFOMM 2ºSim'},{T:TEF,exam:'efomm',lbl:'EFOMM 1ºSim'},
-    {T:TEN_S2,exam:'en_s2',lbl:'EN 2ºSim'},{T:TEN,exam:'en',lbl:'EN 1ºSim'},
+    {T:TEN_S3_GERAL,exam:'en_s3_geral',lbl:'EN 3ºSim'},{T:TEN_S2,exam:'en_s2',lbl:'EN 2ºSim'},{T:TEN,exam:'en',lbl:'EN 1ºSim'},
   ];
   const examHits=[];
   examSets.forEach(({T:et,exam,lbl})=>{
@@ -1229,7 +1325,7 @@ function buscar(){
   const af=fi(T.list); if(af){openAluno(af.nome);return;}
   const examSets=[
     {T:TEF_S2,exam:'efomm_s2'},{T:TEF,exam:'efomm'},
-    {T:TEN_S2,exam:'en_s2'},{T:TEN,exam:'en'},
+    {T:TEN_S3_GERAL,exam:'en_s3_geral'},{T:TEN_S2,exam:'en_s2'},{T:TEN,exam:'en'},
   ];
   for(const {T:et,exam} of examSets){
     const f=fi(et.list); if(f){openExamAluno(exam,f.nome);return;}
@@ -2569,6 +2665,82 @@ const RAW_EN_GERAL = [
 ];
 
 
+// EN 3Â° Simulado â€” 1Â° Dia 02/05/2026 â€” MatemÃ¡tica (22q) Â· InglÃªs (18q)
+const RAW_EN_S3D1 = [
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:1,aprov:true,status:"Aprovado",mate:13,ingl:16,m_mate:5.91,m_ingl:8.89,red:"Sim",media:7.4},
+{unidade:"MADUREIRA",nome:"LANAY LINS",ra:"MT24163974",rank:2,aprov:false,status:"Reprovado",mate:10,ingl:15,m_mate:4.55,m_ingl:8.33,red:"Sim",media:6.44},
+{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:3,aprov:false,status:"Reprovado",mate:7,ingl:15,m_mate:3.18,m_ingl:8.33,red:"Sim",media:5.755},
+{unidade:"BANGU",nome:"LUCAS CRUZ",ra:"MT20039806",rank:4,aprov:false,status:"Reprovado",mate:10,ingl:11,m_mate:4.55,m_ingl:6.11,red:"Sim",media:5.33},
+{unidade:"BANGU",nome:"PEDRO SEGUNDO",ra:"MT21056205",rank:5,aprov:false,status:"Reprovado",mate:7,ingl:13,m_mate:3.18,m_ingl:7.22,red:"Sim",media:5.2},
+{unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:6,aprov:false,status:"Reprovado",mate:8,ingl:11,m_mate:3.64,m_ingl:6.11,red:"Sim",media:4.875},
+{unidade:"MADUREIRA",nome:"SAMUEL FERNANDES",ra:"MT24156572",rank:7,aprov:false,status:"Reprovado",mate:5,ingl:13,m_mate:2.27,m_ingl:7.22,red:"Sim",media:4.745},
+{unidade:"BANGU",nome:"LÍVIA BARBOSA",ra:"MT23122203",rank:8,aprov:false,status:"Reprovado",mate:2,ingl:15,m_mate:0.91,m_ingl:8.33,red:"Sim",media:4.62},
+{unidade:"CAMPO GRANDE",nome:"PEDRO PINTO",ra:"MT22089403",rank:9,aprov:false,status:"Reprovado",mate:3,ingl:14,m_mate:1.36,m_ingl:7.78,red:"Sim",media:4.57},
+{unidade:"BANGU",nome:"FILIPE RIBEIRO",ra:"MT19026004",rank:10,aprov:false,status:"Reprovado",mate:7,ingl:10,m_mate:3.18,m_ingl:5.56,red:"Sim",media:4.37},
+{unidade:"MADUREIRA",nome:"GUILHERME OLIVEIRA",ra:"MT23124365",rank:11,aprov:false,status:"Reprovado",mate:10,ingl:6,m_mate:4.55,m_ingl:3.33,red:"Sim",media:3.94},
+{unidade:"MADUREIRA",nome:"GUILHERME NASCIMENTO",ra:"MT23111651",rank:12,aprov:false,status:"Reprovado",mate:2,ingl:12,m_mate:0.91,m_ingl:6.67,red:"Sim",media:3.79},
+{unidade:"NOVA IGUACU",nome:"LEVI LOYOLA",ra:"MT22092506",rank:13,aprov:false,status:"Reprovado",mate:8,ingl:7,m_mate:3.64,m_ingl:3.89,red:"Sim",media:3.765},
+{unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:14,aprov:false,status:"Reprovado",mate:5,ingl:8,m_mate:2.27,m_ingl:4.44,red:"Sim",media:3.355},
+{unidade:"MADUREIRA",nome:"GIOVANNA SIMÕES",ra:"MT23117831",rank:15,aprov:false,status:"Reprovado",mate:5,ingl:7,m_mate:2.27,m_ingl:3.89,red:"Sim",media:3.08},
+];
+
+// EN 3Â° Simulado â€” 2Â° Dia 09/05/2026 â€” Por(18q) Â· Mat(22q) Â· Ing(18q) Â· Fis(22q)
+const RAW_EN_S3D2 = [
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:1,aprov:false,status:"Reprovado",por:14,mat:13,ing:16,fis:5,m_por:7.78,m_mat:5.91,m_ing:8.89,m_fis:2.27,red:"Sim",media:6},
+{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:2,aprov:false,status:"Reprovado",por:13,mat:7,ing:15,fis:5,m_por:7.22,m_mat:3.18,m_ing:8.33,m_fis:2.27,red:"Sim",media:5},
+{unidade:"MADUREIRA",nome:"LANAY LINS",ra:"MT24163974",rank:3,aprov:false,status:"Reprovado",por:9,mat:10,ing:15,fis:4,m_por:5,m_mat:4.55,m_ing:8.33,m_fis:1.82,red:"Sim",media:4.75},
+{unidade:"BANGU",nome:"PEDRO SEGUNDO",ra:"MT21056205",rank:4,aprov:false,status:"Reprovado",por:10,mat:7,ing:13,fis:7,m_por:5.56,m_mat:3.18,m_ing:7.22,m_fis:3.18,red:"Sim",media:4.63},
+{unidade:"BANGU",nome:"LUCAS CRUZ",ra:"MT20039806",rank:5,aprov:false,status:"Reprovado",por:10,mat:10,ing:11,fis:5,m_por:5.56,m_mat:4.55,m_ing:6.11,m_fis:2.27,red:"Sim",media:4.5},
+{unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:6,aprov:false,status:"Reprovado",por:11,mat:8,ing:11,fis:5,m_por:6.11,m_mat:3.64,m_ing:6.11,m_fis:2.27,red:"Sim",media:4.38},
+{unidade:"MADUREIRA",nome:"SAMUEL FERNANDES",ra:"MT24156572",rank:7,aprov:false,status:"Reprovado",por:12,mat:5,ing:13,fis:4,m_por:6.67,m_mat:2.27,m_ing:7.22,m_fis:1.82,red:"Sim",media:4.25},
+{unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:8,aprov:false,status:"Reprovado",por:10,mat:5,ing:8,fis:8,m_por:5.56,m_mat:2.27,m_ing:4.44,m_fis:3.64,red:"Sim",media:3.88},
+{unidade:"MADUREIRA",nome:"GUILHERME OLIVEIRA",ra:"MT23124365",rank:9,aprov:false,status:"Reprovado",por:6,mat:10,ing:6,fis:6,m_por:3.33,m_mat:4.55,m_ing:3.33,m_fis:2.73,red:"Sim",media:3.5},
+{unidade:"MADUREIRA",nome:"GUILHERME NASCIMENTO",ra:"MT23111651",rank:10,aprov:false,status:"Reprovado",por:9,mat:2,ing:12,fis:4,m_por:5,m_mat:0.91,m_ing:6.67,m_fis:1.82,red:"Sim",media:3.38},
+{unidade:"NOVA IGUACU",nome:"MIGUEL COSTA",ra:"MT23134281",rank:11,aprov:false,status:"Reprovado",por:12,mat:0,ing:0,fis:6,m_por:6.67,m_mat:0,m_ing:0,m_fis:2.73,red:"Sim",media:2.25},
+{unidade:"MADUREIRA",nome:"GABRIEL DOLZANI",ra:"MT23121577",rank:12,aprov:false,status:"Reprovado",por:7,mat:0,ing:0,fis:9,m_por:3.89,m_mat:0,m_ing:0,m_fis:4.09,red:"Sim",media:2},
+{unidade:"TAQUARA",nome:"AMANDA ROSA",ra:"MT23131576",rank:13,aprov:false,status:"Reprovado",por:9,mat:0,ing:0,fis:7,m_por:5,m_mat:0,m_ing:0,m_fis:3.18,red:"Sim",media:2},
+{unidade:"MADUREIRA",nome:"LUIZ DIAS",ra:"MT22093330",rank:14,aprov:false,status:"Reprovado",por:10,mat:0,ing:0,fis:5,m_por:5.56,m_mat:0,m_ing:0,m_fis:2.27,red:"Sim",media:1.88},
+{unidade:"MADUREIRA",nome:"DAVI COSTA",ra:"MT25181447",rank:15,aprov:false,status:"Reprovado",por:8,mat:0,ing:0,fis:6,m_por:4.44,m_mat:0,m_ing:0,m_fis:2.73,red:"Sim",media:1.75},
+{unidade:"MADUREIRA",nome:"ARTHUR NETO",ra:"MT24138562",rank:16,aprov:false,status:"Reprovado",por:12,mat:0,ing:0,fis:2,m_por:6.67,m_mat:0,m_ing:0,m_fis:0.91,red:"Sim",media:1.75},
+{unidade:"MADUREIRA",nome:"LEONARDO FERREIRA",ra:"MT22101067",rank:17,aprov:false,status:"Reprovado",por:10,mat:0,ing:0,fis:3,m_por:5.56,m_mat:0,m_ing:0,m_fis:1.36,red:"Sim",media:1.63},
+{unidade:"BANGU",nome:"YANNI VIANA",ra:"MT21065735",rank:18,aprov:false,status:"Reprovado",por:10,mat:0,ing:0,fis:3,m_por:5.56,m_mat:0,m_ing:0,m_fis:1.36,red:"Sim",media:1.63},
+{unidade:"MADUREIRA",nome:"RICHARD GOMES",ra:"MT23118201",rank:19,aprov:false,status:"Reprovado",por:8,mat:0,ing:0,fis:4,m_por:4.44,m_mat:0,m_ing:0,m_fis:1.82,red:"Sim",media:1.5},
+{unidade:"BANGU",nome:"BRENO OLIVEIRA",ra:"MT24153728",rank:20,aprov:false,status:"Reprovado",por:6,mat:0,ing:0,fis:4,m_por:3.33,m_mat:0,m_ing:0,m_fis:1.82,red:"Sim",media:1.25},
+{unidade:"BANGU",nome:"MIGUEL SOUZA",ra:"MT19023803",rank:21,aprov:false,status:"Reprovado",por:5,mat:0,ing:0,fis:4,m_por:2.78,m_mat:0,m_ing:0,m_fis:1.82,red:"Sim",media:1.13},
+{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:22,aprov:false,status:"Reprovado",por:4,mat:0,ing:0,fis:3,m_por:2.22,m_mat:0,m_ing:0,m_fis:1.36,red:"Sim",media:0.88},
+];
+
+// EN 3Â° Simulado â€” Geral 02/05+09/05 â€” todos os 4 campos
+const RAW_EN_S3_GERAL = [
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:1,aprov:false,status:"Reprovado",por:14,mat:13,ing:16,fis:5,m_por:7.78,m_mat:5.91,m_ing:8.89,m_fis:2.27,red:"Sim",media:6},
+{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:2,aprov:false,status:"Reprovado",por:13,mat:7,ing:15,fis:5,m_por:7.22,m_mat:3.18,m_ing:8.33,m_fis:2.27,red:"Sim",media:5},
+{unidade:"MADUREIRA",nome:"LANAY LINS",ra:"MT24163974",rank:3,aprov:false,status:"Reprovado",por:9,mat:10,ing:15,fis:4,m_por:5,m_mat:4.55,m_ing:8.33,m_fis:1.82,red:"Sim",media:4.75},
+{unidade:"BANGU",nome:"PEDRO SEGUNDO",ra:"MT21056205",rank:4,aprov:false,status:"Reprovado",por:10,mat:7,ing:13,fis:7,m_por:5.56,m_mat:3.18,m_ing:7.22,m_fis:3.18,red:"Sim",media:4.63},
+{unidade:"BANGU",nome:"LUCAS CRUZ",ra:"MT20039806",rank:5,aprov:false,status:"Reprovado",por:10,mat:10,ing:11,fis:5,m_por:5.56,m_mat:4.55,m_ing:6.11,m_fis:2.27,red:"Sim",media:4.5},
+{unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:6,aprov:false,status:"Reprovado",por:11,mat:8,ing:11,fis:5,m_por:6.11,m_mat:3.64,m_ing:6.11,m_fis:2.27,red:"Sim",media:4.38},
+{unidade:"MADUREIRA",nome:"SAMUEL FERNANDES",ra:"MT24156572",rank:7,aprov:false,status:"Reprovado",por:12,mat:5,ing:13,fis:4,m_por:6.67,m_mat:2.27,m_ing:7.22,m_fis:1.82,red:"Sim",media:4.25},
+{unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:8,aprov:false,status:"Reprovado",por:10,mat:5,ing:8,fis:8,m_por:5.56,m_mat:2.27,m_ing:4.44,m_fis:3.64,red:"Sim",media:3.88},
+{unidade:"MADUREIRA",nome:"GUILHERME OLIVEIRA",ra:"MT23124365",rank:9,aprov:false,status:"Reprovado",por:6,mat:10,ing:6,fis:6,m_por:3.33,m_mat:4.55,m_ing:3.33,m_fis:2.73,red:"Sim",media:3.5},
+{unidade:"MADUREIRA",nome:"GUILHERME NASCIMENTO",ra:"MT23111651",rank:10,aprov:false,status:"Reprovado",por:9,mat:2,ing:12,fis:4,m_por:5,m_mat:0.91,m_ing:6.67,m_fis:1.82,red:"Sim",media:3.38},
+{unidade:"NOVA IGUACU",nome:"MIGUEL COSTA",ra:"MT23134281",rank:11,aprov:false,status:"Reprovado",por:12,mat:0,ing:0,fis:6,m_por:6.67,m_mat:0,m_ing:0,m_fis:2.73,red:"Sim",media:2.25},
+{unidade:"BANGU",nome:"LÍVIA BARBOSA",ra:"MT23122203",rank:12,aprov:false,status:"Reprovado",por:0,mat:2,ing:15,fis:0,m_por:0,m_mat:0.91,m_ing:8.33,m_fis:0,red:"Sim",media:2.13},
+{unidade:"CAMPO GRANDE",nome:"PEDRO PINTO",ra:"MT22089403",rank:13,aprov:false,status:"Reprovado",por:0,mat:3,ing:14,fis:0,m_por:0,m_mat:1.36,m_ing:7.78,m_fis:0,red:"Sim",media:2.13},
+{unidade:"BANGU",nome:"FILIPE RIBEIRO",ra:"MT19026004",rank:14,aprov:false,status:"Reprovado",por:0,mat:7,ing:10,fis:0,m_por:0,m_mat:3.18,m_ing:5.56,m_fis:0,red:"Sim",media:2.13},
+{unidade:"MADUREIRA",nome:"GABRIEL DOLZANI",ra:"MT23121577",rank:15,aprov:false,status:"Reprovado",por:7,mat:0,ing:0,fis:9,m_por:3.89,m_mat:0,m_ing:0,m_fis:4.09,red:"Sim",media:2},
+{unidade:"TAQUARA",nome:"AMANDA ROSA",ra:"MT23131576",rank:16,aprov:false,status:"Reprovado",por:9,mat:0,ing:0,fis:7,m_por:5,m_mat:0,m_ing:0,m_fis:3.18,red:"Sim",media:2},
+{unidade:"NOVA IGUACU",nome:"LEVI LOYOLA",ra:"MT22092506",rank:17,aprov:false,status:"Reprovado",por:0,mat:8,ing:7,fis:0,m_por:0,m_mat:3.64,m_ing:3.89,m_fis:0,red:"Sim",media:1.88},
+{unidade:"MADUREIRA",nome:"LUIZ DIAS",ra:"MT22093330",rank:18,aprov:false,status:"Reprovado",por:10,mat:0,ing:0,fis:5,m_por:5.56,m_mat:0,m_ing:0,m_fis:2.27,red:"Sim",media:1.88},
+{unidade:"MADUREIRA",nome:"DAVI COSTA",ra:"MT25181447",rank:19,aprov:false,status:"Reprovado",por:8,mat:0,ing:0,fis:6,m_por:4.44,m_mat:0,m_ing:0,m_fis:2.73,red:"Sim",media:1.75},
+{unidade:"MADUREIRA",nome:"ARTHUR NETO",ra:"MT24138562",rank:20,aprov:false,status:"Reprovado",por:12,mat:0,ing:0,fis:2,m_por:6.67,m_mat:0,m_ing:0,m_fis:0.91,red:"Sim",media:1.75},
+{unidade:"MADUREIRA",nome:"LEONARDO FERREIRA",ra:"MT22101067",rank:21,aprov:false,status:"Reprovado",por:10,mat:0,ing:0,fis:3,m_por:5.56,m_mat:0,m_ing:0,m_fis:1.36,red:"Sim",media:1.63},
+{unidade:"BANGU",nome:"YANNI VIANA",ra:"MT21065735",rank:22,aprov:false,status:"Reprovado",por:10,mat:0,ing:0,fis:3,m_por:5.56,m_mat:0,m_ing:0,m_fis:1.36,red:"Sim",media:1.63},
+{unidade:"MADUREIRA",nome:"GIOVANNA SIMÕES",ra:"MT23117831",rank:23,aprov:false,status:"Reprovado",por:0,mat:5,ing:7,fis:0,m_por:0,m_mat:2.27,m_ing:3.89,m_fis:0,red:"Sim",media:1.5},
+{unidade:"MADUREIRA",nome:"RICHARD GOMES",ra:"MT23118201",rank:24,aprov:false,status:"Reprovado",por:8,mat:0,ing:0,fis:4,m_por:4.44,m_mat:0,m_ing:0,m_fis:1.82,red:"Sim",media:1.5},
+{unidade:"BANGU",nome:"BRENO OLIVEIRA",ra:"MT24153728",rank:25,aprov:false,status:"Reprovado",por:6,mat:0,ing:0,fis:4,m_por:3.33,m_mat:0,m_ing:0,m_fis:1.82,red:"Sim",media:1.25},
+{unidade:"BANGU",nome:"MIGUEL SOUZA",ra:"MT19023803",rank:26,aprov:false,status:"Reprovado",por:5,mat:0,ing:0,fis:4,m_por:2.78,m_mat:0,m_ing:0,m_fis:1.82,red:"Sim",media:1.13},
+{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:27,aprov:false,status:"Reprovado",por:4,mat:0,ing:0,fis:3,m_por:2.22,m_mat:0,m_ing:0,m_fis:1.36,red:"Sim",media:0.88},
+];
+
 // ── Generic ranking renderer for EFOMM / EN ──
 function buildExamTurma(raw, exam){
   raw.forEach(a=>{
@@ -2658,16 +2830,20 @@ const TEF_S2D2      = buildExamTurma4D(RAW_EFOMM_S2D2, 'ef');
 const TEN_S2D2      = buildExamTurma4D(RAW_EN_S2D2, 'en');
 const TEF_S2_DAY2   = buildExamTurma2ndDay(RAW_EFOMM_S2D2, 'efomm');
 const TEN_S2_DAY2   = buildExamTurma2ndDay(RAW_EN_S2D2, 'en');
+const TEN_S3        = buildExamTurma(RAW_EN_S3D1, 'en');
+const TEN_S3D2      = buildExamTurma4D(RAW_EN_S3D2, 'en');
+const TEN_S3_GERAL  = buildExamTurma4D(RAW_EN_S3_GERAL, 'en');
 
 let fEf='todos', fEn='todos';
 let fEf2D='todos', fEfG='todos', fEn2D='todos', fEnG='todos';
 let fEfS2='todos', fEnS2='todos';
 let fEfS2D2='todos', fEnS2D2='todos';
 let fEfS2G='todos', fEnS2G='todos';
+let fEnS3='todos', fEnS3D2='todos', fEnS3G='todos';
 
 (()=>{
   // populate unit selects
-  [['uniSelEf',TEF],['uniSelEn',TEN],['uniSelEf2d',TEF2D],['uniSelEfG',TEF_GERAL],['uniSelEn2d',TEN2D],['uniSelEnG',TEN_GERAL],['uniSelEfS2',TEF_S2],['uniSelEnS2',TEN_S2],['uniSelEfS2D2',TEF_S2_DAY2],['uniSelEnS2D2',TEN_S2_DAY2],['uniSelEfS2G',TEF_S2D2],['uniSelEnS2G',TEN_S2D2]].forEach(([id, T])=>{
+  [['uniSelEf',TEF],['uniSelEn',TEN],['uniSelEf2d',TEF2D],['uniSelEfG',TEF_GERAL],['uniSelEn2d',TEN2D],['uniSelEnG',TEN_GERAL],['uniSelEfS2',TEF_S2],['uniSelEnS2',TEN_S2],['uniSelEfS2D2',TEF_S2_DAY2],['uniSelEnS2D2',TEN_S2_DAY2],['uniSelEfS2G',TEF_S2D2],['uniSelEnS2G',TEN_S2D2],['uniSelEnS3',TEN_S3],['uniSelEnS3D2',TEN_S3D2],['uniSelEnS3G',TEN_S3_GERAL]].forEach(([id, T])=>{
     const sel=document.getElementById(id);
     [...new Set(T.list.map(a=>a.unidade))].sort().forEach(u=>{
       const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
@@ -2685,6 +2861,9 @@ let fEfS2G='todos', fEnS2G='todos';
   renderEnS2D2();
   renderEfommS2Geral();
   renderEnS2Geral();
+  renderEnS3();
+  renderEnS3D2();
+  renderEnS3Geral();
 })();
 
 
@@ -2729,6 +2908,7 @@ function switchEnSim(sim,btn){
   if(btn)btn.classList.add('active');
   document.getElementById('enSim1Wrap').style.display = sim==='s1'?'block':'none';
   document.getElementById('enSim2Wrap').style.display = sim==='s2'?'block':'none';
+  document.getElementById('enSim3Wrap').style.display = sim==='s3'?'block':'none';
 }
 function switchEnTab(tab,btn){
   document.querySelectorAll('#enSim1Wrap .sub-tab-btn').forEach(b=>b.classList.remove('active'));
@@ -2743,6 +2923,13 @@ function switchEnS2Tab(tab,btn){
   document.getElementById('enS2D1Wrap').style.display    = tab==='d1'?'block':'none';
   document.getElementById('enS2D2Wrap').style.display    = tab==='d2'?'block':'none';
   document.getElementById('enS2GeralWrap').style.display = tab==='geral'?'block':'none';
+}
+function switchEnS3Tab(tab,btn){
+  document.querySelectorAll('#enSim3Wrap .sub-tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('enS3D1Wrap').style.display    = tab==='d1'?'block':'none';
+  document.getElementById('enS3D2Wrap').style.display    = tab==='d2'?'block':'none';
+  document.getElementById('enS3GeralWrap').style.display = tab==='geral'?'block':'none';
 }
 function renderEfomm2D(){
   renderExam(TEF2D, fEf2D,
@@ -2864,6 +3051,42 @@ function setFEnS2G(f,btn){
   document.getElementById('uniWrapEnS2G').style.display=f==='unidade'?'block':'none';
   renderEnS2Geral();
 }
+function renderEnS3(){
+  renderExam(TEN_S3, fEnS3,
+    {search:'searchEnS3',uniSel:'uniSelEnS3',total:'totalEnS3',aprov:'aprovEnS3',reprov:'reprovEnS3',body:'bodyEnS3',stats:'statsEnS3'},
+    40, 'en_s3', 'Aprovados');
+}
+function renderEnS3D2(){
+  renderExam(TEN_S3D2, fEnS3D2,
+    {search:'searchEnS3D2',uniSel:'uniSelEnS3D2',total:'totalEnS3D2',aprov:'aprovEnS3D2',reprov:'reprovEnS3D2',body:'bodyEnS3D2',stats:'statsEnS3D2'},
+    40, 'en_s3d2', 'Aprovados');
+}
+function renderEnS3Geral(){
+  renderExam(TEN_S3_GERAL, fEnS3G,
+    {search:'searchEnS3G',uniSel:'uniSelEnS3G',total:'totalEnS3G',aprov:'aprovEnS3G',reprov:'reprovEnS3G',body:'bodyEnS3G',stats:'statsEnS3G'},
+    80, 'en_s3_geral', 'Aprovados');
+}
+function setFEnS3(f,btn){
+  fEnS3=f;
+  document.querySelectorAll('#enS3D1Wrap .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapEnS3').style.display=f==='unidade'?'block':'none';
+  renderEnS3();
+}
+function setFEnS3D2(f,btn){
+  fEnS3D2=f;
+  document.querySelectorAll('#enS3D2Wrap .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapEnS3D2').style.display=f==='unidade'?'block':'none';
+  renderEnS3D2();
+}
+function setFEnS3G(f,btn){
+  fEnS3G=f;
+  document.querySelectorAll('#enS3GeralWrap .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapEnS3G').style.display=f==='unidade'?'block':'none';
+  renderEnS3Geral();
+}
 
 function renderExam(T, filt, ids, maxQ, label, apvLabel){
   const q=(document.getElementById(ids.search).value||'').toLowerCase();
@@ -2934,7 +3157,7 @@ function renderEn(){
 let curExam = 'afa'; // 'afa' | 'efomm' | 'en'
 
 function openExamAluno(exam, nome){
-  const T2 = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:TEN_S2;
+  const T2 = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:exam==='en_s3'?TEN_S3:exam==='en_s3d2'?TEN_S3D2:exam==='en_s3_geral'?TEN_S3_GERAL:TEN_S2;
   const candidato = T2.list.find(a=>a.nome===nome);
   if(!candidato) return;
   const modal = document.getElementById('raModal');
@@ -2953,7 +3176,7 @@ confirmarRA = function(){
   const exam  = modal.dataset.exam || 'afa';
   if(exam === 'afa'){ _origConfirmarRA(); return; }
   const nome  = modal.dataset.nome;
-  const T2    = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:TEN_S2;
+  const T2    = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:exam==='en_s3'?TEN_S3:exam==='en_s3d2'?TEN_S3D2:exam==='en_s3_geral'?TEN_S3_GERAL:TEN_S2;
   let candidato = T2.list.find(a=>a.nome===nome&&(a.ra||'').trim().toUpperCase()===document.getElementById('raInput').value.trim().toUpperCase());
   if(!candidato) candidato = T2.list.find(a=>a.nome===nome);
   if(!candidato){
@@ -2985,7 +3208,7 @@ function buildExamRelatorio(exam, a, T2){
   var isEF=exam==='efomm'||exam.startsWith('ef');
   var label=isEF?'EFOMM':'EN';
   var MIN_NOTA=5.0;
-  var is1day=exam==='efomm'||exam==='efomm_s2'||exam==='en'||exam==='en_s2';
+  var is1day=exam==='efomm'||exam==='efomm_s2'||exam==='en'||exam==='en_s2'||exam==='en_s3';
   var subjs;
   if(is1day&&isEF){
     subjs=[{l:'Português',nota:a.m_port||0,avg:T2.avgs.port||0,ok:a.ok_port},{l:'Inglês',nota:a.m_ingl||0,avg:T2.avgs.ingl||0,ok:a.ok_ingl}];
@@ -3075,10 +3298,10 @@ function buildExamDashboard(exam, a, T2){
 
 function buildExamNotas(exam, a, T2){
   const isEF  = exam==='efomm'||exam.startsWith('ef');
-  const is4D  = ['efomm2d','en2d','ef_geral','en_geral'].includes(exam);
+  const is4D  = ['efomm2d','en2d','ef_geral','en_geral','en_s3d2','en_s3_geral'].includes(exam);
   const label    = isEF?'EFOMM':'EN';
   const apvLabel = isEF?'Classificado':'Aprovado';
-  const dayTag   = exam==='efomm'||exam==='en'?'1º Dia · 14/03/2026':exam==='efomm2d'||exam==='en2d'?'2º Dia · 21/03/2026':exam==='efomm_s2'||exam==='en_s2'?'2º Simulado · 11/04/2026':'Geral (ambos os dias)';
+  const dayTag   = exam==='efomm'||exam==='en'?'1º Dia · 14/03/2026':exam==='efomm2d'||exam==='en2d'?'2º Dia · 21/03/2026':exam==='efomm_s2'||exam==='en_s2'?'2º Simulado · 11/04/2026':exam==='en_s3'?'3º Sim · 1º Dia · 02/05/2026':exam==='en_s3d2'?'3º Sim · 2º Dia · 09/05/2026':exam==='en_s3_geral'?'3º Simulado · Geral':'Geral (ambos os dias)';
 
   let discs;
   if(is4D){
